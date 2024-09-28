@@ -1,0 +1,13 @@
+package tn.esprit.com.msgestproject;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MsGestProjectApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MsGestProjectApplication.class, args);
+    }
+
+}
