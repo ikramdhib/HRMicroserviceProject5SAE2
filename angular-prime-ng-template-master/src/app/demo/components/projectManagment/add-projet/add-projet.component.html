@@ -1,0 +1,68 @@
+<div class="grid" style="height: 100vh;">
+    <div class="col-12 md:col-12 d-flex justify-content-center align-items-center">
+        <div class="card p-fluid" style=" margin: auto; display: flex;">
+            <div class="col-6" style="padding: 1rem;">
+                <h5>Ajouter Projet</h5>
+                
+                <form [formGroup]="projetForm" (ngSubmit)="submitProjet()">
+                    <div class="field">
+                        <label for="name1">Titre de projet</label>
+                        <input formControlName="titre"
+                        [ngClass]="{ 'ng-invalid ng-dirty': submit && form['titre'].errors}"
+                         pInputText id="name1" type="text" />
+                         <div *ngIf="submit && form['titre'].errors" class="p-error">
+                            <div *ngIf="form['titre'].errors?.['required']">Ce champs est obligatoire</div>
+                        </div>
+                    </div>
+                    <div class="field">
+                    <label for="email1">Description</label>
+                    <textarea 
+                    [ngClass]="{ 'ng-invalid ng-dirty': submit && form['description'].errors}"
+                    formControlName="description" rows="5" cols="30" placeholder="Donne des details .." pInputTextarea></textarea>
+                    <div *ngIf="submit && form['description'].errors" class="p-error">
+                        <div *ngIf="form['description'].errors?.['required']">Ce champs est obligatoire</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="dated">Date debut de projet</label>
+		        	<p-calendar 
+                    [ngClass]="{ 'ng-invalid ng-dirty': submit && form['startDate'].errors}"
+                    formControlName="startDate" [showIcon]="true" inputId="icon"></p-calendar>
+                    <div *ngIf="submit && form['startDate'].errors" class="p-error">
+                        <div *ngIf="form['startDate'].errors?.['required']">Ce champs est obligatoire</div>
+                    </div>
+                    </div>
+                    <div class="field">
+                        <label for="datef">Date Fin de projet</label>
+                      <p-calendar 
+                      [ngClass]="{ 'ng-invalid ng-dirty': submit && form['findate'].errors}"
+                      formControlName="findate" [showIcon]="true" inputId="icon"></p-calendar>
+                      <div *ngIf="submit && form['findate'].errors" class="p-error">
+                        <div *ngIf="form['findate'].errors?.['required']">Ce champs est obligatoire</div>
+                    </div>
+                    </div>
+                    <div class="field">
+                        <label for="equipe">Équipe</label>
+                        <p-autoComplete 
+                         [ngClass]="{ 'ng-invalid ng-dirty': submit && selectedEquipe==null}"
+                            [(ngModel)]="selectedEquipe" 
+                            [suggestions]="filteredEquipes" 
+                            (completeMethod)="filterEquipe($event)"
+                            [ngModelOptions]="{standalone: true}" 
+                            field="titre" 
+                            [dropdown]="true">
+                        </p-autoComplete>
+                    </div>
+                <div style="display: flex; justify-content: flex-start;">
+                    <button pButton pRipple [label]="updateTurn ? 'Modifier le projet' : 'Ajouter projet'" class="mb-4"></button>
+                    <p-toast></p-toast>
+                </div>
+            </form>
+            </div>
+            
+            <div class="col-6 d-flex align-items-center justify-content-center" style="padding: 1rem;">
+                <img src="assets/demo/images/projet.jpg" alt="Description de l'image" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>

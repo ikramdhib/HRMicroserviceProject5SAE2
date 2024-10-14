@@ -1,0 +1,88 @@
+.stepper-container {
+    width: 600px;
+    margin: 50px auto;
+  }
+  
+  .steps-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .step {
+    padding: 10px 20px;
+    background-color: lightgray;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+    margin-right: 10px;
+    position: relative;
+  }
+  
+  .step:last-child {
+    margin-right: 0;
+  }
+  
+  .step.active {
+    background-color: green;
+    color: white;
+  }
+  
+  .step-content {
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .stepper-navigation {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .stepper-navigation button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .stepper-navigation button:disabled {
+    background-color: #ccc;
+  }
+  .card {
+    padding: 1.5rem;
+    border-radius: 8px;
+  
+    h2 {
+      font-size: 1.8rem;
+      color: #333;
+    }
+  
+    .p-listbox {
+      border: none;
+      background-color: white;
+    }
+  
+    .p-listbox-item {
+      padding: 1rem;
+      border-bottom: 1px solid #e0e0e0;
+      &:hover {
+        background-color: #f1f1f1;
+      }
+    }
+  
+    .pi {
+      color: #007ad9;
+    }
+  
+    p-tag {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+  }
+  

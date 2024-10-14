@@ -1,5 +1,6 @@
 package tn.esprit.com.msgestproject.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,11 +18,12 @@ public class Equipe implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private int id ;
     private String titre ;
-    @OneToOne
+    @ManyToOne // changer a onetomany
     private Utilisateur responsable ;
     @ManyToMany
     private Set<Utilisateur> users ;
     @OneToMany(mappedBy = "equipe" , cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Projet> projets;
 
 }

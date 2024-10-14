@@ -1,0 +1,35 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { AddProjetRoutingModule } from './add-projet-routing.module';
+import { AddProjetComponent } from './add-projet.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { CalendarModule } from "primeng/calendar";
+import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from 'primeng/toast';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+@NgModule({
+  declarations: [AddProjetComponent],
+  imports: [
+    DynamicDialogModule,
+    CommonModule,
+    AddProjetRoutingModule,
+    DropdownModule,
+    FormsModule,
+    InputTextModule,
+    ButtonModule,
+    InputTextareaModule,
+    AutoCompleteModule,
+    CalendarModule,
+    ReactiveFormsModule,
+    ConfirmPopupModule,
+    ToastModule
+  ]
+})
+export class AddProjetModule { }

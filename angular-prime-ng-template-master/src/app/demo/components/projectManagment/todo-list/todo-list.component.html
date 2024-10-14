@@ -1,0 +1,32 @@
+<div class="grid">
+	<div class="col-12">
+		<div class="card">
+            <h5>ToDo Liste</h5>
+<div class="container">
+    <div class="column" (drop)="onDrop($event, 'PLANIFIER')" (dragover)="onDragOver($event)">
+      <h3>Planifiées</h3>
+      <div *ngFor="let tache of tachesPlanifier" class="tache-planifie" draggable="true" (dragstart)="onDragStart($event, tache)">
+        {{ tache.titre }}
+      </div>
+    </div>
+  
+    <div class="column" (drop)="onDrop($event, 'EN_COUR')" (dragover)="onDragOver($event)">
+      <h3>En Cours</h3>
+      <div *ngFor="let tache of tachesEnCours" class="tache-en-cours" draggable="true" (dragstart)="onDragStart($event, tache)">
+        {{ tache.titre }}
+      </div>
+    </div>
+  
+    <div class="column" (drop)="onDrop($event, 'TERMINER')" (dragover)="onDragOver($event)">
+      <h3>Terminées</h3>
+      <div *ngFor="let tache of tachesTerminer" class="tache-terminee" draggable="true" (dragstart)="onDragStart($event, tache)">
+        {{ tache.titre }}
+      </div>
+    </div>
+    <p-toast></p-toast>
+
+  </div>
+  </div>
+  </div>
+  </div>
+  

@@ -1,4 +1,56 @@
 package tn.esprit.com.msgestproject.Controllers;
 
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import tn.esprit.com.msgestproject.Entities.Equipe;
+import tn.esprit.com.msgestproject.Entities.Utilisateur;
+import tn.esprit.com.msgestproject.Services.EquipeService;
+
+import java.util.List;
+
+@AllArgsConstructor
+@RestController
+@RequestMapping("/equipe")
 public class EquipeContoller {
+    private EquipeService equipeService;
+
+    @PostMapping("/adduser")
+    public Utilisateur addUser(@RequestBody Utilisateur utilisateur){
+        return equipeService.addUser(utilisateur);
+    }
+    @PostMapping("/add")
+    public Equipe addEquipe(@RequestBody Equipe equipe) {
+        return equipeService.addEquipe( equipe);
+    }
+
+    @PutMapping("/update")
+    public Equipe updateEquipe(@RequestBody Equipe equipe) {
+        return equipeService.updateEquipe(equipe);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteEquipe(@PathVariable int id) {
+        equipeService.deleteEquipe(id);
+    }
+
+    @GetMapping("/all")
+    public List<Equipe> getAllEquipes() {
+        return equipeService.getAllEquipes();
+    }
+
+    @GetMapping("/one/{id}")
+    public Equipe getOneById(@PathVariable int id) {
+        return equipeService.getOneById(id);
+    }
+
+    @GetMapping("/users")
+    public List<Utilisateur> getAllUser (){
+        return equipeService.getAllUser();
+    }
+
+    @GetMapping("/geteUserEquiep/{userId}")
+    public List<Equipe> getEquipeByUserId(@PathVariable int userId) {
+
+        return equipeService.getEquipesByUserId(userId);
+    }
 }

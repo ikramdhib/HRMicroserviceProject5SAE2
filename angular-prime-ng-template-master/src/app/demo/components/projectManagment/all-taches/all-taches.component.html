@@ -1,0 +1,46 @@
+<div class="grid">
+
+	<div class="col-12">
+		<div class="card">
+			<h5>Les Taches du projet </h5>
+
+			<p-table [value]="customers3" scrollDirection="both" [scrollable]="true" scrollHeight="400px" styleClass="mt-3" responsiveLayout="scroll">
+				<ng-template pTemplate="header">
+					<tr>
+						<th style="width:200px" pFrozenColumn>Titre</th>
+						<th style="width:200px">Descripton</th>
+						<th style="width:200px">Titre de projet</th>
+						<th style="width:200px">Status</th>
+                        <th style="width:200px">Actions</th>
+						<th style="width:200px" pFrozenColumn alignFrozen="right">Responsable</th>
+					</tr>
+				</ng-template>
+				<ng-template pTemplate="body" let-customer>
+					<tr>
+						<td style="width:200px" pFrozenColumn>{{customer?.titre }}</td>
+						
+						<td style="width:200px">
+							
+							<span class="image-text ml-2">{{customer?.detail}}</span>
+						</td>
+						<td style="width:200px">{{customer?.projet?.titre}}</td>
+						<td style="width:200px">
+                            <span *ngIf="customer.status === 'EN_COUR'" class="customer-badge status-new">{{ customer.status }}</span>
+                            <span *ngIf="customer.status === 'TERMINER'" class="customer-badge status-unqualified">{{ customer.status }}</span>
+                            <span *ngIf="customer.status === 'PLANIFIER'" class="customer-badge status-renewal">{{ customer.status }}</span>
+                        </td>
+                        <td style="min-width: 12rem;">
+                            <p-confirmDialog header="Confirmation" key="confirm1" icon="pi pi-exclamation-triangle" message="Are you sure you want to proceed?"
+                            [style]="{width: '350px'}" acceptButtonStyleClass="p-button-text" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-outlined mr-2 mb-2"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirm1(customer.id)" class="p-button-rounded p-button-danger p-button-outlined mr-2 mb-2"></button>
+                            <p-toast></p-toast>
+						</td>
+						<td style="width:200px" pFrozenColumn alignFrozen="right">{{customer?.user?.nomComplet}}</td>
+					</tr>
+				</ng-template>
+			</p-table>
+		</div>
+	</div>
+
+</div>

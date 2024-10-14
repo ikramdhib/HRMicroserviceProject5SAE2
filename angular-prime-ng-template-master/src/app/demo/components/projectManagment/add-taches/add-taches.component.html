@@ -1,0 +1,106 @@
+<div class="grid p-fluid">
+    <div class="col-12">
+        <div class="card card-w-title flex flex-column">
+            <form [formGroup]="tacheForm" (ngSubmit)="submitTache()">
+            <div class="col-12">
+                <h5>Affecter les taches</h5>
+                
+                <!-- Stepper control -->
+                <p-steps [model]="routeItems" [(activeIndex)]="pageIndex" styleClass="mt-5" [readonly]="false" (onChange)="onStepChange($event)"></p-steps>
+            </div>
+
+            <!-- Step content below the stepper -->
+            <div class="col-12 mt-5">
+                <!-- Step 1: Choisir un projet -->
+                <div *ngIf="pageIndex === 0">
+                    <div class="col-12 md:col-12 d-flex justify-content-center align-items-center" style=" margin: auto; display: flex;">
+                        <div class="col-6">
+                    <h3>Choisir un projet</h3>
+                    <p-dropdown
+                    formControlName="projet"
+                    [ngClass]="{ 'ng-invalid ng-dirty': submit && form['projet'].errors}"
+                     [options]="dropdownItems" optionLabel="titre" [(ngModel)]="selectedProject" 
+                     placeholder="Select a project"
+                        (onChange)="onProjectSelect($event.value.id)"></p-dropdown>
+                        <div *ngIf="submit && form['projet'].errors" class="p-error">
+                            <div *ngIf="form['projet'].errors?.['required']">Ce champs est obligatoire</div>
+                        </div>
+                        </div>
+                        <div class="col-6 d-flex align-items-center justify-content-center" style="padding: 1rem;">
+                            <img src="assets/demo/images/projet2.jpg" alt="Description de l'image" style="max-width: 100%; height: auto;">
+                        </div>
+                        </div>
+                </div>
+
+                <!-- Step 2: Définir taches -->
+                <div *ngIf="pageIndex === 1">
+                    <div class="col-12 md:col-12 d-flex justify-content-center align-items-center" style=" margin: auto; display: flex;">
+                        <div class="col-6">
+                    <h3>Définir taches</h3>
+                    <div class="field">
+                        <label for="name1">Titre </label>
+                        <input 
+                        formControlName="titre"
+                        [ngClass]="{ 'ng-invalid ng-dirty': submit && form['titre'].errors}"
+                        pInputText id="name1" type="text" />
+                        <div *ngIf="submit && form['titre'].errors" class="p-error">
+                            <div *ngIf="form['titre'].errors?.['required']">Ce champs est obligatoire</div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="email1">Détails</label>
+                        <textarea
+                        formControlName="detail"
+                        [ngClass]="{ 'ng-invalid ng-dirty': submit && form['detail'].errors}"
+                         rows="5" cols="30" placeholder="detail .. " pInputTextarea></textarea>
+                         <div *ngIf="submit && form['detail'].errors" class="p-error">
+                            <div *ngIf="form['detail'].errors?.['required']">Ce champs est obligatoire</div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="email1">Membre</label>
+                        <p-dropdown
+                        formControlName="user"
+                        [ngClass]="{ 'ng-invalid ng-dirty': submit && form['user'].errors}"
+                         [options]="members" optionLabel="email" [(ngModel)]="selectedMember"></p-dropdown>
+                         <div *ngIf="submit && form['user'].errors" class="p-error">
+                            <div *ngIf="form['user'].errors?.['required']">Ce champs est obligatoire</div>
+                        </div>
+                    </div>
+                    <div class="col-6" style="display: flex; justify-content: flex-start;">
+                        <button pButton pRipple label="Ajouter" class="p-button-primary"></button>
+                        <button pButton label="Suivant" (click)="nextStep()" class="ml-5 p-button-primary"></button>
+                        <p-toast></p-toast>
+                    </div>
+                </div>
+                <div class="col-6 d-flex align-items-center justify-content-center" style="padding: 1rem;">
+                    <img src="assets/demo/images/taches.jpg" alt="Description de l'image" style="max-width: 100%; height: auto;">
+                </div>
+                </div>
+                </div>
+                <div *ngIf="pageIndex === 2">
+                        <h2 class="mb-4">Liste des nouveaux Tâches</h2>
+                        <p-listbox [options]="tacheList" optionLabel="titre" styleClass="w-full" [style]="{'max-height': '400px'}">
+                          <ng-template let-tache pTemplate="item">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                              <div>
+                                <span class="pi pi-tasks mr-2" style="font-size: 1.5em"></span>
+                                <strong>{{ tache.titre }}</strong>
+                              </div>
+                              <p-tag  severity="success" value="Planifier"></p-tag>
+                            </div>
+                            <p>{{ tache.detail }}</p>
+                            <div class="p-d-flex p-ai-center mt-2">
+                              <span class="pi pi-user mr-2"></span> 
+                              <span>Membre: {{ tache.user.nomComplet }}</span>
+                            </div>
+                          </ng-template>
+                        </p-listbox>
+                      </div>
+                      
+                </div>
+        </form>
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,58 @@
+<div class="col-12 md:col-12 d-flex justify-content-center align-items-center">
+		<div class="card p-fluid" style=" margin: auto; display: flex;">
+			<div class="col-6">
+				<h5 class="mb-5">Ajouter une nouvelle équipe</h5>
+		  <form [formGroup]="teamForm" (ngSubmit)="submitTeam()">
+			<div class="field ">
+			  <label for="teamTitle">Titre d'équipe</label>
+			  <input
+			  [ngClass]="{ 'ng-invalid ng-dirty': submit && form['teamTitle'].errors}"
+			   pInputText id="teamTitle" formControlName="teamTitle" />
+			   <div *ngIf="submit && form['teamTitle'].errors" class="p-error">
+				<div *ngIf="form['teamTitle'].errors?.['required']">Ce champs est obligatoire</div>
+			</div>
+			</div>
+			
+			<div class="field ">
+			  <label for="selectedLead">Responsable d'équipe</label>
+			  <p-dropdown
+			  placeholder="choisir un responsable"
+			  [ngClass]="{ 'ng-invalid ng-dirty': submit && form['selectedLead'].errors}" 
+			  [options]="dropdownItems" optionLabel="email" formControlName="selectedLead"></p-dropdown>
+			  <div *ngIf="submit && form['selectedLead'].errors" class="p-error">
+				<div *ngIf="form['selectedLead'].errors?.['required']">Ce champs est obligatoire</div>
+			</div>
+			</div>
+			
+			<div class="field ">
+			  <label for="teamMembers">Membres de l'équipe</label>
+			  <div class="tags-container">
+				<span *ngFor="let member of employees" 
+					  class="tag" 
+					  [ngClass]="{'selected-tag': isMemberSelected(member)}"
+					  (click)="toggleMember(member)">
+				  {{ member.email }}
+				</span>
+			  </div>
+			  <p-chips
+			 
+			  [ngClass]="{ 'ng-invalid ng-dirty': submit && form['teamMembers'].errors}" 
+			   formControlName="teamMembers"  readonly="true"></p-chips>
+			   <div *ngIf="submit && form['teamMembers'].errors" class="p-error">
+				<div *ngIf="form['teamMembers'].errors?.['required']">Ce champs est obligatoire</div>
+			</div>
+			</div>
+			
+			<div class="col-6" style="display: flex; justify-content: flex-start;">
+			  <button pButton pRipple type="submit" [label]="updateTurn ? 'Modifier l\'équipe' : 'Ajouter équipe'" class="mb-4"></button>
+			  <p-toast></p-toast>
+			</div>
+		  </form>
+		</div>
+	
+		<div class="col-6 d-flex align-items-center justify-content-center" style="padding: 1rem;">
+			<img src="assets/demo/images/equipe.jpg" alt="Description de l'image" style="max-width: 100%; height: auto;">
+		</div>
+	</div>
+	  </div> 
+  

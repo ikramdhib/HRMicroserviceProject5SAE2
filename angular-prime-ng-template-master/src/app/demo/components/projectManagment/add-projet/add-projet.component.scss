@@ -1,0 +1,5 @@
+.card {
+    display: flex;
+    flex-direction: row; /* Assure que les enfants sont en ligne */
+    justify-content: space-between; /* Espace entre le formulaire et l'image */
+}

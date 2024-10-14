@@ -1,0 +1,67 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px; // Ajout d'une marge autour du conteneur principal
+  }
+  
+  .column {
+    width: 30%;
+    border: 1px solid #ccc;
+    border-radius: 8px; // Arrondir les coins
+    padding: 10px;
+    margin: 0 10px; // Ajout d'espace entre les colonnes
+    min-height: 400px; // Hauteur minimum pour mieux visualiser les zones de dépôt
+    background-color: #f0f0f0; // Couleur de fond plus douce
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Ombre légère pour profondeur
+    transition: background-color 0.3s; // Transition pour un changement de couleur fluide
+  }
+  
+  .column:hover {
+    background-color: #e0e0e0; // Changement de couleur au survol
+  }
+  
+  .column h3 {
+    text-align: center;
+    color: #333; // Couleur de texte sombre pour le titre
+    margin-bottom: 10px; // Espacement sous le titre
+  }
+  
+  .column div {
+    background-color: #ffffff; 
+    border-radius: 5px; // Arrondir les coins des tâches
+    padding: 8px;
+    margin: 5px 0;
+    cursor: move; // Indique que les éléments peuvent être déplacés
+    transition: transform 0.2s; // Transition pour un mouvement fluide
+  }
+  
+  .column div:hover {
+    transform: scale(1.02); // Légère augmentation de taille au survol
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Ombre au survol pour effet d'élévation
+  }
+
+  /* Styles pour les tâches planifiées */
+.tache-planifie {
+    border: 2px solid rgb(171, 50, 204);  /* Bord vert */
+    padding: 10px;  /* Espacement interne */
+    margin-bottom: 10px;  /* Espacement entre les tâches */
+    border-radius: 5px;  /* Coins arrondis */
+}
+
+/* Styles pour les tâches en cours */
+.tache-en-cours {
+    border: 2px solid blue;  /* Bord bleu */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* Styles pour les tâches terminées */
+.tache-terminee {
+    border: 2px solid green;  /* Bord rouge */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-decoration: line-through;  /* Contenu barré */
+}
+  

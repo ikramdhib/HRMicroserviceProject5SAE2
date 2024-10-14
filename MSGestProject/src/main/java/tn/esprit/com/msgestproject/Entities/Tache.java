@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -17,7 +18,9 @@ public class Tache implements Serializable {
     private int id ;
     private String titre ;
     private String detail ;
-    @OneToOne
+    @Enumerated(EnumType.STRING)
+    private Status status ;
+    @ManyToOne
     private Utilisateur user;
     @ManyToOne
     private Projet projet;
