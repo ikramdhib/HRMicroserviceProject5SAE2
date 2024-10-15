@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'projets', loadChildren: () => import('./all-projets/all-projets.module').then(m => m.AllProjetsModule) },
   { path: 'teams', loadChildren: () => import('./all-team/all-team.module').then(m => m.AllTeamModule) },
   { path: 'taches/:id', loadChildren: () => import('./all-taches/all-taches.module').then(m => m.AllTachesModule) },
-  { path: 'todoList', loadChildren: () => import('./todo-list/todo-list.module').then(m => m.TodoListModule) },
+  { path: 'todoList/:id', loadChildren: () => import('./todo-list/todo-list.module').then(m => m.TodoListModule) },
   { path: 'userprojet', loadChildren: () => import('./user-project/user-project.module').then(m => m.UserProjectModule) },
 ]
 

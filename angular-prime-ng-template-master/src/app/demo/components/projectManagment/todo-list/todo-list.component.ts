@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TachesService } from '../Services/taches.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-todo-list',
@@ -14,11 +15,14 @@ export class TodoListComponent implements OnInit {
   tachesPlanifier: any[] = [];
   tachesEnCours: any[] = [];
   tachesTerminer: any[] = [];
-
-  constructor(private tacheService: TachesService, private confirmationService: ConfirmationService, private messageService: MessageService) {}
+  id:any;
+  constructor(private route: ActivatedRoute,private tacheService: TachesService, private confirmationService: ConfirmationService, private messageService: MessageService) {}
 
   ngOnInit() {
-    this.getAllTachesWithUserIdAndProjectId(1, 3);
+    this.route.paramMap.subscribe(params => {
+      this.id = params.get('id'); 
+    });
+    this.getAllTachesWithUserIdAndProjectId(this.id, 3);
   }
 
   getAllTachesWithUserIdAndProjectId(userId: number, projectId: number) {

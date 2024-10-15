@@ -4,6 +4,7 @@ import { EquipeService } from '../Services/equipe.service';
 import { ProjetService } from '../Services/projet.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { TachesService } from '../Services/taches.service';
+import { Router } from '@angular/router';
 
 interface expandedRows {
   [key: string]: boolean;
@@ -26,7 +27,7 @@ export class UserProjectComponent implements OnInit {
   isExpanded: boolean = false;
   @ViewChild('filter') filter!: ElementRef;
 
-  constructor(private tacheService : TachesService, private projetService:ProjetService,  private teamService: EquipeService) { }
+  constructor(private router: Router,private tacheService : TachesService, private projetService:ProjetService,  private teamService: EquipeService) { }
 
   ngOnInit() {
       this.getAllUserTeam(6);
@@ -95,6 +96,10 @@ export class UserProjectComponent implements OnInit {
             this.products= res;
         }
     })
+  }
+
+  naviguerAvecId(id: any): void {
+    this.router.navigate(['projet/todoList', id]); // Naviguer vers '/mon-chemin/{id}'
   }
 
   

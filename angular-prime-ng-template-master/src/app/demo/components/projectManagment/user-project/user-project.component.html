@@ -22,8 +22,10 @@
 						<td style="min-width: 12rem;">{{product.titre}}</td>
 						<td style="min-width: 8rem;">{{product.detailles}}</td>
 						<td style="min-width: 10rem;">{{product.equipe.responsable.nomComplet}}</td>
-						<td style="min-width: 10rem;"> {{ product.dateDebut}} </td>
-						<td>{{ product.dateDebut}}</td>
+						<td style="min-width: 10rem;"> {{ product.dateDebut | date: 'MM/dd/yyyy'}} </td>
+						<td style="min-width: 10rem;">{{ product.dateDebut | date: 'MM/dd/yyyy'}}</td>
+						<td><button pButton pRipple (click)="naviguerAvecId(product.id)" type="button" icon="pi pi-sitemap"  class="p-button-rounded p-button-success p-button-outlined mr-2 mb-2"></button></td>
+
 					</tr>
 				</ng-template>
 				<ng-template pTemplate="rowexpansion" let-product>
@@ -37,6 +39,7 @@
 						<th pSortableColumn="customer">Detaille </th>
 						<th pSortableColumn="date">Responsable de tache</th>
 						<th pSortableColumn="stats">Status </th>
+							
 					</tr>
 				</ng-template>
 				<ng-template pTemplate="body" let-order>
@@ -47,6 +50,7 @@
 						<td><span *ngIf="order.status === 'EN_COUR'" class="customer-badge status-new">{{ order.status }}</span>
                             <span *ngIf="order.status === 'TERMINER'" class="customer-badge status-unqualified">{{ order.status }}</span>
                             <span *ngIf="order.status === 'PLANIFIER'" class="customer-badge status-renewal">{{ order.status }}</span></td>
+                            
 					</tr>
 				</ng-template>
 				<ng-template pTemplate="emptymessage">
