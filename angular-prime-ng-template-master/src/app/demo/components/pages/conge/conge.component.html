@@ -1,0 +1,140 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openDialog()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"  ></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="conges"  responsiveLayout="scroll" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Manage Conges</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="code">type </th>
+                        <th pSortableColumn="name">date_debut </th>
+                        <th pSortableColumn="date_fin">date_fin</th>
+                        <th pSortableColumn="duree">duree</th>
+                        <th pSortableColumn="statut">statut </th>
+                        <th pSortableColumn="raison">raison </th>
+                        <th pSortableColumn="dateDemande">dateDemande </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-conge>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="conge"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">type</span>
+                            {{conge.type}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">date_debut</span>
+                            {{conge.date_debut | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">date_fin</span>
+                            {{conge.date_fin | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">duree</span>
+                            {{ conge.duree }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">statut</span>
+                            {{ conge.statut }}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;">
+                            <span class="p-column-title">raison</span>
+                            {{ conge.raison }}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;">
+                            <span class="p-column-title">dateDemande</span>
+                            {{ conge.dateDemande | date:'dd/MM/yyyy' }} 
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" ></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"  (click)="onDelete(conge)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="display" [style]="{width: '450px'}" header="Conge Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+              <form [formGroup]="congeForm">
+                <div class="field">
+                  <label for="type">Type</label>
+                  <input type="text" pInputText id="type" formControlName="type" required />
+                  <div *ngIf="submitted && congeForm.get('type')?.invalid" class="error">Type is required.</div>
+                </div>
+                <div class="field">
+                  <label for="date_debut">Date début</label>
+                  <p-calendar id="date_debut" formControlName="date_debut" dateFormat="mm/dd/yy" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="field">
+                  <label for="date_fin">Date fin</label>
+                  <p-calendar id="date_fin" formControlName="date_fin" dateFormat="mm/dd/yy" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="field">
+                  <label for="duree">Durée</label>
+                  <input type="number" pInputText id="duree" formControlName="duree" readonly />
+                  <div *ngIf="submitted && congeForm.get('duree')?.invalid" class="error">Durée must be at least 1.</div>
+                </div>
+                <div class="field">
+                  <label for="raison">Raison</label>
+                  <input type="text" pInputText id="raison" formControlName="raison" required />
+                  <div *ngIf="submitted && congeForm.get('raison')?.invalid" class="error">Raison is required.</div>
+                </div>
+                <div class="field">
+                  <label for="status">Status</label>
+                  <input type="text" pInputText id="status" formControlName="statut" required />
+                  <div *ngIf="submitted && congeForm.get('statut')?.invalid" class="error">Status is required.</div>
+                </div>
+              </form>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="onHide()"></button>
+                <button pButton pRipple label="Ajouter" icon="pi pi-check" class="p-button-text" type="submit" (click)="addConge()"  [disabled]="congeForm.invalid"></button>
+            </ng-template>
+        </p-dialog>
+        
+      <!-- Boîte de dialogue de confirmation -->
+<p-dialog header="Confirmation de suppression" [(visible)]="displayDeleteDialog" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+      <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+      <span>Êtes-vous sûr de vouloir supprimer le congé <b>{{ selectedConge?.type }}</b> ?</span>
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Non" (click)="displayDeleteDialog=false"></button>
+      <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Oui" (click)="confirmDelete()"></button>
+    </ng-template>
+  </p-dialog>
+
+        
+    </div>
+</div>
