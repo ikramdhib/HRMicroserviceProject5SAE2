@@ -23,7 +23,8 @@ public class Conge implements Serializable {
     private LocalDate date_debut;
     private LocalDate date_fin;
     private int duree;
-    private String statut;
+    @Enumerated(EnumType.STRING)
+    private Status statut;
     private String raison;
     private LocalDate dateDemande;
     @JsonIgnore

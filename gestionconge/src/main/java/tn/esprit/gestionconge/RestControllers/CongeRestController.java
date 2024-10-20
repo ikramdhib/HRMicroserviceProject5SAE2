@@ -19,8 +19,7 @@ public class CongeRestController {
     }
 
     @PutMapping("/updateConge")
-    public Conge updateConge(@PathVariable("id") int id,@RequestBody Conge conge) {
-        conge.setId(id);
+    public Conge updateConge(@RequestBody Conge conge) {
         return congeService.updateConge(conge);
     }
 
