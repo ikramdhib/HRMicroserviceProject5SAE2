@@ -4,6 +4,6 @@ export interface Conge {
   date_debut: string;
   date_fin: string;
   duree: number;
-  statut: string;
+  //statut: string;
   raison: string;
 }
