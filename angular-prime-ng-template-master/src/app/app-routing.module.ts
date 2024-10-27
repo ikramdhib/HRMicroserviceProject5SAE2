@@ -3,11 +3,15 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { MydashboardComponent } from './demo/components/mydashboard/mydashboard.component';
+import { LoginComponent } from './login/login.component';
+
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
+           // { path: 'login', component: LoginComponent },
             {
+                
                 path: '', component: AppLayoutComponent,
                 children: [
                  

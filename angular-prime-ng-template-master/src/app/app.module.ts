@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -28,12 +28,20 @@ import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from 'primeng/dragdrop';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { AuthService } from './config/auth.service';
+import { LoginComponent } from './login/login.component';
+
+/*export function initializeKeycloak(authService: AuthService) {
+    return () => authService.init();
+  }*/
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, MydashboardComponent
+        AppComponent, NotfoundComponent, MydashboardComponent, LoginComponent
     ],
     imports: [
+        KeycloakAngularModule,
         AppRoutingModule,
         AppLayoutModule,
         TableModule,
@@ -54,7 +62,13 @@ import { DragDropModule } from 'primeng/dragdrop';
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
+        PhotoService, ProductService,
+          /* {
+              provide: APP_INITIALIZER,
+              useFactory: initializeKeycloak,
+              multi: true,
+              deps: [KeycloakService],
+            },*/
     ],
     bootstrap: [AppComponent]
 })
