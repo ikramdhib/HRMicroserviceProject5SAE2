@@ -1,0 +1,118 @@
+<style>
+/* Style du bouton Confirmer */
+.custom-confirm-button {
+    background-color: #28a745 !important; /* Couleur verte vive */
+    border: none;
+    margin-right: 3px;
+    box-shadow: 0px 4px 8px rgba(40, 167, 69, 0.4); /* Effet d'ombre */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Effet de survol pour le bouton Confirmer */
+.custom-confirm-button:hover {
+    background-color: #218838 !important; /* Couleur légèrement plus foncée au survol */
+    transform: scale(1.05); /* Légère augmentation de taille */
+}
+
+/* Style du bouton Annuler */
+.custom-cancel-button {
+    background-color: #dc3545 !important; /* Couleur rouge vive */
+    border: none;
+    box-shadow: 0px 4px 8px rgba(220, 53, 69, 0.4); /* Effet d'ombre */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Effet de survol pour le bouton Annuler */
+.custom-cancel-button:hover {
+    background-color: #c82333 !important; /* Couleur légèrement plus foncée au survol */
+    transform: scale(1.05); /* Légère augmentation de taille */
+}
+/* Style pour le statut Confirmé */
+.badge-confirmed {
+    color: black;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    /*box-shadow: 0px 4px 6px rgba(40, 167, 69, 0.3); /* Ombre légère */
+}
+
+/* Style pour le statut Annulé */
+.badge-canceled {
+    color: black;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    /*box-shadow: 0px 4px 6px rgba(220, 53, 69, 0.3); /* Ombre légère */
+}
+
+</style>
+
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h2>Gestion des Congés</h2>
+            <p-table [value]="conges" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Date Début</th>
+                        <th>Date Fin</th>
+                        <th>Durée</th>
+                        <th>Raison</th>
+                        <th>Date Demande</th>
+                        <th>Utilisateur</th>
+                        <th>Actions</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-conge>
+                    <tr>
+                        <td>{{ conge.id }}</td>
+                        <td>{{ conge.type }}</td>
+                        <td>{{ conge.date_debut | date : 'dd/MM/yyyy' }}</td>
+                        <td>{{ conge.date_fin | date : 'dd/MM/yyyy' }}</td>
+                        <td>{{ conge.duree }}</td>
+                        <td>{{ conge.raison }}</td>
+                        <td>{{ conge.dateDemande | date : 'dd/MM/yyyy' }}</td>
+                        <td>{{ conge.utilisateur?.nomComplet }}</td>
+                        <td>
+                            <!-- Afficher les boutons seulement si le congé n'est ni confirmé ni annulé -->
+                            <ng-container
+                                *ngIf="conge.statut !== 'Valider' && conge.statut !== 'Refuser'; else statutTemplate">
+                                <button
+                                    pButton
+                                    label="Confirmer"
+                                    class="p-button-success p-button-rounded custom-confirm-button"
+                                    (click)="confirmerConge(conge)">
+                                </button>
+                                <button
+                                    pButton
+                                    label="Annuler"
+                                    class="p-button-danger p-button-rounded custom-cancel-button"
+                                    (click)="annulerConge(conge)">
+                                </button>
+                            </ng-container>
+
+                            <!-- Texte à afficher si le congé est confirmé ou annulé -->
+                            <ng-template #statutTemplate>
+                                <span *ngIf="conge.statut === 'Valider'" class="badge badge-confirmed">
+                                    Confirmé
+                                </span>
+                                <span *ngIf="conge.statut === 'Refuser'" class="badge badge-canceled">
+                                    Annulé
+                                </span>
+                            </ng-template>
+                            
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

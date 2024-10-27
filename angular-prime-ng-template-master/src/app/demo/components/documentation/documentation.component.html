@@ -5,7 +5,6 @@
         <p>Sakai is an application template for Angular and is distributed as a CLI project. Current versions is Angular v14 with PrimeNG v14. In case CLI is not installed already, use the command below to set it up.</p>
     
 <app-code  ngPreserveWhitespaces ngNonBindable lang="markup">
-npm install -g @angular/cli
 </app-code>
         
         <p>Once CLI is ready in your system, extract the contents of the zip file distribution, cd to the directory,
@@ -47,33 +46,6 @@ Run 'ng help' for more options.
             to avoid sync issues. </p>
     
 <app-code ngPreserveWhitespaces ngNonBindable lang="javascript">
-import &#123; Component, OnInit &#125; from '@angular/core';
-import &#123; PrimeNGConfig &#125; from 'primeng/api';
-import &#123; LayoutService &#125; from './layout/service/app.layout.service';
-
-@Component(&#123;
-    selector: 'app-root',
-    templateUrl: './app.component.html'
-&#125;)
-export class AppComponent implements OnInit &#123;
-
-    constructor(private primengConfig: PrimeNGConfig, private layoutService: LayoutService) &#123; &#125;
-
-    ngOnInit(): void &#123;
-        this.primengConfig.ripple = true;       //enables core ripple functionality
-
-        //optional configuration with the default configuration
-        this.layoutService.config = &#123;
-            ripple: false,                      //toggles ripple on and off
-            inputStyle: 'outlined',             //default style for input elements
-            menuMode: 'static',                 //layout mode of the menu, valid values are "static" and "overlay"
-            colorScheme: 'light',               //color scheme of the template, valid values are "light" and "dark"
-            theme: 'lara-light-indigo',         //default component theme for PrimeNG
-            scale: 14                           //size of the body font size to scale the whole application
-        &#125;;
-    &#125;
-
-&#125;
 </app-code>
     
         <h5>Menu</h5>
@@ -81,33 +53,8 @@ export class AppComponent implements OnInit &#123;
             navigate to this file and define your own model as a nested structure.</p>
     
 <app-code ngPreserveWhitespaces ngNonBindable lang="javascript">
-import &#123; OnInit &#125; from '@angular/core';
-import &#123; Component &#125; from '@angular/core';
 
-@Component(&#123;
-    selector: 'app-menu',
-    templateUrl: './app.menu.component.html'
-&#125;)
-export class AppMenuComponent implements OnInit &#123;
 
-    model: any[] = [];
-
-    ngOnInit() &#123;
-        this.model = [
-            &#123;
-                label: 'Home',
-                items: [
-                    &#123;
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: ['/']
-                    &#125;
-                ]
-            &#125;,
-            //...
-        ];
-    &#125;
-&#125;
 </app-code>
     
         <h4>Integration with Existing Angular CLI Projects</h4>

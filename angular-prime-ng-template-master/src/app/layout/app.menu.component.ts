@@ -94,6 +94,11 @@ export class AppMenuComponent implements OnInit {
                         routerLink: ['/pages/conge']
                     },
                     {
+                        label: 'CongeAdmin',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink: ['/pages/conge-admin']
+                    },
+                    {
                         label: 'Crud',
                         icon: 'pi pi-fw pi-pencil',
                         routerLink: ['/pages/crud']

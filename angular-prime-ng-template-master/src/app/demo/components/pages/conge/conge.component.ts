@@ -24,6 +24,7 @@ export class CongeComponent implements OnInit {
         date_debut: '',
         date_fin: '',
         duree: 0,
+        statut: "",
         raison: ''
       };
     displayDeleteDialog: boolean = false;
@@ -110,6 +111,7 @@ export class CongeComponent implements OnInit {
                 type: formValues.type,
                 date_debut: dateDebut,
                 date_fin: dateFin,
+                statut: "EnCours",
                 duree: formValues.duree,
                 raison: formValues.raison,
             };
