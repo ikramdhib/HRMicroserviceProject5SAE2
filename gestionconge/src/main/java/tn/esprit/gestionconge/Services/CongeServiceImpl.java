@@ -2,7 +2,6 @@ package tn.esprit.gestionconge.Services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import tn.esprit.gestionconge.Entities.Conge;
 import tn.esprit.gestionconge.Entities.Status;
 import tn.esprit.gestionconge.Entities.Utilisateur;
@@ -60,5 +59,17 @@ public class CongeServiceImpl implements IServiceConge{
     @Override
     public void deleteConge(int congeId) {
         congeRepository.deleteById(congeId);
+    }
+
+    @Override
+    public Conge updateStatusConge(int congeId, Status statut) {
+        Optional<Conge> optionalConge = congeRepository.findById(congeId);
+        if (optionalConge.isPresent()) {
+            Conge conge = optionalConge.get();
+            conge.setStatut(statut);
+            return congeRepository.save(conge);
+        } else {
+            throw new RuntimeException("Congé non trouvé avec l'ID: " + congeId);
+        }
     }
 }
