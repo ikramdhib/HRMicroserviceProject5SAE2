@@ -11,7 +11,7 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
-
+import { BrowserModule } from '@angular/platform-browser';
 //New TODO mydasboard
 import { MydashboardComponent } from './demo/components/mydashboard/mydashboard.component';
 import { CommonModule } from '@angular/common';
@@ -27,10 +27,14 @@ import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { ContenuCrudComponent } from './cours/components/contenu/contenu-crud.component';
+import { CoursCrudComponent } from './cours/components/cours/cours-crud.component';
+import { SectionCrudComponent } from './cours/components/section/section-crud.component';
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, MydashboardComponent
+        AppComponent, NotfoundComponent, MydashboardComponent, ContenuCrudComponent, CoursCrudComponent, SectionCrudComponent 
+
     ],
     imports: [
         AppRoutingModule,

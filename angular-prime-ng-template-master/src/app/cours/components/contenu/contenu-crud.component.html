@@ -1,0 +1,106 @@
+<div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <h5>Gestion des Contenus</h5>
+        <p-table #dt1 [value]="contenus" dataKey="id" [rows]="10" [paginator]="true" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [globalFilterFields]="['titre', 'type']" responsiveLayout="scroll">
+          
+          <!-- Barre de recherche et de filtrage -->
+          <ng-template pTemplate="caption">
+            <div class="flex justify-content-between flex-column sm:flex-row">
+              <button pButton label="Effacer les filtres" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+              <span class="p-input-icon-left mb-2">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Rechercher un contenu" class="w-full"/>
+              </span>
+            </div>
+          </ng-template>
+  
+          <!-- Entête du tableau avec filtres -->
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Titre
+                  <p-columnFilter type="text" field="titre" display="menu" placeholder="Filtrer par titre"></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Type
+                  <p-columnFilter type="text" field="type" display="menu" placeholder="Filtrer par type"></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Ordre
+                  <p-columnFilter type="numeric" field="ordre" display="menu" placeholder="Filtrer par ordre"></p-columnFilter>
+                </div>
+              </th>
+              <th>Actions</th>
+            </tr>
+          </ng-template>
+  
+          <!-- Corps du tableau -->
+          <ng-template pTemplate="body" let-contenu>
+            <tr>
+              <td>{{ contenu.titre }}</td>
+              <td>{{ contenu.type }}</td>
+              <td>{{ contenu.ordre }}</td>
+              <td>
+                <button pButton label="Modifier" icon="pi pi-pencil" (click)="editContenu(contenu)" class="p-button-sm p-button-text"></button>
+                <button pButton label="Supprimer" icon="pi pi-trash" (click)="deleteContenu(contenu.id)" class="p-button-sm p-button-danger p-button-text"></button>
+              </td>
+            </tr>
+          </ng-template>
+  
+          <!-- Message si aucune donnée n'est trouvée -->
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4">Aucun contenu trouvé.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  
+    <!-- Formulaire pour ajouter/modifier un contenu -->
+    <div class="col-12 md:col-6" *ngIf="selectedContenu">
+      <div class="card p-fluid">
+        <h5>{{ selectedContenu.id === 0 ? 'Ajouter un Contenu' : 'Modifier le Contenu' }}</h5>
+        <form (ngSubmit)="saveContenu()">
+          <div class="field">
+            <label for="titre">Titre</label>
+            <input pInputText id="titre" type="text" [(ngModel)]="selectedContenu.titre" name="titre" required />
+          </div>
+          <div class="field">
+            <label for="type">Type</label>
+            <select [(ngModel)]="selectedContenu.type" name="type" pInputText>
+              <option value="pdf">PDF</option>
+              <option value="video">Vidéo</option>
+              <option value="texte">Texte</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ordre">Ordre</label>
+            <input pInputText id="ordre" type="number" [(ngModel)]="selectedContenu.ordre" name="ordre" required />
+          </div>
+          <div class="field">
+            <label for="sectionId">Section ID</label>
+            <input pInputText id="sectionId" type="number" [(ngModel)]="selectedContenu.sectionId" name="sectionId" required />
+          </div>
+          <div class="field">
+            <label for="file">Fichier</label>
+            <input id="file" type="file" (change)="onFileSelected($event)" pInputText />
+          </div>
+          <div class="field">
+            <button pButton type="submit" label="{{ selectedContenu.id === 0 ? 'Ajouter' : 'Enregistrer' }}"></button>
+            <button pButton type="button" label="Annuler" (click)="cancel()"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Bouton pour ajouter un nouveau contenu -->
+    <button pButton label="Ajouter un Nouveau Contenu" (click)="addNewContenu()" class="p-mt-3"></button>
+  </div>
+  
