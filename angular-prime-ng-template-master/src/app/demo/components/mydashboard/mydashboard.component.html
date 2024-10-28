@@ -1,7 +1,7 @@
 <div class="grid">
 	<div class="col-12">
 		<div class="card">
-			<h5>Filter Menu</h5>
+			<h5>Liste </h5>
 			<p-table #dt1 [value]="customers1" dataKey="id" [rows]="10" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll">
 				<ng-template pTemplate="caption">
 					<div class="flex justify-content-between flex-column sm:flex-row">
@@ -16,7 +16,7 @@
 					<tr>
 						<th>
 							<div class="flex justify-content-between align-items-center">
-								Name
+								Title
 								<p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
 							</div>
 						</th>

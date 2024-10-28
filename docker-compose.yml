@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+
+  recrute:
+    build: ./RecruitmentMS
+    image: mariemsebei/recrute
+    container_name: recruteContainer
+    ports:
+      - "8087:8087"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/Test21db?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+
+
+
+  eureka-server:
+    build: ./EurekaServer
+    image: mariemsebei/eurekaa
+    container_name: eurekaContainer
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+
+  api-gateway:
+    build: ./ApiGateway
+    image: mariemsebei/apigateway
+    container_name: apigatewayContainer
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+      - recrute
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+
+  db-mysql:
+    image: "mysql:latest"
+    container_name: db-mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
