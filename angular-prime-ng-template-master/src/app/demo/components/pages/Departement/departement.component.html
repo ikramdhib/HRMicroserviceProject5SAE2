@@ -1,0 +1,139 @@
+<div class="card">
+    <div class="table-header">
+      <div>
+        <button pButton type="button" icon="pi pi-plus" label="New" class="p-mr-2" (click)="openNew()"></button>
+    
+            <!-- Other contents... -->
+        <button pButton type="button" icon="pi pi-trash" label="Delete" class="p-button-danger" (click)="deleteSelectedDepartment()"></button>
+          
+            <p-dialog header="Confirm Deletion" [(visible)]="confirmDialog" [modal]="true" [closable]="false">
+              <div>
+                <p>Are you sure you want to delete the selected department(s)?</p>
+              </div>
+              <p-footer>
+                <button pButton label="No" icon="pi pi-times" (click)="confirmDialog = false"></button>
+                <button pButton label="Yes" icon="pi pi-check" (click)="confirmDelete()"></button>
+              </p-footer>
+            </p-dialog>
+          
+            <!-- Other contents... -->
+      </div>
+      
+      <div class="card">
+        <button pButton type="button" icon="pi pi-upload" label="Import" class="p-mr-2"></button>
+        <button pButton type="button" label="Export to CSV" icon="pi pi-file" (click)="exportToCSV()"></button>
+    </div>
+    </div>
+  
+    <p-table #dt [value]="departments" [(selection)]="selectedDepartments" 
+         [globalFilterFields]="['nom']" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+         <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Manage Departements</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+        <tr>
+          <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+          <th pSortableColumn="nom">Name <p-sortIcon field="nom"></p-sortIcon></th>
+          <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Location</th>
+          <th>Budget</th>
+          <th>Manager</th>
+          <th>Number of Employees</th>
+          <th>Created Date</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-department>
+        <tr>
+          <td><p-tableCheckbox [value]="department"></p-tableCheckbox></td>
+          <td>{{ department.nom }}</td>
+          <td>{{ department.type }}</td>
+          <td>{{ department.description }}</td>
+          <td>
+            <span class="p-tag p-tag-rounded" [ngClass]="{
+                'p-tag-success': department.status === 'ACTIVE',
+                'p-tag-warning': department.status === 'INACTIVE',
+                'p-tag-danger': department.status === 'CLOSED'
+              }">
+              {{ department.status }}
+            </span>
+          </td>
+          <td>{{ department.location }}</td>
+          <td>{{ department.budget }}</td>
+          <td>{{ department.manager }}</td>
+          <td>{{ department.numberOfEmployees }}</td>
+          <td>{{ department.createdDate }}</td>
+          <td>
+            <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editDepartment(department)"></button>
+            <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteSelectedDepartment()" ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  
+    <p-dialog header="Department Details" [(visible)]="departmentDialog" [modal]="true" [style]="{width: '450px'}" (hide)="resetForm()" class="p-fluid">
+        <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="nom">Name</label>
+                    <input id="nom" type="text" pInputText [(ngModel)]="department.nom" required 
+                           [ngClass]="{'ng-invalid ng-dirty': submitted && !department.nom}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !department.nom">Name is required.</small>
+                </div>
+                
+                <div class="field">
+                    <label for="type">Type</label>
+                    <p-dropdown id="type" [(ngModel)]="department.type" [options]="departmentTypes" placeholder="Select Type" appendTo="body"></p-dropdown>
+                </div>
+    
+                <div class="field">
+                    <label for="description">Description</label>
+                    <textarea id="description" pInputTextarea [(ngModel)]="department.description" rows="3" required></textarea>
+                </div>
+    
+                <div class="field">
+                    <label for="status">Status</label>
+                    <p-dropdown id="status" [(ngModel)]="department.status" [options]="statusOptions" placeholder="Select Status" appendTo="body"></p-dropdown>
+                </div>
+    
+                <div class="field">
+                    <label for="location">Location</label>
+                    <input id="location" type="text" pInputText [(ngModel)]="department.location" required />
+                </div>
+    
+                <div class="field">
+                    <label for="budget">Budget</label>
+                    <p-inputNumber id="budget" type="number" pInputText [(ngModel)]="department.budget"></p-inputNumber>
+                </div>
+    
+                <div class="field">
+                    <label for="manager">Manager</label>
+                    <input id="manager" type="text" pInputText [(ngModel)]="department.manager" required />
+                </div>
+    
+                <div class="field">
+                    <label for="numberOfEmployees">Number of Employees</label>
+                    <p-inputNumber id="numberOfEmployees" type="number" pInputText [(ngModel)]="department.numberOfEmployees"></p-inputNumber>
+                </div>
+            
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="departmentDialog = false"></button>
+            <button pButton type="button" label="Save" icon="pi pi-check" (click)="saveDepartment()" 
+                    [disabled]="submitted && !department.nom"></button>
+        </ng-template>
+    </p-dialog>
+    
+    
+    
+      
+  </div>
+  
