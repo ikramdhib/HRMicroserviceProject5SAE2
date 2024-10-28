@@ -15,27 +15,27 @@ import java.util.Map;
 public class CongeRestController {
     private CongeServiceImpl congeService;
 
-    @PostMapping("/addConge")
+    @PostMapping("/")
     public Conge addConge(@RequestBody Conge conge) {
       return congeService.addConge(conge);
     }
 
-    @PutMapping("/updateConge")
+    @PutMapping("/")
     public Conge updateConge(@RequestBody Conge conge) {
         return congeService.updateConge(conge);
     }
-    @PutMapping("/updateStatus/{congeId}")
+    @PutMapping("/{congeId}")
     public Conge updateStatusConge(@PathVariable("congeId") int congeId, @RequestBody Map<String, String> request) {
         Status statut = Status.valueOf(request.get("statut"));
         return congeService.updateStatusConge(congeId, statut);
     }
 
 
-    @GetMapping("/allConge")
+    @GetMapping("/")
     private List<Conge> getAllConge(){
         return congeService.getAllConges();
     }
-    @DeleteMapping("/deleteConge/{congeId}")
+    @DeleteMapping("/{congeId}")
     public void deleteConge(@PathVariable("congeId") int congeId) {
         congeService.deleteConge(congeId);
     }

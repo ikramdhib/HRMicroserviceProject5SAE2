@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+
+  conge:
+    build: ./gestionconge
+    image: nihelroui/conge
+    container_name: congeContainer
+    ports:
+      - "8087:8087"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/gestionconge?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root  
+      - SPRING_DATASOURCE_PASSWORD=root
+
+  
+
+  eureka-server:
+    build: ./EurekaServer
+    image: nihelroui/eureka
+    container_name: eurekaContainer
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+
+  api-gateway:
+    build: ./APIGateway
+    image: nihelroui/apigateway
+    container_name: apigatewayContainer
+    ports:
+      - "8090:8090"
+    depends_on:
+      - eureka-server
+      - conge
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+
+  db-mysql:
+    image: "mysql:latest"
+    container_name: db-mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
+
+
+
+
+
+
+
+
+

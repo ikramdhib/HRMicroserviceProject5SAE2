@@ -14,25 +14,25 @@ export class CongeService {
 
     // Récupérer tous les congés
     getAllConges(): Observable<Conge[]> {
-        return this.http.get<Conge[]>(`${this.apiUrl}/allConge`);
+        return this.http.get<Conge[]>(`${this.apiUrl}/`);
     }
 
     // Ajouter un nouveau congé
     addConge(conge: Conge): Observable<Conge> {
-        return this.http.post<Conge>(`${this.apiUrl}/addConge`, conge);
+        return this.http.post<Conge>(`${this.apiUrl}/`, conge);
     }
 
     // Mettre à jour un congé
     updateConge(conge: Conge): Observable<Conge> {
-        return this.http.put<Conge>(`${this.apiUrl}/updateConge`, conge);
+        return this.http.put<Conge>(`${this.apiUrl}/`, conge);
     }
     // Méthode pour mettre à jour le statut d'un congé
 updateStatusConge(congeId: number, statut: Status): Observable<Conge> {
-    return this.http.put<Conge>(`${this.apiUrl}/updateStatus/${congeId}`, { statut });
+    return this.http.put<Conge>(`${this.apiUrl}/${congeId}`, { statut });
 }
 
     // Supprimer un congé par ID
     deleteConge(congeId: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/deleteConge/${congeId}`);
+        return this.http.delete<void>(`${this.apiUrl}/${congeId}`);
     }
 }
