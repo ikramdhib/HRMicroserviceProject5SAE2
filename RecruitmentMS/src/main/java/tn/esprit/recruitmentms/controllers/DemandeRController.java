@@ -16,7 +16,7 @@ import java.io.IOException;
 public class DemandeRController {
     private final IDemandeService iDemandeService;
 
-    @PostMapping("/")
+    @PostMapping("/postuler")
     public ResponseEntity<Demande> createDemande(@RequestPart("demande") Demande demande,
                                                  @RequestPart(value = "file", required = false) MultipartFile file) {
         try {

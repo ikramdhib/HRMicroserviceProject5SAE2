@@ -23,7 +23,6 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'UI Components',
                 items: [
-                    { label: 'ajouter job', icon: 'pi pi-fw pi-id-card', routerLink: ['/recruiting-management/addjoboffer'] },
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
                     { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
@@ -62,6 +61,11 @@ export class AppMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-briefcase',
                 routerLink: ['/pages'],
                 items: [
+
+                    { label: 'Offer Jobs', icon: 'pi pi-fw pi-id-card', routerLink: ['/pages/recruiting'] },
+                    { label: 'Postuler', icon: 'pi pi-fw pi-id-card', routerLink: ['/pages/ApplicationForm'] },
+
+
                     {
                         label: 'Landing',
                         icon: 'pi pi-fw pi-globe',

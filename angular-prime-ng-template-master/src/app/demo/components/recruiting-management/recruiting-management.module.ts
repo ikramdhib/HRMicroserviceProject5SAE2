@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { RecruitingManagementRoutingModule } from './recruiting-management-routing.module';
 import { AddJobOfferComponent } from './add-job-offer/add-job-offer.component';
 

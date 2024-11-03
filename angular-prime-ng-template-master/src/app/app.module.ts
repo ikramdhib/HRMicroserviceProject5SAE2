@@ -27,12 +27,16 @@ import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
     declarations: [
         AppComponent, NotfoundComponent, MydashboardComponent
     ],
     imports: [
+        HttpClientModule ,
         AppRoutingModule,
         AppLayoutModule,
         TableModule,
@@ -40,6 +44,7 @@ import { FormsModule } from '@angular/forms';
         RatingModule,
         ButtonModule,
         SliderModule,
+        ReactiveFormsModule,
         InputTextModule,
         ToggleButtonModule,
         RippleModule,

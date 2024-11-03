@@ -1,0 +1,43 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <h5>Internship Job Offers</h5>
+            <p-dataView #dv [value]="jobOffers" [paginator]="true" [rows]="6" filterBy="title" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                <ng-template pTemplate="header">
+                    <div class="grid grid-nogutter flex-column md:flex-row justify-content-between">
+                        <p-dropdown [options]="sortOptions" placeholder="Sort By" (onChange)="onSortChange($event)"></p-dropdown>
+                        <span class="p-input-icon-left mb-2 md:mb-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Search by Title" (input)="onFilter(dv, $event)">
+                        </span>    
+                        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                    </div>
+                </ng-template>
+
+                <ng-template let-job pTemplate="gridItem">
+                    <div class="col-12 md:col-4">
+                        <div class="card m-3 border-1 surface-border">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">{{ job.title }}</div>
+                                <div class="mb-3">{{ job.description }}</div>
+                                <div class="flex align-items-center justify-content-between mt-3">
+                                    <span class="font-semibold">Experience:</span>
+                                    <span>{{ job.experience }} years</span>
+                                </div>
+                                <div class="flex align-items-center justify-content-between mt-2">
+                                    <span class="font-semibold">End Date:</span>
+                                    <span>{{ job.endDate | date }}</span>
+                                </div>
+                                <div class="flex align-items-center justify-content-between mt-2">
+                                    <span class="font-semibold">Salary:</span>
+                                    <span>${{ job.salary }}</span>
+                                </div>
+                                <p-button icon="pi pi-send" label="Apply" (onClick)="applyForJob(job)"></p-button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+        </div>
+    </div>
+</div>

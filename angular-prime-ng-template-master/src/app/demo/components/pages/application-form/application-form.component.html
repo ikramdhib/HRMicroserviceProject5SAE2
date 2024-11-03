@@ -1,0 +1,88 @@
+<div class="grid p-fluid">
+    <div class="col-12 md:col-6">
+      <div class="card">
+        <h5>Postuler à une Offre d'Emploi</h5>
+  
+        <!-- Full Name -->
+        <div class="grid formgrid">
+          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
+            <span class="p-float-label">
+              <input id="fullname" type="text" pInputText formControlName="fullname" placeholder="Nom Complet" required />
+              <label for="fullname">Nom Complet</label>
+            </span>
+          </div>
+        </div>
+  
+        <!-- Email -->
+        <div class="grid formgrid">
+          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
+            <span class="p-float-label">
+              <input id="email" type="email" pInputText formControlName="email" placeholder="Email" required />
+              <label for="email">Email</label>
+            </span>
+          </div>
+        </div>
+  
+        <!-- Phone -->
+        <div class="grid formgrid">
+          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
+            <span class="p-float-label">
+              <input id="phone" type="text" pInputText formControlName="phone" placeholder="Téléphone" required />
+              <label for="phone">Téléphone</label>
+            </span>
+          </div>
+        </div>
+  
+        <!-- Skills -->
+        <div class="grid formgrid">
+          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
+            <span class="p-float-label">
+              <input id="skills" type="text" pInputText formControlName="skills" placeholder="Compétences" required />
+              <label for="skills">Compétences</label>
+            </span>
+          </div>
+        </div>
+  
+        <!-- Nb Exp -->
+        <div class="grid formgrid">
+          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
+            <h5>Années d'Expérience</h5>
+            <p-inputNumber formControlName="nbExp" mode="decimal" [showButtons]="true" [min]="0" [max]="50"></p-inputNumber>
+          </div>
+        </div>
+  
+        <!-- CV Upload -->
+        <div class="grid formgrid">
+          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
+            <h5>CV</h5>
+            <input id="cvPath" type="file" pInputText formControlName="cvPath" required />
+          </div>
+        </div>
+  
+        <!-- Motivation -->
+        <div class="grid formgrid">
+          <div class="col-12 mb-2 lg:col-12 lg:mb-0">
+            <h5>Motivation (225 caractères max)</h5>
+            <textarea
+              rows="3"
+              cols="30"
+              pInputTextarea
+              formControlName="motivation"
+              placeholder="Écrivez quelques mots de motivation..."
+              maxlength="225"
+              required
+            ></textarea>
+          </div>
+        </div>
+  
+        <!-- Submit Button -->
+        <div class="grid formgrid">
+          <div class="col-12">
+            <button type="submit" pButton label="Postuler" icon="pi pi-check" [disabled]="postulationForm.invalid"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
