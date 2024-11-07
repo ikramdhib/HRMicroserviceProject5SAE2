@@ -20,9 +20,9 @@ public class Tache implements Serializable {
     private String detail ;
     @Enumerated(EnumType.STRING)
     private Status status ;
-    @ManyToOne
-    private Utilisateur user;
+    private int userId;
     @ManyToOne
     private Projet projet;
+    private Utilisateur utilisateur;
 
 }

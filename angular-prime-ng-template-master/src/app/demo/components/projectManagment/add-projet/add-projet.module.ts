@@ -14,9 +14,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogModule } from 'primeng/dialog';
+import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-dialog.component';
 @NgModule({
-  declarations: [AddProjetComponent],
+  declarations: [AddProjetComponent ,EditProjectDialogComponent],
   imports: [
+    DialogModule,
     DynamicDialogModule,
     CommonModule,
     AddProjetRoutingModule,

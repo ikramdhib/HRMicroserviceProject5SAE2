@@ -21,7 +21,7 @@
 						</td>
 						<td style="min-width: 12rem;">{{product.titre}}</td>
 						<td style="min-width: 8rem;">{{product.detailles}}</td>
-						<td style="min-width: 10rem;">{{product.equipe.responsable.nomComplet}}</td>
+						<td style="min-width: 10rem;">{{product.responsable.username}}</td>
 						<td style="min-width: 10rem;"> {{ product.dateDebut | date: 'MM/dd/yyyy'}} </td>
 						<td style="min-width: 10rem;">{{ product.dateDebut | date: 'MM/dd/yyyy'}}</td>
 						<td><button pButton pRipple (click)="naviguerAvecId(product.id)" type="button" icon="pi pi-sitemap"  class="p-button-rounded p-button-success p-button-outlined mr-2 mb-2"></button></td>
@@ -46,7 +46,7 @@
 					<tr>
 						<td>{{order.titre}}</td>
 						<td>{{order.detail}}</td>
-						<td>{{order.user.nomComplet}}</td>
+						<td>{{order.utilisateur.username}}</td>
 						<td><span *ngIf="order.status === 'EN_COUR'" class="customer-badge status-new">{{ order.status }}</span>
                             <span *ngIf="order.status === 'TERMINER'" class="customer-badge status-unqualified">{{ order.status }}</span>
                             <span *ngIf="order.status === 'PLANIFIER'" class="customer-badge status-renewal">{{ order.status }}</span></td>
@@ -75,6 +75,7 @@
                         <th class="table-header">Nom d'equipe</th>
                         <th class="table-header">Nom du membre</th>
                         <th class="table-header">Email du memebre</th>
+                        <th class="table-header">Numéro de téléphone du memebre</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-team let-rowIndex="rowIndex">
@@ -85,9 +86,9 @@
                         </td>
                     </tr>
                     <!-- List all members of the team -->
-                    <tr *ngFor="let user of team.users">
+                    <tr *ngFor="let user of team.members">
                         <td></td> <!-- Empty column for alignment -->
-                        <td class="member-name">{{ user.nomComplet }}</td>
+                        <td class="member-name">{{ user.username }}</td>
                         <td class="member-email">{{ user.email }}</td>
                     </tr>
                 </ng-template>

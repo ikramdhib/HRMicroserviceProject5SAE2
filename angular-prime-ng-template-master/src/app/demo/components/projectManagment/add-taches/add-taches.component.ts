@@ -5,6 +5,7 @@ import { Validators } from '@angular/forms';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { TachesService } from '../Services/taches.service';
 import { ConfirmationService,MessageService } from 'primeng/api';
+import { UserService } from '../../userProject/services/user.service';
 @Component({
   selector: 'app-add-taches',
   templateUrl: './add-taches.component.html',
@@ -23,7 +24,10 @@ export class AddTachesComponent implements OnInit {
   member:any[]=[];
   tachesIDS:any[]=[];
   tacheList:any[]=[]
-  constructor(private messageService: MessageService,private tacheService :TachesService, private projetService: ProjetService,private fb: FormBuilder) {}
+  constructor(private messageService: MessageService,
+    private userServ : UserService,
+    private tacheService :TachesService, private projetService: ProjetService,
+    private fb: FormBuilder) {}
 
   ngOnInit() {
     // Define steps for the stepper
@@ -70,17 +74,29 @@ export class AddTachesComponent implements OnInit {
   }
 
   // Get the selected project details (including members)
-  getProjectDetails(id: any) {
-    this.projetService.getOneProject(id).subscribe({
-      next: (res) => {
-        
-        this.members = res.equipe.users;  // Assuming `members` is a list in the project response
-      },
-      error: (err) => {
-        console.error('Error fetching project details:', err);
-      }
-    });
-  }
+getProjectDetails(id: any) {
+  this.projetService.getOneProject(id).subscribe({
+    next: (res) => {
+      // Assuming `userIds` is an array of user IDs
+      const userIds = res.equipe.userIds;
+
+      // Now, fetch user details by their IDs
+      this.userServ.getUsersIds(userIds).subscribe({
+        next: (userRes) => {
+          // Populate `members` with the detailed user data
+          this.members = userRes; // Assuming userRes contains user details (name, email, etc.)
+        },
+        error: (err) => {
+          console.error('Error fetching users:', err);
+        }
+      });
+    },
+    error: (err) => {
+      console.error('Error fetching project details:', err);
+    }
+  });
+}
+
 
   nextStep() {
     if (this.pageIndex < this.routeItems.length - 1) {
@@ -102,11 +118,11 @@ export class AddTachesComponent implements OnInit {
       const newTache={
         titre:this.tacheForm.value.titre,
         detail:this.tacheForm.value.detail,
-        user:this.selectedMember,
+        userId:this.selectedMember.id,
         projet:this.selectedProject,
         status:"PLANIFIER"
       }
-
+      console.log('selectedMember:', this.selectedMember); 
       this.tacheService.addTache(newTache).subscribe({
         next:(res)=>{
           this.tachesIDS.push(res.id);

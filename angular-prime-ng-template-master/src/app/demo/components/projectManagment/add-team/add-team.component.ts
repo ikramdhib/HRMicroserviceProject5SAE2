@@ -1,126 +1,105 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EquipeService } from '../Services/equipe.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { UserService } from '../../userProject/services/user.service';
 
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { ConfirmationService,MessageService } from 'primeng/api';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 @Component({
   selector: 'app-add-team',
   templateUrl: './add-team.component.html',
   styleUrls: ['./add-team.component.scss'],
-  providers: [DynamicDialogConfig,ConfirmationService,MessageService]
+  providers: [MessageService]
 })
 export class AddTeamComponent implements OnInit {
-  teamForm!: FormGroup; 
-  dropdownItems: any[] = []; 
-  employees: any[] = [];  
-  allusers: any[] = []; 
-  teamMembers: any[] = []; 
-  submit:boolean=false;
-  updateTurn:boolean=false;
-  
-  constructor(public config: DynamicDialogConfig,private messageService: MessageService,private equipeService: EquipeService, private fb: FormBuilder) {}
+  teamForm!: FormGroup;
+  dropdownItems: any[] = [];
+  employees: any[] = [];
+  allusers: any[] = [];
+  teamMembers: any[] = [];
+  submit: boolean = false;
+  updateTurn: boolean = false;
+
+  constructor(
+    private userServ: UserService,
+    private messageService: MessageService,
+    private equipeService: EquipeService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
     // Initialize the form
-   
-
     this.teamForm = this.fb.group({
-      teamTitle: ['',Validators.required ],
-      selectedLead: [null,Validators.required ],
-      teamMembers: [this.teamMembers || [] ,Validators.required ] // Initialisez le FormArray
+      teamTitle: ['', Validators.required],
+      selectedLead: [null, Validators.required],
+      teamMembers: [this.teamMembers || [], Validators.required]
     });
 
-    if (this.config.data && this.config.data.team) {
-      this.updateTurn = true;
-      this.populateForm(this.config.data.team); // Pré-remplir le formulaire avec les données existantes
-    }
+    
 
     // Fetch users for dropdown and employee list
-    this.equipeService.users().subscribe({
+    this.userServ.getUsersRole("EMPLOYEE").subscribe({
       next: (response) => {
-        console.log("*******",response)
+        console.log("Users:", response);
         this.allusers = response;
-        this.dropdownItems = this.allusers
-
+        this.dropdownItems = this.allusers;
         this.employees = this.allusers;
       },
     });
   }
+
   get form() {
     return this.teamForm.controls;
   }
 
-  populateForm(team: any) {
-    this.teamForm.patchValue({
-      teamTitle: team.titre,
-      selectedLead: team.responsable,
-      teamMembers: team.users
-    });
-    this.teamMembers = team.users; // Mettre à jour les membres de l'équipe sélectionnés
-  }
 
-  toggleMember(member: string) {
-    const index = this.teamMembers.indexOf(member);
+
+  toggleMember(memberId: string) {
+    const index = this.teamMembers.indexOf(memberId);
     if (index === -1) {
-      this.teamMembers.push(member); 
+      this.teamMembers.push(memberId);
     } else {
-      this.teamMembers.splice(index, 1); 
-    }   
+      this.teamMembers.splice(index, 1);
+    }
     this.teamForm.get('teamMembers')?.setValue(this.teamMembers);
   }
- 
-  isMemberSelected(member: string): boolean {
-    return this.teamMembers.includes(member);
+
+  isMemberSelected(memberId: string): boolean {
+    return this.teamMembers.includes(memberId);
   }
 
-  
   submitTeam() {
     this.submit = true;
-    if(this.teamForm.valid){
-      if(!this.updateTurn){
-    const newTeam = {
-      titre: this.teamForm.value.teamTitle,
-      responsable: this.teamForm.value.selectedLead,
-      users: this.teamMembers
-    };
-
-    console.log(newTeam,"88888888888888")
-
-    this.equipeService.addStudent(newTeam).subscribe({
-      next: (response) => {
-        console.log('Team added successfully', response);
-        this.messageService.add({ severity: 'info', summary: 'Confirmer', detail: 'l equipe est ajouté avec succés' });
-      },
-      error:(error)=>{
-           
-        this.messageService.add({ severity: 'error', summary: 'Rejeter', detail: 'Il y a un erreur ' });
-          
-        console.log(error)
-      }
-    });
+    if (this.teamForm.valid) {
+      const selectedLeadId = this.teamForm.value.selectedLead?.id || null; // Extracting the ID of the selected lead
+      const memberIds = this.teamMembers.map((member: any) => member.id); // Mapping to only IDs of team members
+  
+      const newTeam = {
+        titre: this.teamForm.value.teamTitle,
+        responsableId: selectedLeadId,
+        userIds: memberIds.length > 0 ? memberIds : null // Ensuring this is either an array of IDs or null
+      };
+  
+     
+        this.equipeService.addStudent(newTeam).subscribe({
+          next: (response) => {
+            console.log('Team added successfully', response);
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Confirm',
+              detail: 'Team added successfully'
+            });
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Reject',
+              detail: 'There was an error'
+            });
+            console.log(error);
+          }
+        });
+    }
   }
-  else{
-    const newTeam = {
-      id:this.config.data.team.id,
-      titre: this.teamForm.value.teamTitle,
-      responsable: this.teamForm.value.selectedLead,
-      users: this.teamMembers
-    };
-
-    this.equipeService.updateEquipe(newTeam).subscribe({
-      next:(res)=>{
-        this.messageService.add({ severity: 'success', summary: 'Confirmer', detail: 'le projet a été modifier avec succés' });
-        console.log(res);
-        
-      },
-      error:(error)=>{
-        this.messageService.add({ severity: 'error', summary: 'Rejeter', detail: 'Il y a un erreur ' });
-
-      }
-    })
-  }
-}
-}
+  
 }

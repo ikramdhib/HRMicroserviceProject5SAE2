@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/GestDepart/GestDepart.iml" filepath="$PROJECT_DIR$/GestDepart/GestDepart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GestionDepartement/GestionDepartement.iml" filepath="$PROJECT_DIR$/GestionDepartement/GestionDepartement.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/HRMicroserviceProject5SAE2.iml" filepath="$PROJECT_DIR$/.idea/HRMicroserviceProject5SAE2.iml" />
+    </modules>
+  </component>
+</project>

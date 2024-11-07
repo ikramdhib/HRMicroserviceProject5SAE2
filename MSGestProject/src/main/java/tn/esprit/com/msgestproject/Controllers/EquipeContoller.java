@@ -7,6 +7,7 @@ import tn.esprit.com.msgestproject.Entities.Utilisateur;
 import tn.esprit.com.msgestproject.Services.EquipeService;
 
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @RestController
@@ -14,10 +15,7 @@ import java.util.List;
 public class EquipeContoller {
     private EquipeService equipeService;
 
-    @PostMapping("/adduser")
-    public Utilisateur addUser(@RequestBody Utilisateur utilisateur){
-        return equipeService.addUser(utilisateur);
-    }
+
     @PostMapping("/add")
     public Equipe addEquipe(@RequestBody Equipe equipe) {
         return equipeService.addEquipe( equipe);
@@ -43,14 +41,14 @@ public class EquipeContoller {
         return equipeService.getOneById(id);
     }
 
-    @GetMapping("/users")
-    public List<Utilisateur> getAllUser (){
-        return equipeService.getAllUser();
-    }
+
 
     @GetMapping("/geteUserEquiep/{userId}")
     public List<Equipe> getEquipeByUserId(@PathVariable int userId) {
 
         return equipeService.getEquipesByUserId(userId);
     }
+
+
+
 }

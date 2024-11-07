@@ -10,6 +10,8 @@ router.get('/getUser/:id', userController.getUserById);
 router.delete('/deleteUser/:id', userController.deleteUser);
 router.get('/getRole/:role', userController.getUserByRole);
 router.put('/updatePass', userController.changePassword);
+router.get('/getUsersIds/:ids', userController.getUsersByIds);
+
 
 
 

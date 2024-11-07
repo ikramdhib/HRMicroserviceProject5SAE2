@@ -11,9 +11,10 @@ import { AddTeamComponent } from './add-team.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { EditTeamComponent } from '../edit-team/edit-team.component';
 
 @NgModule({
-  declarations: [AddTeamComponent],
+  declarations: [AddTeamComponent , EditTeamComponent],
   imports: [
     DynamicDialogModule,
     CommonModule,

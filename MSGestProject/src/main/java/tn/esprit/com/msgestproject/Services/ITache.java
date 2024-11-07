@@ -26,5 +26,6 @@ public interface ITache {
     List<Tache> getAllTcahesWithUserIdAndProjectId(int userId, int projetId);
 
     Tache updateStatus(int id , Status status);
+    Tache assignUserToTask(int tacheId, int userId);
 
 }

@@ -4,12 +4,11 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ProjetService } from '../Services/projet.service';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ConfirmationService,MessageService } from 'primeng/api';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 @Component({
   selector: 'app-add-projet',
   templateUrl: './add-projet.component.html',
   styleUrls: ['./add-projet.component.scss'],
-  providers: [DynamicDialogConfig,ConfirmationService,MessageService]
+  providers: [MessageService]
 })
 export class AddProjetComponent implements OnInit {
 
@@ -18,8 +17,7 @@ export class AddProjetComponent implements OnInit {
   selectedEquipe: any[] = []; 
   projetForm!: FormGroup;
   submit:boolean=false;
-  updateTurn:boolean=false;
-  constructor(public config: DynamicDialogConfig, private confirmationService: ConfirmationService, private messageService: MessageService,private projectService : ProjetService,private equipeServices: EquipeService , private fb: FormBuilder) {}
+  constructor(  private messageService: MessageService,private projectService : ProjetService,private equipeServices: EquipeService , private fb: FormBuilder) {}
 
   ngOnInit() {
     this.projetForm = this.fb.group({
@@ -31,19 +29,6 @@ export class AddProjetComponent implements OnInit {
     })
     this.getEquipes();
 
-    if (this.config.data && this.config.data.projet) {
-      this.updateTurn=true;
-      const projet = this.config.data.projet;
-      const startDate = new Date(projet.dateDebut); 
-      const findate = new Date(projet.dateFin);
-      this.projetForm.patchValue({
-        titre: projet.titre,
-        description: projet.detailles,
-        startDate: startDate,  
-      findate: findate 
-      });
-      this.selectedEquipe = projet.equipe;
-    }
   }
 
   get form() {
@@ -67,7 +52,6 @@ export class AddProjetComponent implements OnInit {
     this.filteredEquipes = filtered; // Mettre à jour les suggestions filtrées
   }
 
-  // Récupérer les équipes depuis le service
   getEquipes() {
     this.equipeServices.getAllEqupes().subscribe({
       next: (res) => {
@@ -84,7 +68,6 @@ export class AddProjetComponent implements OnInit {
     this.submit = true;
     if(this.projetForm.valid){
       
-    if(!this.updateTurn){
     const newProject={
         titre:this.projetForm.value.titre,
         detailles:this.projetForm.value.description,
@@ -105,27 +88,6 @@ export class AddProjetComponent implements OnInit {
           console.log(error)
         }
     })
-  }else{
-    const newProject={
-      id: this.config.data.projet.id,
-      titre:this.projetForm.value.titre,
-      detailles:this.projetForm.value.description,
-      dateDebut:this.projetForm.value.startDate,
-      dateFin:this.projetForm.value.findate,
-      equipe:this.selectedEquipe
-  }
-    this.projectService.updatePrpjet(newProject).subscribe({
-      next:(res)=>{
-        this.messageService.add({ severity: 'success', summary: 'Confirmer', detail: 'le projet a été modifier avec succés' });
-        console.log(res);
-        
-      },
-      error:(error)=>{
-        this.messageService.add({ severity: 'error', summary: 'Rejeter', detail: 'Il y a un erreur ' });
-
-      }
-    })
-  }
 }
   }
 }

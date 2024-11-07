@@ -26,12 +26,17 @@ export class UserProjectComponent implements OnInit {
   rowGroupMetadata: any = {};
   isExpanded: boolean = false;
   @ViewChild('filter') filter!: ElementRef;
-
+  userId:any;
   constructor(private router: Router,private tacheService : TachesService, private projetService:ProjetService,  private teamService: EquipeService) { }
 
   ngOnInit() {
-      this.getAllUserTeam(6);
-      this.getAllProject(6);
+    if (localStorage.hasOwnProperty('id')) {
+      this.userId = localStorage.getItem('id');
+      console.log('user id', this.userId);
+      this.getAllUserTeam(this.userId);
+      this.getAllProject(this.userId);
+    }
+     
   }
 
   onSort() {

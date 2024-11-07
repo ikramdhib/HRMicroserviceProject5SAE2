@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,10 +19,12 @@ public class Equipe implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private int id ;
     private String titre ;
-    @ManyToOne // changer a onetomany
-    private Utilisateur responsable ;
-    @ManyToMany
-    private Set<Utilisateur> users ;
+    private int responsableId ;
+    @ElementCollection
+    private Set<Integer> userIds;
+    @ElementCollection
+    private List<Utilisateur> members;
+    private Utilisateur responsable;
     @OneToMany(mappedBy = "equipe" , cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Projet> projets;

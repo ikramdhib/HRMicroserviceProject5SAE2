@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EquipeRepository extends JpaRepository<Equipe,Integer> {
 
-    List<Equipe> findByResponsable_id(int id);
+
 
 
 
