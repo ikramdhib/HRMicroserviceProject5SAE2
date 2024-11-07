@@ -32,6 +32,12 @@ public class ApiGatewayApplication {
                         .uri("http://localhost:5000"))  // URI du microservice Express
                 .route("MSGestionDept", r -> r.path("/api/departements/**")
                         .uri("http://localhost:8089"))
+                .route("cours-service", r -> r.path("/api/cours/**")
+                        .uri("lb://COURS-SERVICE")) // Utilise Eureka pour la découverte de service
+                .route("section-service", r -> r.path("/api/sections/**")
+                        .uri("lb://COURS-SERVICE")) // Utilise Eureka pour la découverte de service
+                .route("contenu-service", r -> r.path("/api/contenus/**")
+                        .uri("lb://COURS-SERVICE")) // Utilise Eureka pour la découverte de service
                 .build();
 }
 

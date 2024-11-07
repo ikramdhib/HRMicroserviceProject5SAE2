@@ -1,0 +1,94 @@
+<div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <h5>Gestion des Sections</h5>
+        <p-table #dt1 [value]="sections" dataKey="id" [rows]="10" [paginator]="true" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [globalFilterFields]="['titre', 'coursId']" responsiveLayout="scroll">
+          
+          <!-- Barre de recherche et de filtrage -->
+          <ng-template pTemplate="caption">
+            <div class="flex justify-content-between flex-column sm:flex-row">
+              <button pButton label="Effacer les filtres" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+              <span class="p-input-icon-left mb-2">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Rechercher une section" class="w-full"/>
+              </span>
+            </div>
+          </ng-template>
+  
+          <!-- Entête du tableau avec filtres -->
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Titre
+                  <p-columnFilter type="text" field="titre" display="menu" placeholder="Filtrer par titre"></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Ordre
+                  <p-columnFilter type="numeric" field="ordre" display="menu" placeholder="Filtrer par ordre"></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Cours ID
+                  <p-columnFilter type="numeric" field="coursId" display="menu" placeholder="Filtrer par cours ID"></p-columnFilter>
+                </div>
+              </th>
+              <th>Actions</th>
+            </tr>
+          </ng-template>
+  
+          <!-- Corps du tableau -->
+          <ng-template pTemplate="body" let-section>
+            <tr>
+              <td>{{ section.titre }}</td>
+              <td>{{ section.ordre }}</td>
+              <td>{{ section.coursId }}</td>
+              <td>
+                <button pButton label="Modifier" icon="pi pi-pencil" (click)="editSection(section)" class="p-button-sm p-button-text"></button>
+                <button pButton label="Supprimer" icon="pi pi-trash" (click)="deleteSection(section.id)" class="p-button-sm p-button-danger p-button-text"></button>
+              </td>
+            </tr>
+          </ng-template>
+  
+          <!-- Message si aucune donnée n'est trouvée -->
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4">Aucune section trouvée.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  
+    <!-- Formulaire pour ajouter/modifier une section -->
+    <div class="col-12 md:col-6" *ngIf="selectedSection">
+      <div class="card p-fluid">
+        <h5>{{ selectedSection.id === 0 ? 'Ajouter une Section' : 'Modifier la Section' }}</h5>
+        <form (ngSubmit)="saveSection()">
+          <div class="field">
+            <label for="titre">Titre</label>
+            <input pInputText id="titre" type="text" [(ngModel)]="selectedSection.titre" name="titre" required />
+          </div>
+          <div class="field">
+            <label for="ordre">Ordre</label>
+            <input pInputText id="ordre" type="number" [(ngModel)]="selectedSection.ordre" name="ordre" required />
+          </div>
+          <div class="field">
+            <label for="coursId">Cours ID</label>
+            <input pInputText id="coursId" type="number" [(ngModel)]="selectedSection.coursId" name="coursId" required />
+          </div>
+          <div class="field">
+            <button pButton type="submit" label="{{ selectedSection.id === 0 ? 'Ajouter' : 'Enregistrer' }}"></button>
+            <button pButton type="button" label="Annuler" (click)="cancel()"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Bouton pour ajouter une nouvelle section -->
+    <button pButton label="Ajouter une Nouvelle Section" (click)="addNewSection()" class="p-mt-3"></button>
+  </div>
+  

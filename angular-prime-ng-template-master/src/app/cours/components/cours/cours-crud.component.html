@@ -1,0 +1,96 @@
+<div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <h5>Gestion des Cours</h5>
+        <p-table #dt1 [value]="coursList" dataKey="id" [rows]="10" [paginator]="true" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [globalFilterFields]="['titre', 'description']" responsiveLayout="scroll">
+          
+          <!-- Barre de recherche et de filtrage -->
+          <ng-template pTemplate="caption">
+            <div class="flex justify-content-between flex-column sm:flex-row">
+              <button pButton label="Effacer les filtres" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+              <span class="p-input-icon-left mb-2">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Rechercher un cours" class="w-full"/>
+              </span>
+            </div>
+          </ng-template>
+  
+          <!-- Entête du tableau avec filtres -->
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Titre
+                  <p-columnFilter type="text" field="titre" display="menu" placeholder="Filtrer par titre"></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Description
+                  <p-columnFilter type="text" field="description" display="menu" placeholder="Filtrer par description"></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                <div class="flex justify-content-between align-items-center">
+                  Auteur ID
+                  <p-columnFilter type="numeric" field="auteurId" display="menu" placeholder="Filtrer par auteur ID"></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                Actions
+              </th>
+            </tr>
+          </ng-template>
+  
+          <!-- Corps du tableau -->
+          <ng-template pTemplate="body" let-cours>
+            <tr>
+              <td>{{ cours.titre }}</td>
+              <td>{{ cours.description }}</td>
+              <td>{{ cours.auteurId }}</td>
+              <td>
+                <button pButton label="Modifier" icon="pi pi-pencil" (click)="editCours(cours)" class="p-button-sm p-button-text"></button>
+                <button pButton label="Supprimer" icon="pi pi-trash" (click)="deleteCours(cours.id)" class="p-button-sm p-button-danger p-button-text"></button>
+              </td>
+            </tr>
+          </ng-template>
+  
+          <!-- Message si aucune donnée n'est trouvée -->
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4">Aucun cours trouvé.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  
+    <!-- Formulaire pour ajouter/modifier un cours -->
+    <div class="col-12 md:col-6" *ngIf="selectedCours">
+      <div class="card p-fluid">
+        <h5>{{ selectedCours.id === 0 ? 'Ajouter un Cours' : 'Modifier le Cours' }}</h5>
+        <form (ngSubmit)="saveCours()">
+          <div class="field">
+            <label for="titre">Titre</label>
+            <input pInputText id="titre" type="text" [(ngModel)]="selectedCours.titre" name="titre" required />
+          </div>
+          <div class="field">
+            <label for="description">Description</label>
+            <input pInputText id="description" type="text" [(ngModel)]="selectedCours.description" name="description" required />
+          </div>
+          <div class="field">
+            <label for="auteurId">Auteur ID</label>
+            <input pInputText id="auteurId" type="number" [(ngModel)]="selectedCours.auteurId" name="auteurId" required />
+          </div>
+          <div class="field">
+            <button pButton type="submit" label="{{ selectedCours.id === 0 ? 'Ajouter' : 'Enregistrer' }}"></button>
+            <button pButton type="button" label="Annuler" (click)="cancel()"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Bouton pour ajouter un nouveau cours -->
+    <button pButton label="Ajouter un Nouveau Cours" (click)="addNewCours()" class="p-mt-3"></button>
+  </div>
+  

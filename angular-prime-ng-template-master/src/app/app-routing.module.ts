@@ -1,8 +1,11 @@
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { MydashboardComponent } from './demo/components/mydashboard/mydashboard.component';
+import { ContenuCrudComponent } from './cours/components/contenu/contenu-crud.component';
+import { CoursCrudComponent } from './cours/components/cours/cours-crud.component';
+import { SectionCrudComponent } from './cours/components/section/section-crud.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './config/auth.guard';
 
@@ -24,7 +27,9 @@ import { AuthGuard } from './config/auth.guard';
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule), canActivate: [AuthGuard]  },
                     { path: 'projet', loadChildren: () => import('./demo/components/projectManagment/project-managment.module').then(m=>m.projectManagment) , canActivate: [AuthGuard]  },
                     { path: 'user', loadChildren: () => import('./demo/components/userProject/userProject.module').then(m=>m.UserProjectModule) , canActivate: [AuthGuard]  },
-
+                    { path: 'contenus', component: ContenuCrudComponent },
+                    { path: 'cours', component: CoursCrudComponent },
+                    { path: 'sections', component: SectionCrudComponent },
                     // New Update Template
                     { path: 'mydashboard', component: MydashboardComponent },
                 ],
@@ -36,8 +41,9 @@ import { AuthGuard } from './config/auth.guard';
             { path: 'pages/notfound', component: NotfoundComponent },
             { path: '**', redirectTo: 'pages/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
-    ],
+
+   
+],
     exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule { }
