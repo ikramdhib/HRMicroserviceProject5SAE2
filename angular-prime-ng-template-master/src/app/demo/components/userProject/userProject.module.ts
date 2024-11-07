@@ -23,12 +23,13 @@ import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.compo
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { EmployeeListRoutingModule } from './employee-list/employee-list-routing.module';
 import { HrComponent } from './hr/hr.component';
+import { HrDialogComponent } from './hr-dialog/hr-dialog.component';
 
 
 @NgModule({
     declarations: [
       EmployeeDialogComponent,
-      HrComponent
+      HrDialogComponent
   ],
     imports: [
 

@@ -56,7 +56,7 @@ export class EmployeeListComponent implements OnInit {
   }
   addEmployee() {
     this.ref = this.dialogService.open(EmployeeDialogComponent, {
-      header: 'Add New Employee',
+      header: 'Ajouter un noveau employe',
       width: '500px',
       contentStyle: { 'max-height': '500px', 'overflow': 'hidden' }, // Pour le défilement
       baseZIndex: 10000 

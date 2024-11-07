@@ -1,0 +1,57 @@
+<div class="grid" style="height: 100vh; ">
+    <div class="col-12 md:col-12 d-flex justify-content-center align-items-center">
+      <div class="p-fluid" style="margin: auto; display: flex;">
+        <div class="col-12" style="padding: 2rem;">
+          
+          <form [formGroup]="employeeForm" (ngSubmit)="submitEmployee()">
+            <div class="field">
+              <label for="username">Nom Complet</label>
+              <input formControlName="username"
+                [ngClass]="{ 'ng-invalid ng-dirty': submit && employeeForm.get('username')?.errors }"
+                pInputText id="username" type="text" />
+              <div *ngIf="submit && employeeForm.get('username')?.errors" class="p-error">
+                <div *ngIf="employeeForm.get('username')?.errors?.['required']">Ce champ est obligatoire</div>
+              </div>
+            </div>
+  
+            <div class="field">
+              <label for="cin">CIN</label>
+              <input formControlName="cin"
+                [ngClass]="{ 'ng-invalid ng-dirty': submit && employeeForm.get('cin')?.errors }"
+                pInputText id="cin" type="text" />
+              <div *ngIf="submit && employeeForm.get('cin')?.errors" class="p-error">
+                <div *ngIf="employeeForm.get('cin')?.errors?.['required']">Ce champ est obligatoire</div>
+              </div>
+            </div>
+  
+            <div class="field">
+              <label for="phone">Numéro de Téléphone</label>
+              <input formControlName="phone"
+                [ngClass]="{ 'ng-invalid ng-dirty': submit && employeeForm.get('phone')?.errors }"
+                pInputText id="phone" type="text" />
+              <div *ngIf="submit && employeeForm.get('phone')?.errors" class="p-error">
+                <div *ngIf="employeeForm.get('phone')?.errors?.['required']">Ce champ est obligatoire</div>
+              </div>
+            </div>
+  
+            <div class="field">
+              <label for="email">Email</label>
+              <input formControlName="email"
+                [ngClass]="{ 'ng-invalid ng-dirty': submit && employeeForm.get('email')?.errors }"
+                pInputText id="email" type="text" />
+              <div *ngIf="submit && employeeForm.get('email')?.errors" class="p-error">
+                <div *ngIf="employeeForm.get('email')?.errors?.['required']">Ce champ est obligatoire</div>
+                <div *ngIf="employeeForm.get('email')?.errors?.['email']">Email invalide</div>
+              </div>
+            </div>
+  
+            <div style="display: flex; justify-content: flex-start;">
+              <button pButton pRipple type="submit" label="Ajouter Employé" class="mb-4" [disabled]="employeeForm.invalid"></button>
+              <p-toast></p-toast>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
