@@ -15,20 +15,29 @@ export class TodoListComponent implements OnInit {
   tachesPlanifier: any[] = [];
   tachesEnCours: any[] = [];
   tachesTerminer: any[] = [];
+  userId:any;
   id:any;
   constructor(private route: ActivatedRoute,private tacheService: TachesService, private confirmationService: ConfirmationService, private messageService: MessageService) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id'); 
+      console.log(this.id,"lolololololol")
+      if (localStorage.hasOwnProperty('id')) {
+        this.userId = localStorage.getItem('id');
+        console.log('user id', this.userId);
+        this.getAllTachesWithUserIdAndProjectId(this.userId, this.id);
+      }
+     
     });
-    this.getAllTachesWithUserIdAndProjectId(this.id, 3);
+   
   }
 
-  getAllTachesWithUserIdAndProjectId(userId: number, projectId: number) {
+  getAllTachesWithUserIdAndProjectId(userId: any, projectId: any) {
     this.tacheService.getAllTachesByUserIdProjectId(userId, projectId).subscribe({
       next: (res) => {
         this.allTaches = res;
+        console.log(res,"eeeeeeeeeeer")
         this.updateLists();
       },
       error: (err) => {

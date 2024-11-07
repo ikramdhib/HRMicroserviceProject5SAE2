@@ -22,6 +22,7 @@ public class Projet implements Serializable {
     private String detailles ;
     private Date dateDebut ;
     private Date dateFin;
+    private Utilisateur responsable;
     @ManyToOne
     private Equipe equipe;
     @OneToMany(mappedBy = "projet" , cascade =  CascadeType.ALL)

@@ -62,6 +62,7 @@
                         <p-dropdown
                         formControlName="user"
                         [ngClass]="{ 'ng-invalid ng-dirty': submit && form['user'].errors}"
+                        placeholder="Select a member"
                          [options]="members" optionLabel="email" [(ngModel)]="selectedMember"></p-dropdown>
                          <div *ngIf="submit && form['user'].errors" class="p-error">
                             <div *ngIf="form['user'].errors?.['required']">Ce champs est obligatoire</div>
@@ -92,7 +93,7 @@
                             <p>{{ tache.detail }}</p>
                             <div class="p-d-flex p-ai-center mt-2">
                               <span class="pi pi-user mr-2"></span> 
-                              <span>Membre: {{ tache.user.nomComplet }}</span>
+                              <span>Membre: {{ tache.utilisateur.username }}</span>
                             </div>
                           </ng-template>
                         </p-listbox>

@@ -14,5 +14,5 @@ public interface TacheRepository extends JpaRepository<Tache,Integer> {
 
     List<Tache> findByProjetId(int projetId);
 
-    List<Tache> findByUser_IdAndProjet_Id(int userId, int projetId);
+    List<Tache> findByUserIdAndProjet_Id(int userId , int projetId);
 }

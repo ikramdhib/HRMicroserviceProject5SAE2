@@ -23,12 +23,14 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [AllProjetsComponent],
   imports: [
     ReactiveFormsModule,
     DialogModule,
+    DynamicDialogModule, 
     ConfirmPopupModule,
     ConfirmDialogModule,
     TooltipModule,

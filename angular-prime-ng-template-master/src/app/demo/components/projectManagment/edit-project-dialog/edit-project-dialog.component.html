@@ -1,8 +1,5 @@
-<div class="grid" style="height: 100vh;">
-    <div class="col-12 md:col-12 d-flex justify-content-center align-items-center">
-        <div class="card p-fluid" style=" margin: auto; display: flex;">
-            <div class="col-6" style="padding: 1rem;">
-                <h5>Ajouter Projet</h5>
+
+        <div class="card p-fluid" style=" margin: auto; display: flex; padding: 1rem;">
                 
                 <form [formGroup]="projetForm" (ngSubmit)="submitProjet()">
                     <div class="field">
@@ -54,15 +51,8 @@
                         </p-autoComplete>
                     </div>
                 <div style="display: flex; justify-content: flex-start;">
-                    <button pButton pRipple label="Ajouter projet" class="mb-4"></button>
+                    <button pButton pRipple [label]="updateTurn ? 'Modifier le projet' : 'Ajouter projet'" class="mb-4"></button>
                     <p-toast></p-toast>
                 </div>
             </form>
             </div>
-            
-            <div class="col-6 d-flex align-items-center justify-content-center" style="padding: 1rem;">
-                <img src="assets/demo/images/projet.jpg" alt="Description de l'image" style="max-width: 100%; height: auto;">
-            </div>
-        </div>
-    </div>
-</div>

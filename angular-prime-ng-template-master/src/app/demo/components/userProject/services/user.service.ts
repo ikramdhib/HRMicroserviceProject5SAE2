@@ -36,4 +36,7 @@ export class UserService {
     ajouterUser(user:any){
       return this.http.post<any>(`${this.API_RL}users/addUser`,user);
     }
+    getUsersIds(ids:any){
+      return this.http.get<any>(`${this.API_RL}users/getUsersIds/${ids}`);
+    }
 }

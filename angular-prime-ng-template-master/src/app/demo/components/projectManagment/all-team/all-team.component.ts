@@ -5,9 +5,10 @@ import { Customer, Representative } from 'src/app/demo/api/customer';
 import { Product } from 'src/app/demo/api/product';
 import { EquipeService } from '../Services/equipe.service';
 import { AddTeamComponent } from '../add-team/add-team.component';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { AddProjetComponent } from '../add-projet/add-projet.component'; 
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { EditTeamComponent } from '../edit-team/edit-team.component';
 
 interface expandedRows {
   [key: string]: boolean;
@@ -15,7 +16,7 @@ interface expandedRows {
 @Component({
   selector: 'app-all-team',
   templateUrl: './all-team.component.html',
-  providers: [MessageService, ConfirmationService,DialogService],
+  providers: [DynamicDialogConfig,MessageService, ConfirmationService,DialogService],
   styleUrls: ['./all-team.component.scss']
 })
 export class AllTeamComponent implements OnInit {
@@ -23,7 +24,7 @@ export class AllTeamComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
 
 
-  products: Product[] = [];
+  teams: any[] = [];
 
   expandedRows: expandedRows = {};
 
@@ -40,15 +41,14 @@ export class AllTeamComponent implements OnInit {
   }
 
   openDialog(team: any) {
-    this.ref = this.dialogService.open(AddTeamComponent, {
+    console.log(team)
+    this.ref = this.dialogService.open(EditTeamComponent, {
       header: 'Modifier Projet',
-      width: '50%',
-      data: {
-        team: team // Passer le projet sélectionné ici
-      }
+      width: '30%',
+      data: {team}
     });
   }
-  confirm1(id:any) {
+  confirmDelete(id:any) {
     this.confirmationService.confirm({
         key: 'confirm1',
         message: 'Are you sure to perform this action?',
@@ -61,7 +61,7 @@ export class AllTeamComponent implements OnInit {
   getAllEquipes(){
     return this.EquipeService.getAllEqupes().subscribe({
       next:(res)=>{
-        this.products=res
+        this.teams=res
       }
     })
   }

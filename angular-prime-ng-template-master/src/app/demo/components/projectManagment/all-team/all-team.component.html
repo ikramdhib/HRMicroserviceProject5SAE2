@@ -1,63 +1,84 @@
 <div class="grid">
 	<div class="col-12">
-		<div class="card">
-			<h5>Row Expand</h5>
-			<p-toast></p-toast>
-			<p-table [value]="products" dataKey="name" [expandedRowKeys]="expandedRows" responsiveLayout="scroll">
-				<ng-template pTemplate="header">
-					<tr>
-						<th style="width: 3rem"></th>
-						<th pSortableColumn="name">Nom d'equipe <p-sortIcon field="name"></p-sortIcon></th>
-						<th pSortableColumn="price">Responsable d'equipe <p-sortIcon field="price"></p-sortIcon></th>
-						
-					</tr>
-				</ng-template>
-				<ng-template pTemplate="body" let-product let-expanded="expanded">
-					<tr>
-						<td>
-							<button type="button" pButton pRipple [pRowToggler]="product" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-						</td>
-						<td style="min-width: 12rem;">{{product.titre}}</td>
-						<td style="min-width: 8rem;">{{product.responsable.nomComplet }}</td>
-                            <td style="min-width: 12rem;">
-                                <p-confirmDialog header="Confirmation" key="confirm1" icon="pi pi-exclamation-triangle" message="Are you sure you want to proceed?"
-                                [style]="{width: '350px'}" acceptButtonStyleClass="p-button-text" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
-                                <button pButton pRipple type="button" icon="pi pi-pencil" (click)="openDialog(product)" class="p-button-rounded p-button-outlined mr-2 mb-2"></button>
-                                <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirm1(product.id)" class="p-button-rounded p-button-danger p-button-outlined mr-2 mb-2"></button>
-                                <p-toast></p-toast>
-                            </td>
-					</tr>
-				</ng-template>
-				<ng-template pTemplate="rowexpansion" let-product>
-					<tr>
-						<td colspan="7">
-							<div class="p-3">
-								<p-table [value]="product.users" dataKey="id" responsiveLayout="scroll">
-									<ng-template pTemplate="header">
-					<tr>
-						<th pSortableColumn="id">Nom Complet <p-sortIcon field="price"></p-sortIcon></th>
-						<th pSortableColumn="customer">email <p-sortIcon field="customer"></p-sortIcon></th>
-						
-					</tr>
-				</ng-template>
-				<ng-template pTemplate="body" let-order>
-					<tr>
-						<td>{{order.nomComplet}}</td>
-						<td>{{order.email}}</td>
-					</tr>
-				</ng-template>
-				<ng-template pTemplate="emptymessage">
-					<tr>
-						<td colspan="6">There are no order for this product yet.</td>
-					</tr>
-				</ng-template>
-			</p-table>
-		</div>
-		</td>
-		</tr>
-		</ng-template>
+	  <div class="card">
+		<h5>La list des Equipes</h5>
+		<p-toast></p-toast>
+		<p-confirmDialog header="Confirmation" key="confirm1" icon="pi pi-exclamation-triangle" message="Are you sure you want to proceed?"
+            [style]="{width: '350px'}" acceptButtonStyleClass="p-button-text" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+		<p-table [value]="teams" dataKey="id" [expandedRowKeys]="expandedRows" responsiveLayout="scroll">
+		  <ng-template pTemplate="header">
+			<tr>
+			  <th style="width: 3rem"></th>
+			  <th>Nom d'equipe</th>
+			  <th>Responsable d'equipe</th>
+			  <th>Actions</th>
+			</tr>
+		  </ng-template>
+		  <ng-template pTemplate="body" let-team let-expanded="expanded">
+			<tr>
+			  <td>
+				<button
+				  type="button"
+				  pButton
+				  pRipple
+				  [pRowToggler]="team"
+				  class="p-button-text p-button-rounded p-button-plain"
+				  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+				></button>
+			  </td>
+			  <td>{{ team.titre }}</td>
+			  <td>{{ team.responsable?.username }}</td>
+			  <td>
+				<button
+				  pButton
+				  pRipple
+				  type="button"
+				  icon="pi pi-pencil"
+				  (click)="openDialog(team)"
+				  class="p-button-rounded p-button-outlined mr-2 mb-2"
+				></button>
+				<button
+				  pButton
+				  pRipple
+				  type="button"
+				  icon="pi pi-trash"
+				  (click)="confirmDelete(team.id)"
+				  class="p-button-rounded p-button-danger p-button-outlined mr-2 mb-2"
+				></button>
+			  </td>
+			</tr>
+		  </ng-template>
+		  <ng-template pTemplate="rowexpansion" let-team>
+			<tr>
+			  <td colspan="7">
+				<div class="p-3">
+				  <p-table [value]="team.members" responsiveLayout="scroll">
+					<ng-template pTemplate="header">
+					  <tr>
+						<th>Nom Complet</th>
+						<th>Email</th>
+						<th>Numero de téléphone</th>
+					  </tr>
+					</ng-template>
+					<ng-template pTemplate="body" let-user>
+					  <tr>
+						<td>{{ user.username }}</td>
+						<td>{{ user.email }}</td>
+						<td>{{ user.phone }}</td>
+					  </tr>
+					</ng-template>
+					<ng-template pTemplate="emptymessage">
+					  <tr>
+						<td colspan="2">No users for this team.</td>
+					  </tr>
+					</ng-template>
+				  </p-table>
+				</div>
+			  </td>
+			</tr>
+		  </ng-template>
 		</p-table>
+	  </div>
 	</div>
-	</div>
-
-</div>
+  </div>
+  

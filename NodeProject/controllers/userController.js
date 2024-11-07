@@ -170,6 +170,27 @@ const getUserByRole = async (req, res) => {
   }
 };
 
+const getUsersByIds = async (req, res) => {
+  try {
+    // Supposons que vous récupérez les utilisateurs par un tableau d'IDs
+    const userIds = req.params.ids.split(',');
+    const users = await User.findAll({
+      where: {
+        id: userIds
+      }
+    });
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'Aucun utilisateur trouvé' });
+    }
+
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs' });
+  }
+};
+
 
 
   module.exports ={
@@ -179,5 +200,6 @@ const getUserByRole = async (req, res) => {
   changePassword,
   createUser,
   deleteUser,
-  getUserByRole
+  getUserByRole,
+  getUsersByIds
   }

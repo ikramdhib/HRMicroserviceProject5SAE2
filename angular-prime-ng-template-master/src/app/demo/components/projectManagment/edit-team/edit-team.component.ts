@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EquipeService } from '../Services/equipe.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { UserService } from '../../userProject/services/user.service';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
+import { EquipeService } from '../Services/equipe.service';
 
 @Component({
-  selector: 'app-add-team',
-  templateUrl: './add-team.component.html',
-  styleUrls: ['./add-team.component.scss'],
-  providers: [MessageService]
+  selector: 'app-edit-team',
+  templateUrl: './edit-team.component.html',
+  styleUrls: ['./edit-team.component.scss'],
+  providers: [ MessageService]
+
 })
-export class AddTeamComponent implements OnInit {
+export class EditTeamComponent implements OnInit {
+
   teamForm!: FormGroup;
   dropdownItems: any[] = [];
   employees: any[] = [];
@@ -22,6 +24,7 @@ export class AddTeamComponent implements OnInit {
 
   constructor(
     private userServ: UserService,
+    public config: DynamicDialogConfig,
     private messageService: MessageService,
     private equipeService: EquipeService,
     private fb: FormBuilder
@@ -35,7 +38,11 @@ export class AddTeamComponent implements OnInit {
       teamMembers: [this.teamMembers || [], Validators.required]
     });
 
-    
+    if ( this.config.data?.team) {
+      console.log("this.config.data?.team",this.config.data?.team)
+      this.updateTurn = true;
+      this.populateForm(this.config.data?.team);
+    }
 
     // Fetch users for dropdown and employee list
     this.userServ.getUsersRole("EMPLOYEE").subscribe({
@@ -52,7 +59,14 @@ export class AddTeamComponent implements OnInit {
     return this.teamForm.controls;
   }
 
-
+  populateForm(team: any) {
+    this.teamForm.patchValue({
+      teamTitle: team.titre,
+      selectedLead: team.responsable,
+      teamMembers: team.members
+    });
+    this.teamMembers = team.members;
+  }
 
   toggleMember(memberId: string) {
     const index = this.teamMembers.indexOf(memberId);
@@ -75,12 +89,13 @@ export class AddTeamComponent implements OnInit {
       const memberIds = this.teamMembers.map((member: any) => member.id); // Mapping to only IDs of team members
   
       const newTeam = {
+        id: this.updateTurn ? this.config.data.team.id : undefined,
         titre: this.teamForm.value.teamTitle,
         responsableId: selectedLeadId,
         userIds: memberIds.length > 0 ? memberIds : null // Ensuring this is either an array of IDs or null
       };
   
-     
+      if (!this.updateTurn) {
         this.equipeService.addStudent(newTeam).subscribe({
           next: (response) => {
             console.log('Team added successfully', response);
@@ -99,7 +114,28 @@ export class AddTeamComponent implements OnInit {
             console.log(error);
           }
         });
+      } else {
+        this.equipeService.updateEquipe(newTeam).subscribe({
+          next: (res) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Confirm',
+              detail: 'Team updated successfully'
+            });
+            console.log(res);
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Reject',
+              detail: 'There was an error'
+            });
+            console.log(error);
+          }
+        });
+      }
     }
   }
   
+
 }

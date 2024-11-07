@@ -13,5 +13,5 @@ public interface IProjet {
     Projet updateProjet(Projet projet);
 
     void deleteProjet(int id);
-    public List<Projet> getProjetsByUserId(int userId);
+     List<Projet> getProjetsByUserId(int userId);
 }

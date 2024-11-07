@@ -3,10 +3,11 @@ import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Customer, Representative } from 'src/app/demo/api/customer';
 import { ProjetService } from '../Services/projet.service';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { AddProjetComponent } from '../add-projet/add-projet.component'; 
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
+import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-dialog.component';
 
 @Component({
   selector: 'app-all-projets',
@@ -17,7 +18,7 @@ import { Router } from '@angular/router';
 export class AllProjetsComponent  {
   ref: DynamicDialogRef | undefined;
 
-  customers1: Customer[] = [];
+  projects: any[] = [];
 
 
  
@@ -37,12 +38,11 @@ export class AllProjetsComponent  {
   constructor(private router: Router,private dialogService: DialogService,private confirmationService: ConfirmationService,private messageService: MessageService,private projetService : ProjetService) { }
 
   openDialog(projet: any) {
-    this.ref = this.dialogService.open(AddProjetComponent, {
+    console.log(projet)
+    this.ref = this.dialogService.open(EditProjectDialogComponent, {
       header: 'Modifier Projet',
-      width: '50%',
-      data: {
-        projet: projet // Passer le projet sélectionné ici
-      }
+      width: '30%',
+      data : { projet}
     });
   }
 
@@ -67,7 +67,7 @@ export class AllProjetsComponent  {
   getAllproject(){
     return this.projetService.getAllProject().subscribe({
       next:(res)=>{
-        this.customers1 =res;
+        this.projects =res;
         this.loading = false;
       }
     })
