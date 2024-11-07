@@ -8,9 +8,9 @@ import { Department } from '../components/pages/Departement/Department'; // Adju
   providedIn: 'root'
 })
 export class DepartmentService {
-  private apiUrl=environment.API_URL+'/api/departements';
+  private apiUrl=environment.API_URL+'api/departements';
 
-  private apiUrlll = 'http://localhost:8070/api/departements';
+  //private apiUrlll = 'http://localhost:8070/api/departements';
 
   constructor(private http: HttpClient) { }
 
