@@ -1,151 +1,47 @@
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
 require('dotenv').config();
+const axios = require('axios'); // Ajoutez cette ligne pour importer axios
+const bcrypt = require('bcrypt'); // Assurez-vous d'utiliser bcrypt pou
 const jwt = require("jsonwebtoken");
 const { randomString } = require("../utils/random");
 const { verifyEmail } = require("../utils/sendEmail");
+const { getKeycloakToken, verifyJwtToken } = require("../middelwares/keycloakAdapter"); // Chemin vers le service intermédiaire
 
-
-const register = async (req, res) => {
-    const { username, phone , cin, email, password,role } = req.body;
-    // Check if all required fields are provided
-    if (!username || !email || !password ||!phone ||!cin) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-  
-    try {
-      // Check if the user with the given email already exists
-      const foundUser = await User.findOne({where:{ email: email }});
-      if (foundUser) {
-        return res.status(401).json({ message: "User email already exists" });
-      }
-  
-      // Hash the provided password
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const codeVerification = randomString(20);
-  
-      // Create a new user in the database
-      const user = await User.create({
-        username,
-        phone,
-        cin,
-        email,
-        password: hashedPassword,
-        role: role || undefined,
-        verificationCode:codeVerification
-      });
-      const link = `http://localhost:5000/auth/verify?code=${codeVerification}`;
-      verifyEmail(email, username, link);
-      // Generate an access token
-      const accessToken = jwt.sign(
-        {
-          UserInfo: {
-            id: user.id,
-            role: user.role
-          },
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "15m" }
-      );
-  
-      // Generate a refresh token
-      const refreshToken = jwt.sign(
-        {
-          UserInfo: {
-            id: user.id,
-            role: user.role
-  
-          },
-        },
-        process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "7d" }
-      );
-  
-      res.cookie("jwt", refreshToken, {
-        httpOnly: true, //accessible only by web server not js can access
-        secure: true, //https
-        sameSite: "None", //send to the domain that you deploy your app cross-site cookie
-        maxAge: 7 * 24 * 60 * 60 * 1000, //expire date of the cookie  1000 1s * 60s * 60m * 24 hours * 7 numbre of days
-      });
-  
-      res.status(201).json({
-        accessToken,
-        email: user.email,
-        username: user.username,
-        
-      });
-    } catch (error) {
-      console.error("Registration error:", error);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  };
-
-
-  
-const login = async (req, res) => {
+  const login = async (req, res) => {
     const { email, password } = req.body;
-  
+
     // Check if all required fields are provided
     if (!email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+        return res.status(400).json({ message: "All fields are required" });
     }
+    
     try {
-      // Check if the user with the given email already exists
-      const foundUser = await User.findOne({where:{ email: email }});
-      if (!foundUser) {
-        return res.status(401).json({ message: "User does not exist" });
-      }
-  
-      // compare the password from req.body and saved in db
-      const matchPassword = await bcrypt.compare(password, foundUser.password);
-  
-      if (!matchPassword)
-        return res.status(401).json({ message: "Wrong Password" });
-  
-      // Generate an access token
-      const accessToken = jwt.sign(
-        {
-          UserInfo: {
-            id: foundUser.id,
-            email: foundUser.email,
-            role: foundUser.role
-  
-          },
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "15m" }
-      );
-  
-      // Generate a refresh token
-      const refreshToken = jwt.sign(
-        {
-          UserInfo: {
-            id: foundUser.id,
-            role: foundUser.role
-  
-          },
-        },
-        process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "7d" }
-      );
-  
-      res.cookie("jwt", refreshToken, {
-        httpOnly: true, //accessible only by web server not js can access
-        secure: false, //not accessible https
-        sameSite: "None", //send to the domain that you deploy your app cross-site cookie
-        maxAge: 7 * 24 * 60 * 60 * 1000, //expire date of the cookie  1000 1s * 60s * 60m * 24 hours * 7 numbre of days
-      });
-  
-     
-      res.status(201).json({
-        accessToken,
-        email: foundUser.email,
-      });
+        // Check if the user with the given email already exists
+        const foundUser = await User.findOne({ where: { email: email } });
+        if (!foundUser) {
+            return res.status(401).json({ message: "User does not exist" });
+        }
+
+        // Compare the password from req.body and saved in db
+        const matchPassword = await bcrypt.compare(password, foundUser.password);
+        if (!matchPassword) {
+            return res.status(401).json({ message: "Wrong Password" });
+        }
+
+        // Get Keycloak token
+        const keycloakToken = await getKeycloakToken(email,password);
+        const response ={
+          accessToken: keycloakToken, 
+          email: foundUser.email,
+          id :foundUser.id,
+          role:foundUser.role
+        }
+        res.status(200).json(response);
     } catch (error) {
-      console.error("Login error:", error);
-      res.status(500).json({ message: "Internal server error : Login Error" });
+        console.error("Login error:", error);
+        res.status(500).json({ message: "Internal server error : Login Error" });
     }
-  };
+};
   
 const refresh = (req, res) => {
     const cookies = req.cookies;
@@ -212,7 +108,6 @@ const refresh = (req, res) => {
 
 
   module.exports = {
-    register,
     login,
     refresh,
     logout,

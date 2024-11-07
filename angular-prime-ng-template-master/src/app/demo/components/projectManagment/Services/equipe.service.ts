@@ -22,7 +22,7 @@ export class EquipeService {
     return this.http.get<any>(`${this.API_RL}equipe/users`);
   }
   getAllEqupes(){
-    return this.http.get<any>(`${this.API_RL}equipe/all`);
+    return this.http.get<any>(`${this.API_RL}equipe/all`,this.httpOptions);
   }
   deleteTeam(id:any){
     return this.http.delete<any>(`${this.API_RL}equipe/delete/${id}`);

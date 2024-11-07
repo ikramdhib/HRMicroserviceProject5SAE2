@@ -1,11 +1,10 @@
 const express = require("express")
 const sequelize  = require("./config/db")
 const app = express()
-const corsOptions =require("./config/corsOptions");
 const dotenv = require('dotenv');
 const morgan =require('morgan');
 const colors = require('colors')
-const cors=require("cors")
+require('dotenv').config();
 
 const Eureka = require('eureka-js-client').Eureka;
 //dotenv config
@@ -15,9 +14,6 @@ dotenv.config();
 app.use(express.json())
 app.use(morgan('dev'))
 
-//security of the server 
-app.use(cors(corsOptions));
-app.use(cors());
 
 
 const client = new Eureka({

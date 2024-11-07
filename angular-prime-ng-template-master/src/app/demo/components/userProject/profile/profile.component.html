@@ -1,0 +1,64 @@
+<div class="grid" style="height: 100vh;">
+    <div class="col-12 md:col-12 d-flex justify-content-center align-items-center">
+        <div class="card p-fluid" style=" margin: auto; display: flex;">
+            <div class="col-6" style="padding: 1rem;">
+              <p-toast></p-toast>
+        
+            <h5>Profil Utilisateur</h5>
+
+            <!-- Display user information -->
+            <div class="user-info">
+                <p><strong>Nom d'utilisateur:</strong> {{ user?.username }}</p>
+                <p><strong>Email:</strong> {{ user?.email }}</p>
+                <p><strong>Téléphone:</strong> {{ user?.phone }}</p>
+                <p><strong>CIN:</strong> {{ user?.cin }}</p>
+                <p><strong>Rôle:</strong> {{ user?.role }}</p>
+                <button pButton label="Modifier" (click)="toggleEdit()" class="mt-3"></button>
+            </div>
+  
+      <!-- Edit form -->
+      <form *ngIf="isEditing" [formGroup]="userForm" (ngSubmit)="updateProfile()" class="edit-form">
+        <div class="field">
+          <label for="username">Nom d'utilisateur</label>
+          <input type="text" id="username" formControlName="username" pInputText
+                 [ngClass]="{ 'ng-invalid ng-dirty': submit && userForm.get('username')?.errors }" />
+          <div *ngIf="submit && userForm.get('username')?.errors" class="error-message">
+            <div *ngIf="userForm.get('username')?.errors?.['required']">Ce champ est obligatoire</div>
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email" pInputText
+                 [ngClass]="{ 'ng-invalid ng-dirty': submit && userForm.get('email')?.errors }" />
+          <div *ngIf="submit && userForm.get('email')?.errors" class="error-message">
+            <div *ngIf="userForm.get('email')?.errors?.['required']">Ce champ est obligatoire</div>
+          </div>
+        </div>
+      
+        <div class="field">
+          <label for="phone">Téléphone</label>
+          <input type="text" id="phone" formControlName="phone" pInputText
+                 [ngClass]="{ 'ng-invalid ng-dirty': submit && userForm.get('phone')?.errors }" />
+          <div *ngIf="submit && userForm.get('phone')?.errors" class="error-message">
+            <div *ngIf="userForm.get('phone')?.errors?.['required']">Ce champ est obligatoire</div>
+          </div>
+        </div>
+      
+        <div class="field">
+          <label for="cin">CIN</label>
+          <input type="text" id="cin" formControlName="cin" pInputText
+                 [ngClass]="{ 'ng-invalid ng-dirty': submit && userForm.get('cin')?.errors }" />
+          <div *ngIf="submit && userForm.get('cin')?.errors" class="error-message">
+            <div *ngIf="userForm.get('cin')?.errors?.['required']">Ce champ est obligatoire</div>
+          </div>
+        </div>
+        <button type="submit" pButton label="Mettre à jour"  style="display: flex; justify-content: flex-start;" class="submit-button"></button>
+      </form>
+    </div>
+  </div>
+  </div>
+  </div>
+
+
+  

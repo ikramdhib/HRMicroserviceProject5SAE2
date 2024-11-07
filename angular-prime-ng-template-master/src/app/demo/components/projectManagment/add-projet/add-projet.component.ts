@@ -72,7 +72,7 @@ export class AddProjetComponent implements OnInit {
     this.equipeServices.getAllEqupes().subscribe({
       next: (res) => {
         this.equipes = res; // Stocker les équipes récupérées
-        console.log(this.equipes);
+        console.log(".....",this.equipes);
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des équipes:', err);

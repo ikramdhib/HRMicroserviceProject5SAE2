@@ -30,7 +30,8 @@ import { FormsModule } from '@angular/forms';
 import { DragDropModule } from 'primeng/dragdrop';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthService } from './config/auth.service';
-import { LoginComponent } from './login/login.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from './config/auth-interceptor.service';
 
 /*export function initializeKeycloak(authService: AuthService) {
     return () => authService.init();
@@ -38,7 +39,7 @@ import { LoginComponent } from './login/login.component';
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, MydashboardComponent, LoginComponent
+        AppComponent, NotfoundComponent, MydashboardComponent, 
     ],
     imports: [
         KeycloakAngularModule,
@@ -63,12 +64,9 @@ import { LoginComponent } from './login/login.component';
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService,
-          /* {
-              provide: APP_INITIALIZER,
-              useFactory: initializeKeycloak,
-              multi: true,
-              deps: [KeycloakService],
-            },*/
+       // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
+           
+          
     ],
     bootstrap: [AppComponent]
 })

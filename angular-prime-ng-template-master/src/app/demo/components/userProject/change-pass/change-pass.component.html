@@ -1,0 +1,35 @@
+<div class="grid" style="height: 100vh;">
+    <div class="col-12 col-12 d-flex justify-content-center">
+      <div class="card p-fluid" style="display: flex; width: 80%; margin: 0 ;">
+        <div class="col-6" style="padding: 2rem;">
+          <h5>Changer de Mot de Passe</h5>
+          <p-toast></p-toast>
+  
+          <form [formGroup]="passwordChangeForm" (ngSubmit)="changePassword()">
+            <div class="field">
+              <label for="oldPassword">Ancien Mot de Passe</label>
+              <input type="password" id="oldPassword" formControlName="oldPassword" />
+              <div *ngIf="submit && passwordChangeForm.get('oldPassword')?.errors" class="p-error">
+                <div *ngIf="passwordChangeForm.get('oldPassword')?.errors?.['required']">Ce champ est requis</div>
+              </div>
+            </div>
+  
+            <div class="field">
+              <label for="newPassword">Nouveau Mot de Passe</label>
+              <input type="password" id="newPassword" formControlName="newPassword" />
+              <div *ngIf="submit && passwordChangeForm.get('newPassword')?.errors" class="p-error">
+                <div *ngIf="passwordChangeForm.get('newPassword')?.errors?.['required']">Ce champ est requis</div>
+              </div>
+            </div>
+  
+            <button type="submit" pButton label="Changer" class="mt-3"></button>
+          </form>
+        </div>
+  
+        <div class="col-6 d-flex align-items-center justify-content-center" style="padding: 1rem;">
+          <img src="assets/demo/images/pass.jfif" alt="Changer le mot de passe" style="max-width: 100%; height: auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+  

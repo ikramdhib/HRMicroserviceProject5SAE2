@@ -18,12 +18,22 @@
             <span>Calendar</span>
         </button>
         <button class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </button>
-        <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
             <i class="pi pi-cog"></i>
             <span>Settings</span>
         </button>
+
+        <!-- User Icon Button with Dropdown Next to Settings -->
+        <div class="user-dropdown-container" (click)="showUserMenu = !showUserMenu">
+            <button class="p-link layout-topbar-button">
+                <i class="pi pi-user"></i>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div *ngIf="showUserMenu" class="user-dropdown-menu">
+                <a class="dropdown-item" routerLink="/user/profile">Profile</a>
+                <a class="dropdown-item" routerLink="/user/change-password">Change Password</a>
+                <a class="dropdown-item" (click)="logout()">Logout</a>
+            </div>
+        </div>
     </div>
 </div>

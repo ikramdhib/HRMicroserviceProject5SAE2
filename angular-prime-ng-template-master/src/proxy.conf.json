@@ -1,0 +1,9 @@
+{
+    "/api": {
+        "target": "http://localhost:8056",
+        "secure": false,
+        "timeout": 6000000,                    
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+  }

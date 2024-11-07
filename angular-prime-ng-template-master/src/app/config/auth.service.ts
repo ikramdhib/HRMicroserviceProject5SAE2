@@ -1,39 +1,32 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { KeycloakService } from 'keycloak-angular';
+import { Observable, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private keycloakService: KeycloakService) {}
-/*
-init(){
-  return     this.keycloakService.init({
-      config: {
-        url: 'http://localhost:8080',
-        realm: 'HR-realm',
-        clientId: 'angular-client',
-      },
-      enableBearerInterceptor: true,
-      initOptions: {
-        onLoad: 'login-required', // Force login on load
-        checkLoginIframe: false, 
-      },
-    }).catch((error) => {
-      console.error('Keycloak init failed', error);
-      return Promise.reject(error); // Handle the error appropriately
-    });
-}
+  API_RL=environment.API_URL;
+  constructor(private http: HttpClient) {}
 
-logout() {
-  return this.keycloakService.logout();
-}
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.API_RL}auth/login`, { email, password });
+  }
 
-getUsername() {
-  return this.keycloakService.getUsername();
-}
+  logout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+  }
 
-isAuthenticated(): any {
-  return this.keycloakService.isLoggedIn();
-}*/
+  getToken() {
+    return localStorage.getItem('accessToken');
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
 }

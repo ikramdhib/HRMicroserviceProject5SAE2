@@ -2,23 +2,20 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
+import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard  {
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
 
-/*  constructor(private keycloakService: KeycloakService, private router: Router) {}
-  async canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Promise<boolean> {
-    const isLoggedIn = await this.keycloakService.isLoggedIn();
-    if (!isLoggedIn) {
+  canActivate(): boolean {
+    console.log("0000000000000000000000000",this.authService.isAuthenticated())
+    if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
       return false;
     }
     return true;
   }
-    */
   
 }
