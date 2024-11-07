@@ -103,6 +103,7 @@ export class AppMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-briefcase',
                 routerLink: ['/pages'],
                 items: [
+                    
                     {
                         label: 'Landing',
                         icon: 'pi pi-fw pi-globe',
@@ -128,6 +129,16 @@ export class AppMenuComponent implements OnInit {
                                 routerLink: ['/auth/access']
                             }
                         ]
+                    },
+                    {
+                        label: 'Conge',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink: ['/pages/conge']
+                    },
+                    {
+                        label: 'CongeAdmin',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink: ['/pages/conge-admin']
                     },
                     {
                         label: 'Crud',

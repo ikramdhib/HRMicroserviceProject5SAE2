@@ -27,6 +27,7 @@ import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
 
 import { ContenuCrudComponent } from './cours/components/contenu/contenu-crud.component';
 import { CoursCrudComponent } from './cours/components/cours/cours-crud.component';
@@ -64,7 +65,8 @@ import { AuthInterceptorService } from './config/auth-interceptor.service';
         ProgressBarModule,
         ToastModule,
         FormsModule,
-        DragDropModule
+        DragDropModule,
+        CalendarModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

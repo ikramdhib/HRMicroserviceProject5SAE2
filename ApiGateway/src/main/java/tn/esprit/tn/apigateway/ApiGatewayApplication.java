@@ -38,6 +38,8 @@ public class ApiGatewayApplication {
                         .uri("lb://COURS-SERVICE")) // Utilise Eureka pour la découverte de service
                 .route("contenu-service", r -> r.path("/api/contenus/**")
                         .uri("lb://COURS-SERVICE")) // Utilise Eureka pour la découverte de service
+                .route("gestionconge",r->r.path("/conges/**")
+                        .uri("http://localhost:8087"))
                 .build();
 }
 
