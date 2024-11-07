@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .and()
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/eureka/**","/auth/**","/users/**","/projet/**")
+                        .pathMatchers("/eureka/**","/auth/**","/users/**","/projet/**","/equipe/**","/tache/**")
                         .permitAll()
                         .anyExchange()
                         .authenticated()
