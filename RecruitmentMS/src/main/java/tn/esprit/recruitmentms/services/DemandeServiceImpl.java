@@ -1,6 +1,7 @@
 package tn.esprit.recruitmentms.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.recruitmentms.entities.Demande;
@@ -26,48 +27,34 @@ import java.util.Optional;
 public class DemandeServiceImpl implements IDemandeService{
     private IDemandeRepository iDemandeRepository;
     private IJobOfferRepository iJobOfferRepository;
-
     private final String uploadDir = "C:/Users/Marye/Desktop/upload";
-    @Override
-    public Demande createDemande(Demande demande, MultipartFile file) throws IOException {
-        // Check if the file is present and not empty
+
+
+    public Demande createDemande(Demande demande, MultipartFile file, MultipartFile coverLetterFile) throws IOException {
+        // Save CV file if present
         if (file != null && !file.isEmpty()) {
-            // Validate file type (ensure it's a PDF)
-            if (!file.getContentType().equals("application/pdf")) {
-                throw new IllegalArgumentException("Only PDF files are allowed for CV upload.");
-            }
-
-            // Create a unique filename to prevent overwriting
-            String originalFileName = file.getOriginalFilename();
-            String uniqueFileName = System.currentTimeMillis() + "_" + originalFileName;
-            Path filePath = Paths.get(uploadDir, uniqueFileName);
-
-            // Create the upload directory if it doesn't exist
-            File dir = new File(uploadDir);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            // Save the file to the specified directory
-            try {
-                Files.copy(file.getInputStream(), filePath);
-                // Set the CV path in the Demande entity
-                demande.setCvPath(filePath.toString());
-            } catch (IOException e) {
-                throw new IOException("Failed to save the CV file. Please try again.", e);
-            }
+            String cvPath = saveFile(file);
+            demande.setCvPath(cvPath);
         }
 
-        // Set additional default values if needed
-        demande.setEtat(Etat.valueOf("RECEIVED"));
-        demande.setStatus(Status.valueOf("Nothing"));
+        // Save Cover Letter file if present
+        if (coverLetterFile != null && !coverLetterFile.isEmpty()) {
+            String coverLetterPath = saveFile(coverLetterFile);
+            demande.setCoverLetterPath(coverLetterPath);
+        }
 
-        // Save the Demande entity to the repository
+        // Save Demande to the database
         return iDemandeRepository.save(demande);
     }
 
-
-
+    // Utility method to save file
+    private String saveFile(MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        Path filePath = Paths.get(uploadDir + fileName);
+        Files.createDirectories(filePath.getParent());
+        Files.write(filePath, file.getBytes());
+        return filePath.toString();
+    }
 
     public Demande retrieveDemande(Long idDem) {
         return iDemandeRepository.findById(idDem).orElse(null);
@@ -86,7 +73,7 @@ public class DemandeServiceImpl implements IDemandeService{
             demande.setEtat(updatedDemande.getEtat());
             demande.setStatus(updatedDemande.getStatus());
             demande.setCvPath(updatedDemande.getCvPath());
-            demande.setCoverLetter(updatedDemande.getCoverLetter());
+            demande.setCoverLetterPath(updatedDemande.getCoverLetterPath());
             demande.setJobOffer(updatedDemande.getJobOffer());
             return iDemandeRepository.save(demande);
         } else {

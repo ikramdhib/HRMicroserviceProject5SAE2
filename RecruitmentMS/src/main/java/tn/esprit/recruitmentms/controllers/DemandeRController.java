@@ -1,5 +1,7 @@
 package tn.esprit.recruitmentms.controllers;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,14 @@ public class DemandeRController {
     private final IDemandeService iDemandeService;
 
     @PostMapping("/postuler")
-    public ResponseEntity<Demande> createDemande(@RequestPart("demande") Demande demande,
-                                                 @RequestPart(value = "file", required = false) MultipartFile file) {
+    public ResponseEntity<Demande> createDemande(
+            @RequestPart("demande") Demande demande,
+            @RequestPart(value = "cvPath", required = false) MultipartFile cvFile,
+            @RequestPart(value = "coverLetterPath", required = false) MultipartFile coverLetterFile) {
+
         try {
-            Demande createdDemande = iDemandeService.createDemande(demande, file);
+            // Process the creation of the Demande
+            Demande createdDemande = iDemandeService.createDemande(demande, cvFile, coverLetterFile);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDemande);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
@@ -29,7 +35,11 @@ public class DemandeRController {
         }
     }
 
-   @GetMapping("/{idDem}")
+
+
+
+
+    @GetMapping("/{idDem}")
     public Demande retrieveDemande(@PathVariable("idDem") Long idDem) {
         return iDemandeService.retrieveDemande(idDem);
     }

@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PostulerService } from 'src/app/demo/service/postuler.service';
+import { JobOffer } from 'src/app/models/job-offer.model';
 
-interface JobOffer {
-  id: number;  // Add id property
-  title: string;
-  description: string;
-  experience: number;
-  endDate: Date;
-  salary: number;
-}
 @Component({
   selector: 'app-recruiting',
   templateUrl: './recruiting.component.html',
@@ -21,37 +15,41 @@ export class RecruitingComponent implements OnInit {
   sortField!: keyof JobOffer;
   sortOrder!: number;
 
-  constructor(private postulerService: PostulerService) {}
+  // New property to hold the new job offer data
+  newJobOffer: JobOffer = {
+    idJob: 0,             
+    title: '',
+    description: '',
+    competence: '',       
+    nbreExperience: 0,    
+    dateFin: new Date(),  
+    salary: 0
+  };
+
+  constructor(private postulerService: PostulerService, private router: Router) {}
 
   ngOnInit(): void {
-    this.jobOffers = [
-      {
-        id: 1,
-        title: 'Software Development Intern',
-        description: 'Work on developing modern web applications.',
-        experience: 1,
-        endDate: new Date('2024-12-31'),
-        salary: 1200
-      },
-      {
-        id: 2,
-        title: 'Data Analysis Intern',
-        description: 'Analyze data sets and produce meaningful insights.',
-        experience: 0,
-        endDate: new Date('2024-11-30'),
-        salary: 1000
-      },
-      {
-        id: 3,
-        title: 'UI/UX Design Intern',
-        description: 'Create stunning user interfaces and experiences.',
-        experience: 0,
-        endDate: new Date('2024-10-15'),
-        salary: 1100
-      }
-    ];
+    // Check if job offers are stored in localStorage
+    const storedJobOffers = localStorage.getItem('jobOffers');
+    if (storedJobOffers) {
+      // Parse and load the job offers from localStorage
+      this.jobOffers = JSON.parse(storedJobOffers);
+      this.filteredJobOffers = [...this.jobOffers];
+    } else {
+      // Fetch from API if not found in localStorage
+      this.postulerService.getJobOffers().subscribe(
+        (data) => {
+          this.jobOffers = data;
+          this.filteredJobOffers = [...this.jobOffers];
+          this.saveJobOffersToLocalStorage(); // Store fetched data in localStorage
+          this.sortOffers();
+        },
+        (error) => {
+          console.error('Error fetching job offers', error);
+        }
+      );
+    }
 
-    this.filteredJobOffers = [...this.jobOffers];
     this.sortOptions = [
       { label: 'Salary Low to High', value: 'salary' },
       { label: 'Salary High to Low', value: '!salary' },
@@ -61,20 +59,14 @@ export class RecruitingComponent implements OnInit {
     this.sortOrder = 1;
   }
 
+  // Method to save job offers to localStorage
+  saveJobOffersToLocalStorage() {
+    localStorage.setItem('jobOffers', JSON.stringify(this.jobOffers));
+  }
+
+  // Apply for job - navigate to application form with selected job
   applyForJob(job: JobOffer) {
-    const applicantData = {
-      name: 'Applicant Name',  // Replace with actual applicant info
-      email: 'applicant@example.com'  // Replace with actual applicant info
-    };
-    
-    this.postulerService.applyForJob(job.id, applicantData).subscribe(
-      response => {
-        console.log(`Successfully applied for: ${job.title}`, response);
-      },
-      error => {
-        console.error(`Error applying for: ${job.title}`, error);
-      }
-    );
+    this.router.navigate(['/ApplicationForm'], { state: { job: job } });
   }
 
   onSortChange(event: any) {
@@ -94,14 +86,20 @@ export class RecruitingComponent implements OnInit {
   sortOffers() {
     this.filteredJobOffers.sort((a, b) => {
       let result = 0;
-      if (a[this.sortField] < b[this.sortField]) {
+
+      if (a[this.sortField] instanceof Date && b[this.sortField] instanceof Date) {
+        result = a[this.sortField].toString().localeCompare(b[this.sortField].toString());
+      } else if (a[this.sortField] < b[this.sortField]) {
         result = -1;
       } else if (a[this.sortField] > b[this.sortField]) {
         result = 1;
       }
-
+      
       return result * this.sortOrder;
     });
+
+    // After sorting, store the updated jobOffers in localStorage
+    this.saveJobOffersToLocalStorage();
   }
 
   onFilter(dv: any, event: any) {
@@ -109,5 +107,35 @@ export class RecruitingComponent implements OnInit {
     this.filteredJobOffers = this.jobOffers.filter(job => job.title.toLowerCase().includes(query));
     this.sortOffers();
   }
-}
 
+  onSubmit() {
+    // Call the service to create the job offer
+    this.postulerService.createJobOffer(this.newJobOffer).subscribe(
+      (response) => {
+        // Add the new job offer to the list
+        this.jobOffers.push(response);
+        this.filteredJobOffers = [...this.jobOffers];
+        this.sortOffers();
+
+        // Save the updated list to localStorage
+        this.saveJobOffersToLocalStorage();
+
+        // Reset the form
+        this.newJobOffer = {
+          idJob: 0,
+          title: '',
+          description: '',
+          competence: '',
+          nbreExperience: 0,
+          dateFin: new Date(),
+          salary: 0
+        };
+      },
+      (error) => {
+        console.error('Error creating job offer', error);
+        alert('There was an error creating the job offer. Please try again.');
+      }
+    );
+  }
+
+}

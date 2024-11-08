@@ -20,7 +20,7 @@ public class JobOfferRController {
     private final IJobOfferService iJobOfferService;
 
     @Operation(description = "Add JobOffer")
-    @PostMapping("/")
+    @PostMapping("/add")
     public JobOffer createJobOffer(@RequestBody JobOffer jobOffer) {
         return iJobOfferService.createJobOffer(jobOffer);
     }

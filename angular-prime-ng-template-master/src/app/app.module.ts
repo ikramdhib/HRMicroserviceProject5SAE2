@@ -29,11 +29,14 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationComponent } from './demo/service/demo/components/pages/confirmation/confirmation.component';
+import { ConfirmationRoutingModule } from './confirmation/confirmation-routing.module';
+import { JobListRoutingModule } from './demo/components/pages/job-list-routing.module';
 
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, MydashboardComponent
+        AppComponent, NotfoundComponent, MydashboardComponent, ConfirmationComponent
     ],
     imports: [
         HttpClientModule ,
@@ -52,7 +55,9 @@ import { ReactiveFormsModule } from '@angular/forms';
         DropdownModule,
         ProgressBarModule,
         ToastModule,
-        FormsModule
+        FormsModule,
+        ConfirmationRoutingModule,
+        JobListRoutingModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

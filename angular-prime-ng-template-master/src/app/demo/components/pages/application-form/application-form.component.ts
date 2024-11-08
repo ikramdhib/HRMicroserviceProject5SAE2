@@ -1,95 +1,84 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'; 
+import { Router } from '@angular/router';
+import { ApplicationService } from 'src/app/demo/service/application.service';
 
 @Component({
   selector: 'app-application-form',
   templateUrl: './application-form.component.html',
-  styles: [`
-    :host ::ng-deep .p-multiselect {
-        min-width: 15rem;
-    }
-
-    :host ::ng-deep .multiselect-custom-virtual-scroll .p-multiselect {
-        min-width: 20rem;
-    }
-
-    :host ::ng-deep .multiselect-custom .p-multiselect-label {
-        padding-top: .25rem;
-        padding-bottom: .25rem;
-
-    }
-
-    :host ::ng-deep .multiselect-custom .country-item.country-item-value {
-        padding: .25rem .5rem;
-        border-radius: 3px;
-        display: inline-flex;
-        margin-right: .5rem;
-        background-color: var(--primary-color);
-        color: var(--primary-color-text);
-    }
-
-    :host ::ng-deep .multiselect-custom .country-item.country-item-value img.flag {
-        width: 17px;
-    }
-
-    :host ::ng-deep .multiselect-custom .country-item {
-        display: flex;
-        align-items: center;
-    }
-
-    :host ::ng-deep .multiselect-custom .country-item img.flag {
-        width: 18px;
-        margin-right: .5rem;
-    }
-
-    :host ::ng-deep .multiselect-custom .country-placeholder {
-        padding: 0.25rem;
-    }
-
-    :host ::ng-deep .p-colorpicker {
-        width: 2.5em
-    }
-`]
+  styleUrls: ['./application-form.component.scss']
 })
 export class ApplicationFormComponent implements OnInit {
-  applicationForm!: FormGroup;
-  selectedFile: File | null = null;
-postulationForm: any;
+  applyForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.applicationForm = this.fb.group({
-      fullname: ['', Validators.required],
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private applicationService: ApplicationService
+  ) {
+    // Initialize the form with the appropriate fields
+    this.applyForm = this.fb.group({
+      fullName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      skills: ['', Validators.required],
-      nbExp: [0, [Validators.required, Validators.min(0)]], // Changed to nbExp to match your HTML
-      cvPath: ['', Validators.required], // Change to match the cvPath input in HTML
-      motivation: ['', [Validators.required, Validators.maxLength(225)]], // Added motivation field
+      phone: ['', [Validators.required]],
+      skills: ['', [Validators.required]],
+      nbExp: ['', [Validators.required, Validators.min(0)]],
+      cvPath: [null],  // Placeholder for CV File
+      coverLetterPath: [null]  // Placeholder for Cover Letter File
     });
   }
 
-  onFileSelect(event: any): void {
+  ngOnInit(): void { }
+
+  // Capture the CV file input
+  onFileChangeCv(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.selectedFile = file;
-      // Update form control value to reflect the selected file
-      this.applicationForm.patchValue({ cvPath: file.name }); // Store file name in cvPath field
-      console.log("File selected:", file.name);
+      this.applyForm.patchValue({ cvPath: file });
     }
   }
 
-  onSubmit(): void {
-    if (this.applicationForm.valid) {
-      const formData = {
-        ...this.applicationForm.value,
-        cv: this.selectedFile // Include the selected file in the submission
-      };
-      console.log("Application Data:", formData);
-      // You can proceed to send formData to your API or service here
-    } else {
-      console.error("Form is invalid");
+  // Capture the Cover Letter file input
+  onFileChangeCoverLetter(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.applyForm.patchValue({ coverLetterPath: file });
     }
+  }
+
+  submitApplication() {
+    if (this.applyForm.invalid) {
+      console.error('Please fill in all required fields.');
+      return;
+    }
+
+    const applicationData = new FormData();
+
+    // Loop over each form control and append its value to the FormData
+    Object.keys(this.applyForm.controls).forEach(key => {
+      const control = this.applyForm.get(key);
+      if (control && control.value !== null) {
+        if (key === 'cvPath' || key === 'coverLetterPath') {
+          const file = control.value;
+          if (file && file instanceof File) {
+            applicationData.append(key, file, file.name);
+          }
+        } else {
+          applicationData.append(key, control.value);
+        }
+      }
+    });
+
+    // Call the service to submit the application
+    this.applicationService.submitApplication(applicationData).subscribe(
+      response => {
+        console.log('Application submitted successfully!', response);
+        this.router.navigate(['/confirmation']);  // Navigate to a confirmation page
+      },
+      error => {
+        console.error('Error submitting application', error);
+      }
+    );
   }
 }

@@ -1,88 +1,60 @@
 <div class="grid p-fluid">
-    <div class="col-12 md:col-6">
-      <div class="card">
-        <h5>Postuler à une Offre d'Emploi</h5>
-  
-        <!-- Full Name -->
+  <div class="col-12 md:col-12">
+    <div class="card">
+      <h5>Job Application Form</h5>
+      <form [formGroup]="applyForm" (ngSubmit)="submitApplication()">
         <div class="grid formgrid">
-          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
-            <span class="p-float-label">
-              <input id="fullname" type="text" pInputText formControlName="fullname" placeholder="Nom Complet" required />
-              <label for="fullname">Nom Complet</label>
-            </span>
+          <!-- Full Name -->
+          <div class="col-12 mb-6 lg:col-6 lg:mb-0">
+            <label for="fullName">Full Name *</label>
+            <input type="text" pInputText id="fullName" placeholder="Enter your full name" formControlName="fullName" />
+          </div>
+
+          <!-- Email -->
+          <div class="col-12 mb-6 lg:col-6 lg:mb-0">
+            <label for="email">Email *</label>
+            <input type="email" pInputText id="email" placeholder="Enter your email" formControlName="email" />
+          </div>
+
+          <!-- Phone -->
+          <div class="col-12 mb-6 lg:col-6 lg:mb-0">
+            <label for="phone">Phone *</label>
+            <input type="text" pInputText id="phone" placeholder="Enter your phone number" formControlName="phone" />
+          </div>
+
+          <!-- Experience -->
+          <div class="col-12 mb-6 lg:col-6 lg:mb-0">
+            <label for="nbExp">Years of Experience *</label>
+            <input type="number" pInputText id="nbExp" placeholder="Enter years of experience" formControlName="nbExp" />
+          </div>
+
+          <!-- Skills -->
+          <div class="col-2 mb-12 lg:col-12 lg:mb-0">
+            <label for="skills">Skills *</label>
+            <textarea rows="3" cols="30" id="skills" pInputTextarea placeholder="List your skills" formControlName="skills"></textarea>
+          </div>
+
+          <!-- CV Upload -->
+          <div class="col-12 mb-12 lg:col-12 lg:mb-0">
+            <label for="cvPath">Upload CV *</label>
+            <input type="file" id="cvPath" formControlName="cvPath" />
+          </div>
+
+          <!-- Cover Letter Upload -->
+          <div class="col-12 mb-12 lg:col-12 lg:mb-0">
+            <label for="coverLetterPath">Upload Cover Letter (Optional)</label>
+            <input type="file" id="coverLetterPath" formControlName="coverLetterPath" />
           </div>
         </div>
-  
-        <!-- Email -->
-        <div class="grid formgrid">
-          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
-            <span class="p-float-label">
-              <input id="email" type="email" pInputText formControlName="email" placeholder="Email" required />
-              <label for="email">Email</label>
-            </span>
-          </div>
+
+        
+
+
+
+        <div class="col-12 mb-4 lg:col-4 lg:mb-0">
+          <button pButton label="Submit Application" type="submit" [disabled]="applyForm.invalid"></button>
         </div>
-  
-        <!-- Phone -->
-        <div class="grid formgrid">
-          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
-            <span class="p-float-label">
-              <input id="phone" type="text" pInputText formControlName="phone" placeholder="Téléphone" required />
-              <label for="phone">Téléphone</label>
-            </span>
-          </div>
-        </div>
-  
-        <!-- Skills -->
-        <div class="grid formgrid">
-          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
-            <span class="p-float-label">
-              <input id="skills" type="text" pInputText formControlName="skills" placeholder="Compétences" required />
-              <label for="skills">Compétences</label>
-            </span>
-          </div>
-        </div>
-  
-        <!-- Nb Exp -->
-        <div class="grid formgrid">
-          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
-            <h5>Années d'Expérience</h5>
-            <p-inputNumber formControlName="nbExp" mode="decimal" [showButtons]="true" [min]="0" [max]="50"></p-inputNumber>
-          </div>
-        </div>
-  
-        <!-- CV Upload -->
-        <div class="grid formgrid">
-          <div class="col-12 mb-2 lg:col-6 lg:mb-0">
-            <h5>CV</h5>
-            <input id="cvPath" type="file" pInputText formControlName="cvPath" required />
-          </div>
-        </div>
-  
-        <!-- Motivation -->
-        <div class="grid formgrid">
-          <div class="col-12 mb-2 lg:col-12 lg:mb-0">
-            <h5>Motivation (225 caractères max)</h5>
-            <textarea
-              rows="3"
-              cols="30"
-              pInputTextarea
-              formControlName="motivation"
-              placeholder="Écrivez quelques mots de motivation..."
-              maxlength="225"
-              required
-            ></textarea>
-          </div>
-        </div>
-  
-        <!-- Submit Button -->
-        <div class="grid formgrid">
-          <div class="col-12">
-            <button type="submit" pButton label="Postuler" icon="pi pi-check" [disabled]="postulationForm.invalid"></button>
-          </div>
-        </div>
-      </div>
+      </form>
     </div>
-    
   </div>
-  
+</div>

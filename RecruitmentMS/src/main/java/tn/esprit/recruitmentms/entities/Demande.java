@@ -27,12 +27,12 @@ public class Demande implements Serializable {
     String phone;
     String skills;
     Integer nbExp;
+    String cvPath;
+    String coverLetterPath;
     @Enumerated(EnumType.STRING)
     private Etat etat;
     @Enumerated(EnumType.STRING)
     private Status status;
-    String cvPath;
-    String coverLetter;
     @ManyToOne
     private JobOffer jobOffer;
 

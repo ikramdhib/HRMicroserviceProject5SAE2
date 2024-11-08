@@ -1,20 +1,27 @@
-// src/app/demo/service/postuler.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-
+import { JobOffer } from 'src/app/models/job-offer.model';
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
 export class PostulerService {
-    private apiUrl = 'http://localhost:8086/demandes/postuler'; 
+  private apiUrl = 'http://localhost:8086/joboffers/add'; 
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-    // Method to post job application data
-    applyForJob(jobId: number, applicantData: any): Observable<any> {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      return this.http.post(this.apiUrl, { jobId, ...applicantData }, { headers });
-    }
+  getJobOffers(): Observable<JobOffer[]> {
+    return this.http.get<JobOffer[]>(this.apiUrl);
+  }
+
+  
+
+  createJobOffer(newJobOffer: JobOffer): Observable<JobOffer> {
+    return this.http.post<JobOffer>(this.apiUrl, newJobOffer);
+  }
+
+  applyForJob(jobId: number, applicantData: any) {
+    const apiUrl = `http://localhost:8086/joboffers/${jobId}/apply`;
+    return this.http.post(apiUrl, applicantData);
+  }
 }

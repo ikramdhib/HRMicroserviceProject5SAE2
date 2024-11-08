@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
         { path: 'recruiting', loadChildren: () => import('./recruiting/recruiting.module').then(m => m.recruitingModule) },
         { path: 'ApplicationForm', loadChildren: () => import('./application-form/application-form.module').then(m => m.ApplicationFormModule) },])],
-        
+   
 
     exports: [RouterModule]
 })

@@ -1,0 +1,29 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Job ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Competence</th>
+        <th>Experience Required</th>
+        <th>Salary</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let job of jobs">
+        <td>{{ job.idJob }}</td>
+        <td>{{ job.title }}</td>
+        <td>{{ job.description }}</td>
+        <td>{{ job.competence }}</td>
+        <td>{{ job.nbreExperience }}</td>
+        <td>{{ job.salary }}</td>
+        <td>
+          <button pButton label="View Details" (click)="viewJob(job.idJob)"></button>
+          <button pButton label="Apply" (click)="applyForJob(job.idJob)"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
