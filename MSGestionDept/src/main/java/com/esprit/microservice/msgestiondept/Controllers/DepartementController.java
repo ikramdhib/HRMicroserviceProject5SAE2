@@ -1,6 +1,7 @@
 package com.esprit.microservice.msgestiondept.Controllers;
 
 import com.esprit.microservice.msgestiondept.Entities.Department;
+import com.esprit.microservice.msgestiondept.Entities.Utilisateur;
 import com.esprit.microservice.msgestiondept.Services.DepartementService;
 import com.esprit.microservice.msgestiondept.Services.DepartementServiceImpl;
 import lombok.AllArgsConstructor;
@@ -51,5 +52,16 @@ public class DepartementController {
     public ResponseEntity<Void> deleteDepartement(@PathVariable Long id) {
         departementService.deleteDepartement(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/addDepartmentAndAssignToUsers")
+    public Department addDepartmentAndAssignToUsers(
+            @RequestBody Department department,
+            @RequestParam List<Integer> userIds) {
+        return departementService.addDepartmentAndAssignToUsers(department, userIds);
+    }
+    @GetMapping("/{departmentId}/users")
+    public List<Utilisateur> getUsersByDepartment(@PathVariable Long departmentId) {
+       return departementService.getUsersByDepartmentId(departmentId);
     }
 }

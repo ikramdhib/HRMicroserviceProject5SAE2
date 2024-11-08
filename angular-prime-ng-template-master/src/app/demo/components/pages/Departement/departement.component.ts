@@ -4,7 +4,8 @@ import { Department } from './Department';  // Adjust this path
 import { ConfirmationService, MessageService } from 'primeng/api';  // For confirmation and messages
 import { ConfirmPopup } from 'primeng/confirmpopup'; // Import ConfirmPopup
 import { Table } from 'primeng/table';
-
+import{Utilisateur} from'./Utilisateur'
+import { UserService } from '../../userProject/services/user.service';
 
 @Component({
   selector: 'app-departement',
@@ -15,6 +16,7 @@ import { Table } from 'primeng/table';
 })
 export class DepartementComponent implements OnInit {
   departments: Department[] = [];
+  usersByDepartment: { [key: number]: Utilisateur[] } = {};  // To store users for each department
   selectedDepartments: Department[] = [];
   departmentDialog: boolean = false;
   department: Department = { id: 0, nom: '', description: '', type: '', status: '', location: '', budget: 0, manager: '', numberOfEmployees: 0 };
@@ -23,6 +25,8 @@ export class DepartementComponent implements OnInit {
   confirmDialog: boolean = false; // For confirmation dialog
   departmentToDeleteId: number | null = null; // Store ID of department to delete
   submitted: boolean = false;
+  users: Utilisateur[] = [];  // Store users for the selected department
+  userIdsToAssign: number[] = []
   departmentTypes = [
     { label: 'Human Resources', value: 'RESSOURCES_HUMAINES' },
     { label: 'IT', value: 'INFORMATIQUE' },
@@ -39,6 +43,7 @@ export class DepartementComponent implements OnInit {
   ];
 
   constructor(
+    private userServ : UserService,
     private departmentService: DepartmentService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
@@ -48,12 +53,25 @@ export class DepartementComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDepartments();
+    this.loadUsers();  // Load all users when the component initializes
+
   }
 
   loadDepartments() {
-    this.departmentService.getDepartments().subscribe({
-      next: (data) => this.departments = data,
-      error: (err) => this.showError(err)
+    this.departmentService.getDepartments().subscribe((departments) => {
+      this.departments = departments;
+      this.loadUsersForDepartments(departments);  // Load users for each department
+    });
+  }
+
+  loadUsersForDepartments(departments: Department[]) {
+    departments.forEach((department) => {
+      this.departmentService.getUsersByDepartment(department.id).subscribe({
+        next: (users) => {
+          this.usersByDepartment[department.id] = users;  // Store users for each department
+        },
+        error: (err) => console.error(err)
+      });
     });
   }
 
@@ -62,7 +80,19 @@ export class DepartementComponent implements OnInit {
     this.submitted = false;
     this.departmentDialog = true;
     this.editMode = false;
+    this.loadUsers();
+
   }
+  loadUsers() {
+    this.userServ.getAllUser().subscribe({
+      next: (users) => {
+        this.users = users;
+        console.log('Loaded users:', this.users);  // Log to check if the users are fetched properly
+      },
+      error: (err) => this.showError(err)
+    });
+  }
+  
 
   editDepartment(department: Department) {
     this.department = { ...department };
@@ -103,20 +133,23 @@ export class DepartementComponent implements OnInit {
   saveDepartment() {
     this.submitted = true;
     if (this.department.nom.trim()) {
+      console.log('User IDs to Assign:', this.userIdsToAssign);  // Log the user IDs to check if they are selected
       if (this.editMode) {
+        // Edit department logic
         this.departmentService.updateDepartment(this.department.id, this.department).subscribe({
           next: (updated) => {
             this.departments[this.findIndexById(updated.id)] = updated;
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'departement updated', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Department updated', life: 3000 });
             this.departmentDialog = false;
           },
           error: (err) => this.showError(err)
         });
       } else {
-        this.departmentService.createDepartment(this.department).subscribe({
+        // Add new department and assign users
+        this.departmentService.addDepartmentAndAssignToUsers(this.department, this.userIdsToAssign).subscribe({
           next: (created) => {
             this.departments.push(created);
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'departement Created', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Department created and users assigned', life: 3000 });
             this.departmentDialog = false;
           },
           error: (err) => this.showError(err)
@@ -124,6 +157,18 @@ export class DepartementComponent implements OnInit {
       }
     }
   }
+  
+  
+
+toggleUserSelection(event: any) {
+  // Log the entire event object
+  console.log('Selected users:', event.value);
+
+  // Update the user IDs to assign
+  this.userIdsToAssign = event.value;
+}
+
+
 
   findIndexById(id: number): number {
     return this.departments.findIndex(d => d.id === id);

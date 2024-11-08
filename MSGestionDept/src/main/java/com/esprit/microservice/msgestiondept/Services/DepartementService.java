@@ -1,7 +1,9 @@
 package com.esprit.microservice.msgestiondept.Services;
 
 
+
 import com.esprit.microservice.msgestiondept.Entities.Department;
+import com.esprit.microservice.msgestiondept.Entities.Utilisateur;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,5 +25,13 @@ public interface DepartementService {
     // Supprimer un département
     void deleteDepartement(Long id);
 
+    public List<Utilisateur> getUsersByDepartmentId(Long departmentId);
+
+  //  public List<Utilisateur> getAllUsers();
+    //public Department creerDepartementWithUsers(Department department, List<Long> userIds);
+
+    public Department addDepartmentAndAssignToUsers(Department department, List<Integer> userIds) ;
+
+    //public List<Utilisateur> getUsersByDepartment(Long departmentId) ;
 
 }

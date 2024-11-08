@@ -20,6 +20,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';  // Import ConfirmPopupModule
 import { MessageService } from 'primeng/api';
+import { MultiSelectModule } from 'primeng/multiselect';  // Import the MultiSelectModule
 
 @NgModule({
     imports: [
@@ -41,6 +42,7 @@ import { MessageService } from 'primeng/api';
         DepartementRoutingModule,
         ConfirmDialogModule,
         ConfirmPopupModule,
+        MultiSelectModule
         ],
     declarations: [DepartementComponent],
     providers: [ConfirmationService, MessageService],
