@@ -40,6 +40,10 @@ public class ApiGatewayApplication {
                         .uri("lb://COURS-SERVICE")) // Utilise Eureka pour la découverte de service
                 .route("gestionconge",r->r.path("/conges/**")
                         .uri("http://localhost:8087"))
+                .route("RecruitmentMS",r->r.path("/demandes/**")
+                        .uri("http://localhost:8086"))
+                .route("RecruitmentMS",r->r.path("/joboffers/**")
+                        .uri("http://localhost:8086"))
                 .build();
 }
 

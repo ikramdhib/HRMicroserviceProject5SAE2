@@ -27,8 +27,7 @@ public class Conge implements Serializable {
     private Status statut;
     private String raison;
     private LocalDate dateDemande;
-    @JsonIgnore
-    @ManyToOne
-    private Utilisateur utilisateur;
+
+    private int userId;
 
 }

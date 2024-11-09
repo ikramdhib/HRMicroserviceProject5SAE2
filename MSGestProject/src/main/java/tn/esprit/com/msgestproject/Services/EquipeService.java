@@ -130,5 +130,8 @@ public class EquipeService implements IEquipe {
         return equipeDTOs;
 
     }
+    public long countProjects() {
+        return equipeRepository.count();
+    }
 }
 

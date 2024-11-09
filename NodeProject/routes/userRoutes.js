@@ -11,9 +11,9 @@ router.delete('/deleteUser/:id', userController.deleteUser);
 router.get('/getRole/:role', userController.getUserByRole);
 router.put('/updatePass', userController.changePassword);
 router.get('/getUsersIds/:ids', userController.getUsersByIds);
-
-
-
+router.get('/count', userController.getUserCount);
+router.get('/roles', userController.getRoleDistribution);
+router.get('/registration-stats', userController.getRegistrationStats);
 
 
 

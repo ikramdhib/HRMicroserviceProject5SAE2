@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
-import { Representative } from 'src/app/demo/api/customer';
 import { UserService } from '../services/user.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -22,7 +21,7 @@ export class EmployeeListComponent implements OnInit {
   selectedCustomers1: any[] = [];
 
 
-  representatives: Representative[] = [];
+  representatives: any[] = [];
 
   statuses: any[] = [];
 

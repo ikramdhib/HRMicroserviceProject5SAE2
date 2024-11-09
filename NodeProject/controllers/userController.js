@@ -191,6 +191,51 @@ const getUsersByIds = async (req, res) => {
   }
 };
 
+const getUserCount = async (req, res) => {
+  try {
+    const count = await User.count();
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const getRoleDistribution = async (req, res) => {
+  try {
+    const roles = await User.findAll({
+      attributes: [
+        'role', // Récupérer les rôles
+        [Sequelize.fn('COUNT', Sequelize.col('role')), 'count'] // Compter le nombre d'utilisateurs pour chaque rôle
+      ],
+      group: ['role'], // Groupement par rôle
+    });
+
+    // Si la réponse est correcte, envoyez-la en JSON
+    res.json(roles);
+  } catch (error) {
+    console.error('Error fetching user roles:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+const getRegistrationStats = async (req, res) => {
+  try {
+    const stats = await User.findAll({
+      attributes: [
+        // Utiliser TO_CHAR pour formater la date 'createdAt' en 'YYYY-MM'
+        [Sequelize.fn('TO_CHAR', Sequelize.col('createdAt'), 'YYYY-MM'), 'month'], // Formate la date au format 'YYYY-MM'
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'] // Compte les utilisateurs par mois
+      ],
+      group: [Sequelize.fn('TO_CHAR', Sequelize.col('createdAt'), 'YYYY-MM')], // Groupe les utilisateurs par mois
+      order: [[Sequelize.fn('TO_CHAR', Sequelize.col('createdAt'), 'YYYY-MM'), 'ASC']] // Trie les résultats par mois
+    });
+
+    // Retourner les résultats sous forme de JSON
+    res.json(stats);
+  } catch (error) {
+    console.error('Error fetching registration stats:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
 
 
   module.exports ={
@@ -201,5 +246,8 @@ const getUsersByIds = async (req, res) => {
   createUser,
   deleteUser,
   getUserByRole,
-  getUsersByIds
+  getUsersByIds,
+  getUserCount,
+  getRoleDistribution,
+  getRegistrationStats
   }

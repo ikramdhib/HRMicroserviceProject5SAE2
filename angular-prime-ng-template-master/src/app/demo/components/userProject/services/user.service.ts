@@ -42,4 +42,16 @@ export class UserService {
     getUsersIds(ids:any){
       return this.http.get<any>(`${this.API_RL}users/getUsersIds/${ids}`);
     }
+
+  getUserCount()  {
+    return this.http.get<any>(`${this.API_RL}users/count`);
+  }
+
+  getRoleDistribution() {
+    return this.http.get<any>(`${this.API_RL}users/roles`);
+  }
+
+  getRegistrationStats() {
+    return this.http.get<any>(`${this.API_RL}users/registration-stats`);
+  }
 }

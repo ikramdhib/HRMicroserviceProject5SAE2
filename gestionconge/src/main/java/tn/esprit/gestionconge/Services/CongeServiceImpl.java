@@ -1,12 +1,12 @@
 package tn.esprit.gestionconge.Services;
 
 import lombok.AllArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import tn.esprit.gestionconge.Entities.Conge;
 import tn.esprit.gestionconge.Entities.Status;
 import tn.esprit.gestionconge.Entities.Utilisateur;
 import tn.esprit.gestionconge.Repositories.ICongeRepository;
-import tn.esprit.gestionconge.Repositories.IUtilisateurRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,14 +15,14 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CongeServiceImpl implements IServiceConge{
-    private IUtilisateurRepository utilisateurRepository;
     private ICongeRepository congeRepository;
+    private UserClient userClient;
     @Override
-    public Conge addConge(Conge conge) {
-        Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findById(1);
+    public Conge addConge(Conge conge,int id) {
+        Utilisateur optionalUtilisateur = userClient.getUserById(id);
         // Vérifiez si l'utilisateur existe
-        if (optionalUtilisateur.isPresent()) {
-            conge.setUtilisateur(optionalUtilisateur.get()); // Lier l'utilisateur au congé
+        if (optionalUtilisateur!=null) {
+            conge.setId(optionalUtilisateur.getId()); // Lier l'utilisateur au congé
             conge.setDateDemande(LocalDate.now());
             conge.setStatut(Status.EnCours);
 

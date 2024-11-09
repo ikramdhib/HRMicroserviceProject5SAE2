@@ -21,12 +21,19 @@ export class AuthService {
     localStorage.removeItem('userRole');
   }
 
-  getToken() {
-    return localStorage.getItem('accessToken');
+  gettoken(){
+    let token : any = localStorage.getItem('accessToken');
+    return token;
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!localStorage.getItem('accessToken');
+  }
+  
+
+  // Récupère les rôles de l'utilisateur
+  getUserRoles(): any {
+    return localStorage.getItem('userRole');
   }
 
 }

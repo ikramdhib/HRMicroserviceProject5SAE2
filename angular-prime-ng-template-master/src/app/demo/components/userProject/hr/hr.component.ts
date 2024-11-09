@@ -4,7 +4,6 @@ import { Table } from 'primeng/table';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../services/user.service';
-import { Representative } from 'src/app/demo/api/customer';
 import { HrDialogComponent } from '../hr-dialog/hr-dialog.component';
 
 @Component({
@@ -24,7 +23,7 @@ export class HrComponent implements OnInit {
   selectedCustomers1: any[] = [];
 
 
-  representatives: Representative[] = [];
+  representatives: any[] = [];
 
   statuses: any[] = [];
 

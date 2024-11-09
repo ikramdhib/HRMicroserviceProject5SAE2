@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { Customer, Representative } from 'src/app/demo/api/customer';
-import { Product } from 'src/app/demo/api/product';
 import { EquipeService } from '../Services/equipe.service';
 import { AddTeamComponent } from '../add-team/add-team.component';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';

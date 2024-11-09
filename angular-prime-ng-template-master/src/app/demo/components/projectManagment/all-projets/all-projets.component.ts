@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { Customer, Representative } from 'src/app/demo/api/customer';
 import { ProjetService } from '../Services/projet.service';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { AddProjetComponent } from '../add-projet/add-projet.component'; 
@@ -23,11 +22,11 @@ export class AllProjetsComponent  {
 
  
 
-  selectedCustomers1: Customer[] = [];
+  selectedCustomers1: any[] = [];
 
-  selectedCustomer: Customer = {};
+  selectedCustomer: any = {};
 
-  representatives: Representative[] = [];
+  representatives: any[] = [];
 
 
 

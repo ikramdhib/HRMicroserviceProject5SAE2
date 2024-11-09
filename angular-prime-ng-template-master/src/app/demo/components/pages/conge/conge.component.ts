@@ -29,7 +29,7 @@ export class CongeComponent implements OnInit {
       };
     displayDeleteDialog: boolean = false;
     displayEditDialog: boolean = false;
-
+    userId:any;
     constructor(
         private congeService: CongeService,
         private messageService: MessageService,
@@ -76,6 +76,10 @@ export class CongeComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (localStorage.hasOwnProperty('id')) {
+            this.userId = localStorage.getItem('id');
+            console.log('user id', this.userId);
+          }
         this.loadConges();
     }
 
@@ -118,7 +122,7 @@ export class CongeComponent implements OnInit {
 
             console.log('Conge à ajouter:', newConge);
 
-            this.congeService.addConge(newConge).subscribe(
+            this.congeService.addConge(newConge ,this.userId).subscribe(
                 (response) => {
                     console.log('Congé ajouté avec succès!', response);
                     this.congeForm.reset(); // Réinitialiser le formulaire

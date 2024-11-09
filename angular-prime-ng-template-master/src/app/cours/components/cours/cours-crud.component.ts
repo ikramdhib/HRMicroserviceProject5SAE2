@@ -13,10 +13,17 @@ export class CoursCrudComponent implements OnInit {
   selectedCours: Cours | null = null;
   loading: boolean = true;
 
+  userRole:any;
+  isEmployee: boolean = false;
   constructor(private coursService: CoursService) {}
 
   ngOnInit(): void {
     this.loadCours();
+    if (localStorage.hasOwnProperty('userRole')) {
+      this.userRole = localStorage.getItem('userRole');
+      console.log('user id', this.userRole);
+      this.isEmployee = this.userRole === 'EMPLOYEE';
+    }
   }
 
   // Charger la liste des cours

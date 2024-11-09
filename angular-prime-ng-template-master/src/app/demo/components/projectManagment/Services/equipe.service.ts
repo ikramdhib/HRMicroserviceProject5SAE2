@@ -33,6 +33,9 @@ export class EquipeService {
   getUseEquipe(id:any){
     return this.http.get<any>(`${this.API_RL}equipe/geteUserEquiep/${id}`);
   }
+  getCountEquie(){
+    return this.http.get<any>(`${this.API_RL}equipe/count`);
+  }
 
  
 }

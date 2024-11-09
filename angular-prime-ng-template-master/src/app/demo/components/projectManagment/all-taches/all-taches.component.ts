@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { Customer, Representative } from 'src/app/demo/api/customer';
 import { ActivatedRoute } from '@angular/router';
-import { CustomerService } from 'src/app/demo/service/customer.service';
-import { ProductService } from 'src/app/demo/service/product.service';
 import { TachesService } from '../Services/taches.service';
 interface expandedRows {
   [key: string]: boolean;
@@ -18,7 +15,7 @@ interface expandedRows {
 export class AllTachesComponent  {
   
 
-  customers3: Customer[] = [];
+  customers3: any[] = [];
 
   id: any | null = null;
 
@@ -28,11 +25,10 @@ export class AllTachesComponent  {
 
   @ViewChild('filter') filter!: ElementRef;
 
-  constructor(private confirmationService: ConfirmationService,private messageService: MessageService,private route: ActivatedRoute,private tachesService:TachesService, private customerService: CustomerService, private productService: ProductService) { }
+  constructor(private confirmationService: ConfirmationService,private messageService: MessageService,private route: ActivatedRoute,private tachesService:TachesService) { }
 
   ngOnInit() {
       
-      this.customerService.getCustomersLarge().then(customers => this.customers3 = customers);
       
       this.route.paramMap.subscribe(params => {
         this.id = params.get('id'); 

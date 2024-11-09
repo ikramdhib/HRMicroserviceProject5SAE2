@@ -10,6 +10,8 @@ import tn.esprit.com.msgestproject.Repsitories.ProjetRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -88,6 +90,21 @@ public class ProjetService implements IProjet{
 
         return projets;
     }
+    public long countProjects() {
+        return projetRepository.count();
+    }
+
+    public Map<String, Long> getProjectsDistributionByStartDate() {
+        List<Projet> projets = projetRepository.findAll(); // Récupère tous les projets
+
+        // Regroupement des projets par année-mois (format: yyyy-MM)
+        return projets.stream()
+                .collect(Collectors.groupingBy(projet -> {
+                    // Formater la date de début pour extraire l'année et le mois
+                    return String.format("%tY-%<tm", projet.getDateDebut());
+                }, Collectors.counting()));
+    }
+
 
 
 }

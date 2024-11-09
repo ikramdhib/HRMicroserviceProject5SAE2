@@ -19,8 +19,8 @@ export class CongeService {
     }
 
     // Ajouter un nouveau congé
-    addConge(conge: Conge): Observable<Conge> {
-        return this.http.post<Conge>(`${this.apiUrl}/`, conge);
+    addConge(conge: Conge , id:any): Observable<Conge> {
+        return this.http.post<Conge>(`${this.apiUrl}/${id}`, conge);
     }
 
     // Mettre à jour un congé

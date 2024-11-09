@@ -1,51 +1,43 @@
-.user-info {
-    background-color: #f9f9f9;
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1rem;
-}
-
-.user-info p {
-    margin: 0.5rem 0;
-}
-
-.user-form {
-    background-color: #ffffff;
-    padding: 1.5rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.field {
-    margin-bottom: 1rem;
-}
-
-.field label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-
-.field input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-}
-
-.field input.ng-invalid.ng-dirty {
-    border-color: #e74c3c; /* Red border for invalid fields */
-}
-.card {
+.profile-container {
     display: flex;
-    flex-direction: row; /* Assure que les enfants sont en ligne */
-    justify-content: space-between; /* Espace entre le formulaire et l'image */
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
 }
-.update-button {
-    margin-top: 1rem;
-    width: 100%;
-    background-color: #007bff; /* Bootstrap primary color */
+
+.profile-card {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.profile-image {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.profile-info {
+    padding: 2rem;
+    flex: 2;
+}
+
+.submit-button {
+    background-color: #28a745;
     color: white;
-    border: none;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8rem;
 }

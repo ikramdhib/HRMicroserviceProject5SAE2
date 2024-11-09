@@ -49,6 +49,9 @@ public class EquipeContoller {
         return equipeService.getEquipesByUserId(userId);
     }
 
-
+    @GetMapping("/count")
+    public long getProjectCount() {
+        return equipeService.countProjects();
+    }
 
 }

@@ -1,6 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { AuthService } from '../config/auth.service';
 
 @Component({
     selector: 'app-menu',
@@ -9,19 +10,28 @@ import { LayoutService } from './service/app.layout.service';
 export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
-
-    constructor(public layoutService: LayoutService) { }
+    userRoles:any;
+    constructor(private authService:AuthService ,public layoutService: LayoutService) { }
 
     ngOnInit() {
+
+        const role = this.authService.getUserRoles();
+        if (role) {
+          
+          this.userRoles = role 
+        }
+    
+
         this.model = [
             {
                 label: 'Home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home',
+                     routerLink: ['/user/dashboard'],
+                     roles: ['ADMIN', 'HR','EMPLOYEE'] }
                 ]
             },
             {
-                label: 'Gestion des projets',
                 items: [
                     {
                         label: 'Projets',
@@ -30,15 +40,18 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Ajouter Projet',
                                 icon: 'pi pi-plus',
-                                routerLink: ['/projet/addprojet']
+                                routerLink: ['/projet/addprojet'],
+                                roles: ['ADMIN', 'HR']
                             },
                             {
                                 label: 'List des Projets',
                                 icon: 'pi pi-bars',
-                                routerLink: ['/projet/projets']
+                                routerLink: ['/projet/projets'],
+                                roles: ['ADMIN', 'HR']
                             },
                           
-                        ]
+                        ],
+                        roles: ['ADMIN', 'HR']
                     },
                     {
                         label: 'Equipes',
@@ -47,179 +60,124 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Ajouter Equipe',
                                 icon: 'pi pi-user-plus',
-                                routerLink: ['/projet/addteam']
+                                routerLink: ['/projet/addteam'],
+                                roles: ['ADMIN', 'HR']
                             },
                             {
                                 label: 'List des équipes',
                                 icon: 'pi pi-table',
-                                routerLink: ['/projet/teams']
+                                routerLink: ['/projet/teams'],
+                                roles: ['ADMIN', 'HR']
                             },
                           
-                        ]
+                        ],
+                        roles: ['ADMIN', 'HR']
                     },
 
-                    { label: 'Ajouter des taches', icon: 'pi pi-pencil', routerLink: ['/projet/addtaches'] },
+                    { label: 'Ajouter des taches', 
+                        icon: 'pi pi-pencil', 
+                        routerLink: ['/projet/addtaches'],
+                        roles: ['ADMIN', 'HR'] },
 
-                ]
+                        { label: 'Projets', 
+                            icon: 'pi pi-briefcase', 
+                            routerLink: ['/projet/userprojet'],
+                            roles: ['EMPLOYEE'] },
+
+                ],
+                
             },
+           
+           
+           
             {
-                label: 'UI Components',
-                items: [
-                    { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel'] },
-                    { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', routerLink: ['/uikit/invalidstate'] },
-                    { label: 'Button', icon: 'pi pi-fw pi-mobile', routerLink: ['/uikit/button'], class: 'rotated-icon' },
-                    { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
-                    { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
-                    { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },
-                    { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
-                    { label: 'Overlay', icon: 'pi pi-fw pi-clone', routerLink: ['/uikit/overlay'] },
-                    { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                    { label: 'Menu', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'], preventExact: true },
-                    { label: 'Message', icon: 'pi pi-fw pi-comment', routerLink: ['/uikit/message'] },
-                    { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
-                    { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] },
-                    { label: 'MyDashBoard', icon: 'pi pi-fw pi-id-card', routerLink: ['/mydashboard'] }
-                ]
-            },
-            {
-                label: 'Prime Blocks',
-                items: [
-                    { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW' },
-                    { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
-                ]
-            },
-            {
-                label: 'Utilities',
-                items: [
-                    { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', routerLink: ['/utilities/icons'] },
-                    { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: ['https://www.primefaces.org/primeflex/'], target: '_blank' },
-                ]
-            },
-            {
-                label: 'Pages',
                 icon: 'pi pi-fw pi-briefcase',
-                routerLink: ['/pages'],
                 items: [
-                    
-                    {
-                        label: 'Landing',
-                        icon: 'pi pi-fw pi-globe',
-                        routerLink: ['/landing']
-                    },
-                    {
-                        label: 'Auth',
-                        icon: 'pi pi-fw pi-user',
-                        items: [
-                            {
-                                label: 'Login',
-                                icon: 'pi pi-fw pi-sign-in',
-                                routerLink: ['/auth/login']
-                            },
-                            {
-                                label: 'Error',
-                                icon: 'pi pi-fw pi-times-circle',
-                                routerLink: ['/auth/error']
-                            },
-                            {
-                                label: 'Access Denied',
-                                icon: 'pi pi-fw pi-lock',
-                                routerLink: ['/auth/access']
-                            }
-                        ]
-                    },
+                    { label: 'Offer Jobs',
+                         icon: 'pi pi-fw pi-id-card',
+                         routerLink: ['/pages/recruiting'],
+                         roles: ['ADMIN', 'HR'] },
+                    { label: 'Postuler', 
+                        icon: 'pi pi-fw pi-id-card', 
+                        routerLink: ['/pages/ApplicationForm'],
+                        roles: ['ADMIN', 'HR'] },
+
                     {
                         label: 'Conge',
                         icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/pages/conge']
+                        routerLink: ['/pages/conge'],
+                        roles: ['ADMIN', 'HR']
                     },
                     {
                         label: 'CongeAdmin',
                         icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/pages/conge-admin']
-                    },
-                    {
-                        label: 'Crud',
-                        icon: 'pi pi-fw pi-pencil',
-                        routerLink: ['/pages/crud']
-                    },
-                    {
-                        label: 'Timeline',
-                        icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/pages/timeline']
-                    },
-                    {
-                        label: 'Not Found',
-                        icon: 'pi pi-fw pi-exclamation-circle',
-                        routerLink: ['/pages/notfound']
-                    },
-                    {
-                        label: 'Empty',
-                        icon: 'pi pi-fw pi-circle-off',
-                        routerLink: ['/pages/empty']
+                        routerLink: ['/pages/conge-admin'],
+                        roles: ['EMPLOYEE']
                     },
                     {
                         label: 'Departements',
                         icon: 'pi pi-fw pi-circle-off',
-                        routerLink: ['/pages/departement']
+                        routerLink: ['/pages/departement'],
+                        roles: ['ADMIN', 'HR']
                     },
                 ]
             },
+
             {
-                label: 'Hierarchy',
+                icon: 'pi pi-fw pi-briefcase',
                 items: [
+                    { label: 'Cours',
+                         icon: 'pi pi-book',
+                         routerLink: ['/cours'],
+                         roles: ['ADMIN', 'HR','EMPLOYEE'] 
+                        },
+
+                    { label: 'Sections', 
+                        icon: 'pi pi-bookmark', 
+                        routerLink: ['/sections'],
+                        roles: ['ADMIN', 'HR'] },
+
                     {
-                        label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
-                                ]
-                            },
-                        ]
+                        label: 'Contenus',
+                        icon: 'pi pi-copy',
+                        routerLink: ['/contenus'],
+                        roles: ['ADMIN', 'HR','EMPLOYEE']
                     },
                     {
-                        label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                        ]
-                    }
+                        label: 'CongeAdmin',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink: ['/pages/conge-admin'],
+                        roles: ['EMPLOYEE']
+                    },
+                    {
+                        label: 'Departements',
+                        icon: 'pi pi-fw pi-circle-off',
+                        routerLink: ['/pages/departement'],
+                        roles: ['ADMIN', 'HR']
+                    },
                 ]
             },
-            {
-                label: 'Get Started',
-                items: [
-                    {
-                        label: 'Documentation', icon: 'pi pi-fw pi-question', routerLink: ['/documentation']
-                    },
-                    {
-                        label: 'View Source', icon: 'pi pi-fw pi-search', url: ['https://github.com/primefaces/sakai-ng'], target: '_blank'
-                    }
-                ]
-            }
+           
+            
         ];
+        this.filterMenuByRole();
     }
+
+
+    filterMenuByRole() {
+        // Iterate through the menu and filter out items the user is not authorized for based on their roles
+        this.model = this.model.map(menuItem => {
+          // Filter menu items for each menu category
+          if (menuItem.items) {
+            menuItem.items = menuItem.items.filter((item:any) => {
+              // If no roles are specified for the item, show it by default
+              if (!item.roles || item.roles.some((role:any) => this.userRoles.includes(role))) {
+                return true;
+              }
+              return false;
+            });
+          }
+          return menuItem;
+        });
+      }
 }

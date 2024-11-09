@@ -13,11 +13,18 @@ export class ContenuCrudComponent implements OnInit {
   selectedContenu: Contenu | null = null;
   selectedFile: File | null = null;
   loading: boolean = true;
-
+  userRole:any;
+  isEmployee: boolean = false;
   constructor(private contenuService: ContenuService) {}
 
   ngOnInit(): void {
     this.loadContenus();
+    if (localStorage.hasOwnProperty('userRole')) {
+      this.userRole = localStorage.getItem('userRole');
+      console.log('user id', this.userRole);
+      this.isEmployee = this.userRole === 'EMPLOYEE';
+    }
+
   }
 
   // Charger la liste des contenus

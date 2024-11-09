@@ -30,5 +30,11 @@ export class ProjetService {
   getallWithUserId(id:any){
     return this.http.get<any>(`${this.API_RL}projet/getprojetWithUserId/${id}`);
   }
+  getCountProject(){
+    return this.http.get<any>(`${this.API_RL}projet/count`);
+  }
+  getDistrubutedProject(){
+    return this.http.get<any>(`${this.API_RL}projet/distribution`);
+  }
 
 }

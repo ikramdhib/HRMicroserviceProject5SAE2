@@ -15,9 +15,9 @@ import java.util.Map;
 public class CongeRestController {
     private CongeServiceImpl congeService;
 
-    @PostMapping("/")
-    public Conge addConge(@RequestBody Conge conge) {
-      return congeService.addConge(conge);
+    @PostMapping("/{id}")
+    public Conge addConge(@RequestBody Conge conge ,@PathVariable int id) {
+      return congeService.addConge(conge , id);
     }
 
     @PutMapping("/")
