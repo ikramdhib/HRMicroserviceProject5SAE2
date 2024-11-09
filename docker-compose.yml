@@ -2,10 +2,10 @@ version: '3.9'
 
 services:
 
-  recrute:
-    build: ./RecruitmentMS
-    image: mariemsebei/recrute
-    container_name: recruteContainer
+  conge:
+    build: ./gestionconge
+    image: ikramdhib/conge
+    container_name: congeContainer
     ports:
       - "8087:8087"
     depends_on:
@@ -13,15 +13,96 @@ services:
       - eureka-server
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/Test21db?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/gestionconge?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root  
       - SPRING_DATASOURCE_PASSWORD=root
+    
+  gestprojet:
+    build: ./MSGestionDept
+    image: ikramdhib/gestprojet
+    container_name: gestprojet
+    ports:
+      - "8088:8088"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+  
+  gestdepartment:
+    build: ./MSGestionDept
+    image: ikramdhib/gestdepartment
+    container_name: gestdepartment
+    ports:
+      - "8089:8089"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+  
+  gestcours:
+    build: ./cours-service
+    image: ikramdhib/gestcours
+    container_name: gestcours
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
 
+  gestjobs:
+    build: ./RecruitmentMS
+    image: ikramdhib/gestjobs
+    container_name: gestjobs
+    ports:
+      - "8086:8086"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/gestionconge?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root  
+      - SPRING_DATASOURCE_PASSWORD=root
+    
+  node-app:
+    build: ./NodeProject 
+    image: ikramdhib/api-users
+    container_name: api-users
+    ports:
+      - "5000:5000"  
+    depends_on:
+      - eureka-server
+      - db-postgres  
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=HR-realm
+      - KEYCLOAK_CLIENT_ID=api-gateway-client
+      - KEYCLOAK_CLIENT_SECRET=WpMXns8EGwlA9IEfUmDqS6aY5roYywHy
+    
+  angular-app:
+    build: ./angular-prime-ng-template-master
+    image: ikramdhib/sakai-ng
+    container_name: sakai-ng
+    ports:
+      - "80:80"
 
+   keycloak:
+    image: jboss/keycloak:latest 
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_USER=admin 
+      - KEYCLOAK_PASSWORD=admin 
+    ports:
+      - "8080:8080"
 
   eureka-server:
     build: ./EurekaServer
-    image: mariemsebei/eurekaa
+    image: ikramdhib/eureka
     container_name: eurekaContainer
     ports:
       - "8761:8761"
@@ -30,15 +111,19 @@ services:
 
   api-gateway:
     build: ./ApiGateway
-    image: mariemsebei/apigateway
+    image: ikramdhib/apigateway
     container_name: apigatewayContainer
     ports:
-      - "8081:8081"
+      - "8056:8056"
     depends_on:
       - eureka-server
-      - recrute
+      - conge
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=HR-realm
+      - KEYCLOAK_CLIENT_ID=api-gateway-client
+      - KEYCLOAK_CLIENT_SECRET=WpMXns8EGwlA9IEfUmDqS6aY5roYywHy
 
   db-mysql:
     image: "mysql:latest"
@@ -48,3 +133,19 @@ services:
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=gestionconge
+  
+  db-postgres:
+    image: "postgres:latest"
+    container_name: db-postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=postgres 
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

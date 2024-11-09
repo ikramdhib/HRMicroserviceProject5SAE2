@@ -5,7 +5,10 @@ WORKDIR /app
 COPY . .
 
 RUN npm install --legacy-peer-deps
-RUN ng build
+
+RUN npm install -g @angular/cli
+
+RUN ng build --configuration production
 
 FROM nginx:alpine
 
