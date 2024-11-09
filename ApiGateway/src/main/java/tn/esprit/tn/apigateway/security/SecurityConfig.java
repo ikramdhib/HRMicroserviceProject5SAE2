@@ -1,8 +1,8 @@
 package tn.esprit.tn.apigateway.security;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -16,41 +16,35 @@ import java.util.Arrays;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.addAllowedOrigin("http://localhost:4200"); // Autorise votre application Angular
+        corsConfig.addAllowedMethod("*"); // Autorise toutes les méthodes (GET, POST, etc.)
+        corsConfig.addAllowedHeader("*"); // Autorise tous les headers
+        corsConfig.setAllowCredentials(true);
 
-        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:4200"));  // Allow Angular frontend
-        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed methods
-        corsConfig.setAllowedHeaders(Arrays.asList("*"));
-        corsConfig.setAllowCredentials(true); // Allow credentials
-        corsConfig.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig); // Apply config to all paths
+        source.registerCorsConfiguration("/**", corsConfig);
 
-        return new CorsWebFilter(source); // Return the CORS Web Filter
+        return new CorsWebFilter(source);
     }
 
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity serverHttpSecurity){
-        serverHttpSecurity
-                .cors()  // Ensure CORS is applied first
-                .and()
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        http
+                .cors().and()
+                .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/eureka/**","/auth/**","/users/**","/projet/**",
-                                "/equipe/**","/tache/**","/api/departements/**" ,"/api/cours/**",
-                                "/api/sections/**","/api/contenus/**","/conges/**",
-                                "/demandes/**","/joboffers/**")
-                        .permitAll()
-                        .anyExchange()
-                        .authenticated()
+                        .pathMatchers("/eureka/**", "/auth/**").permitAll()
+                        .anyExchange().authenticated()
                 )
-                .oauth2ResourceServer(oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec
-                        .jwt(Customizer.withDefaults()));
-        return serverHttpSecurity.build();
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt()); // JWT configuration
+
+        return http.build();
     }
-
-
 
 }

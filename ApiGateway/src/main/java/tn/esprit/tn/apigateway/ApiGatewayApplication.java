@@ -21,17 +21,17 @@ public class ApiGatewayApplication {
     public RouteLocator gatewayRoutes(RouteLocatorBuilder routeLocatorBuilder){
         return  routeLocatorBuilder.routes()
                 .route("MSGestProject",r->r.path("/equipe/**")
-                        .uri("http://localhost:8088"))
+                        .uri("http://gestprojet:8088"))
                 .route("MSGestProject",r->r.path("/projet/**")
-                        .uri("http://localhost:8088"))
+                        .uri("http://gestprojet:8088"))
                 .route("MSGestProject",r->r.path("/tache/**")
-                        .uri("http://localhost:8088"))
+                        .uri("http://gestprojet:8088"))
                 .route("MSGestProject",r->r.path("/tache/**")
-                        .uri("http://localhost:8088"))
+                        .uri("http://gestprojet:8088"))
                 .route("MSExpressService", r -> r.path("/users/**", "/auth/**") // routes du microservice express
-                        .uri("http://localhost:5000"))  // URI du microservice Express
+                        .uri("http://node-app:5000"))  // URI du microservice Express
                 .route("MSGestionDept", r -> r.path("/api/departements/**")
-                        .uri("http://localhost:8089"))
+                        .uri("http://gestdepartment:8089"))
                 .route("cours-service", r -> r.path("/api/cours/**")
                         .uri("lb://COURS-SERVICE")) // Utilise Eureka pour la découverte de service
                 .route("section-service", r -> r.path("/api/sections/**")
@@ -39,11 +39,11 @@ public class ApiGatewayApplication {
                 .route("contenu-service", r -> r.path("/api/contenus/**")
                         .uri("lb://COURS-SERVICE")) // Utilise Eureka pour la découverte de service
                 .route("gestionconge",r->r.path("/conges/**")
-                        .uri("http://localhost:8087"))
+                        .uri("http://conge:8087"))
                 .route("RecruitmentMS",r->r.path("/demandes/**")
-                        .uri("http://localhost:8086"))
+                        .uri("http://gestjobs:8086"))
                 .route("RecruitmentMS",r->r.path("/joboffers/**")
-                        .uri("http://localhost:8086"))
+                        .uri("http://gestjobs:8086"))
                 .build();
 }
 

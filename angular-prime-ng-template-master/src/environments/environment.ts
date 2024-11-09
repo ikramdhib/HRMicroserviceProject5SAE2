@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-   API_URL:'http://localhost:8056/'
+   API_URL:'http://eureka-server:8056/'
 };
 
 

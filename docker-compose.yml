@@ -18,7 +18,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=root
     
   gestprojet:
-    build: ./MSGestionDept
+    build: ./MSGestProject
     image: ikramdhib/gestprojet
     container_name: gestprojet
     ports:
@@ -75,34 +75,38 @@ services:
       - eureka-server
       - db-postgres  
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-postgres:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=root
       - KEYCLOAK_URL=http://keycloak:8080
       - KEYCLOAK_REALM=HR-realm
       - KEYCLOAK_CLIENT_ID=api-gateway-client
-      - KEYCLOAK_CLIENT_SECRET=WpMXns8EGwlA9IEfUmDqS6aY5roYywHy
+      - KEYCLOAK_CLIENT_SECRET=tpTOfaWvPPioiCSYs9WpgmOuwVR0SedN
     
   angular-app:
     build: ./angular-prime-ng-template-master
     image: ikramdhib/sakai-ng
     container_name: sakai-ng
     ports:
-      - "80:80"
+      - "4200:80"
 
-   keycloak:
-    image: jboss/keycloak:latest 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.0
     container_name: keycloak
+    command: "start-dev"
+    restart: unless-stopped
     environment:
-      - KEYCLOAK_USER=admin 
-      - KEYCLOAK_PASSWORD=admin 
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
     ports:
       - "8080:8080"
+    volumes:
+      - keycloak-data:/opt/keycloak/data 
 
   eureka-server:
     build: ./EurekaServer
-    image: ikramdhib/eureka
+    image: ikramdhib/eureka-server
     container_name: eurekaContainer
     ports:
       - "8761:8761"
@@ -117,13 +121,19 @@ services:
       - "8056:8056"
     depends_on:
       - eureka-server
+      - keycloak
+      - node-app
+      - gestjobs
+      - gestcours
+      - gestdepartment
+      - gestprojet
       - conge
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - KEYCLOAK_URL=http://keycloak:8080
       - KEYCLOAK_REALM=HR-realm
       - KEYCLOAK_CLIENT_ID=api-gateway-client
-      - KEYCLOAK_CLIENT_SECRET=WpMXns8EGwlA9IEfUmDqS6aY5roYywHy
+      - KEYCLOAK_CLIENT_SECRET=tpTOfaWvPPioiCSYs9WpgmOuwVR0SedN
 
   db-mysql:
     image: "mysql:latest"
@@ -149,3 +159,5 @@ services:
 
 volumes:
   pgdata:
+  keycloak-data:
+    driver: local

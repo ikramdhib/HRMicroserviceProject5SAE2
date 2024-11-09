@@ -21,12 +21,13 @@ import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContenuCrudComponent } from './cours/components/contenu/contenu-crud.component';
 import { CoursCrudComponent } from './cours/components/cours/cours-crud.component';
 import { SectionCrudComponent } from './cours/components/section/section-crud.component';
 import { DragDropModule } from 'primeng/dragdrop';
 import { NgModule } from '@angular/core';
+import { AuthInterceptorService } from './config/auth-interceptor.service';
 
 /*export function initializeKeycloak(authService: AuthService) {
     return () => authService.init();
@@ -60,7 +61,8 @@ import { NgModule } from '@angular/core';
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        CountryService, EventService, IconService, NodeService
+        CountryService, EventService, IconService, NodeService,
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }
        // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },         
     ],
     bootstrap: [AppComponent]

@@ -6,10 +6,10 @@ const qs = require('qs');
 async function getKeycloakToken(email,password){
     try {
       const response = await axios.post(
-        'http://localhost:8080/realms/HR-realm/protocol/openid-connect/token',
+        'http://keycloak:8080/realms/HR-realm/protocol/openid-connect/token',
         qs.stringify({
             client_id: 'api-gateway-client',
-            client_secret: 'WpMXns8EGwlA9IEfUmDqS6aY5roYywHy',
+            client_secret: 'V5ON0UKESxNL1SSsVQH0fifOsj3SOK5C',
             username: email,
             password: password,
             grant_type: 'password'

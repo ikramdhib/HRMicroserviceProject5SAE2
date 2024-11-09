@@ -32,7 +32,7 @@ const client = new Eureka({
     }
 },
 eureka: {
-    host: 'localhost',         // Adresse du serveur Eureka
+    host: 'eureka-server',         // Adresse du serveur Eureka
     port: 8761,                // Port par défaut de Eureka
     servicePath: '/eureka/apps/'
 }
