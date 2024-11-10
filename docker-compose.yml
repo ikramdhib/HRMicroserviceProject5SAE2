@@ -27,11 +27,12 @@ services:
     depends_on:
       - eureka-server
       - configserver
+      - nodeproject
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
     volumes:
-      - h2-data:/data/h2db
+      - gestprojet-data:/data
       
   gestdepartment:
     build: ./MSGestionDept
@@ -42,11 +43,12 @@ services:
     depends_on:
       - eureka-server
       - configserver
+      - nodeproject
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     volumes:
-      - h2-data:/data/h2db
-  
+      - gestdepartment-data:/data
+
   gestcours:
     build: ./cours-service
     image: ikramdhib/gestcours
@@ -59,7 +61,7 @@ services:
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     volumes:
-      - h2-data:/data/h2db
+      - gestcours-data:/data
 
   gestjobs:
     build: ./RecruitmentMS
@@ -185,7 +187,8 @@ volumes:
   pgdata:
   keycloak-data:
     driver: local
-  h2-data:   
-    driver: local
   mysql-data:  
     driver: local
+  gestcours-data:
+  gestdepartment-data:
+  gestprojet-data:
