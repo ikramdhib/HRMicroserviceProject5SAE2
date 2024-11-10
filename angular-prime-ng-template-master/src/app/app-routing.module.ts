@@ -28,7 +28,7 @@ import { AuthorizationGuardsService } from './config/authorization-guards.servic
                     { path: 'recruite', loadChildren: () => import('./demo/components/recruiting-management/recruiting-management.module').then(m => m.RecruitingManagementModule) },
                     // New Update Template
                     
-                ],
+                ],canActivate: [AuthGuard]
             },
 
            { path: 'pages/notfound', component: NotfoundComponent },
