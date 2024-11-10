@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/eureka/**", "/auth/**" ,"/equipe/**","/projet/**",
+                        .pathMatchers("/eureka/**", "/auth/**" ,"/users/**","/equipe/**","/projet/**",
                                 "/tache/**","/api/departements/**","/api/cours/**",
                                 "/api/sections/**","/api/contenus/**","/conges/**",
                                 "/demandes/**","/joboffers/**").permitAll()

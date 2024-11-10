@@ -26,9 +26,13 @@ services:
     depends_on:
       - eureka-server
       - configserver
+      - nodeproject
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
-  
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+    volumes:
+      - h2-data:/data/h2db
+      
   gestdepartment:
     build: ./MSGestionDept
     image: ikramdhib/gestdepartment
@@ -39,6 +43,8 @@ services:
       - eureka-server
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    volumes:
+      - h2-data:/data/h2db
   
   gestcours:
     build: ./cours-service
@@ -50,6 +56,8 @@ services:
       - eureka-server
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    volumes:
+      - h2-data:/data/h2db
 
   gestjobs:
     build: ./RecruitmentMS
@@ -66,10 +74,10 @@ services:
       - SPRING_DATASOURCE_USERNAME=root  
       - SPRING_DATASOURCE_PASSWORD=root
     
-  node-app:
+  nodeproject:
     build: ./NodeProject 
-    image: ikramdhib/api-users
-    container_name: api-users
+    image: ikramdhib/nodeproject
+    container_name: nodeproject
     ports:
       - "5000:5000"  
     depends_on:
@@ -121,8 +129,8 @@ services:
     depends_on:
       - eureka-server
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
-      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/ikramdhib/HRMicroserviceProject5SAE2.git/configFiles
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/ikramdhib/HRMicroserviceProject5SAE2.git
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCH_PATHS=configFiles
       
   api-gateway:
     build: ./ApiGateway
@@ -133,7 +141,7 @@ services:
     depends_on:
       - eureka-server
       - keycloak
-      - node-app
+      - nodeproject
       - gestjobs
       - gestcours
       - gestdepartment
@@ -155,6 +163,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=gestionconge
+    volumes:
+      - mysql-data:/var/lib/mysql
   
   db-postgres:
     image: "postgres:latest"
@@ -171,4 +181,8 @@ services:
 volumes:
   pgdata:
   keycloak-data:
+    driver: local
+  h2-data:   
+    driver: local
+  mysql-data:  
     driver: local

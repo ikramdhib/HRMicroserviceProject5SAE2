@@ -26,8 +26,8 @@ public class ApiGatewayApplication {
                         .uri("http://gestprojet:8088"))
                 .route("MSGestProject",r->r.path("/tache/**")
                         .uri("http://gestprojet:8088"))
-                .route("MSExpressService", r -> r.path("/users/**", "/auth/**") // routes du microservice express
-                        .uri("http://node-app:5000"))  // URI du microservice Express
+                .route("nodeproject", r -> r.path("/users/**", "/auth/**") // routes du microservice express
+                        .uri("http://nodeproject:5000"))  // URI du microservice Express
                 .route("MSGestionDept", r -> r.path("/api/departements/**")
                         .uri("http://gestdepartment:8089"))
                 .route("cours-service", r -> r.path("/api/cours/**")

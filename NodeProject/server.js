@@ -18,14 +18,14 @@ app.use(morgan('dev'))
 
 const client = new Eureka({
   instance: {
-    app: 'MSExpressService',  // Nom de votre service
+    app: 'nodeproject',  // Nom de votre service
     hostName: 'localhost',     // Nom d'hôte
     ipAddr: '127.0.0.1',       // Utiliser l'adresse IP
     port: {
         '$': 5000,             // Port sur lequel votre service écoute
         '@enabled': true
     },
-    vipAddress: 'MSExpressService', // Nom VIP
+    vipAddress: 'nodeproject', // Nom VIP
     dataCenterInfo: {
         '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
         name: 'MyOwn'
