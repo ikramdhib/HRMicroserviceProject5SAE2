@@ -11,6 +11,7 @@ services:
     depends_on:
       - db-mysql
       - eureka-server
+      - configserver
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/gestionconge?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
@@ -26,7 +27,6 @@ services:
     depends_on:
       - eureka-server
       - configserver
-      - nodeproject
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
@@ -41,6 +41,7 @@ services:
       - "8089:8089"
     depends_on:
       - eureka-server
+      - configserver
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     volumes:
@@ -54,6 +55,7 @@ services:
       - "8081:8081"
     depends_on:
       - eureka-server
+      - configserver
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     volumes:
@@ -68,6 +70,7 @@ services:
     depends_on:
       - db-mysql
       - eureka-server
+      - configserver
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/gestionconge?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC

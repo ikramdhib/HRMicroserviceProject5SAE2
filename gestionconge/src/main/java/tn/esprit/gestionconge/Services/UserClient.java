@@ -7,7 +7,7 @@ import tn.esprit.gestionconge.Entities.Utilisateur;
 
 import java.util.List;
 
-@FeignClient(name = "MSExpressService")
+@FeignClient(name = "nodeproject",url = "http://nodeproject:5000")
 public interface UserClient {
 
     @GetMapping("/users/getUser/{id}")
