@@ -39,7 +39,10 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/eureka/**", "/auth/**").permitAll()
+                        .pathMatchers("/eureka/**", "/auth/**" ,"/equipe/**","/projet/**",
+                                "/tache/**","/api/departements/**","/api/cours/**",
+                                "/api/sections/**","/api/contenus/**","/conges/**",
+                                "/demandes/**","/joboffers/**").permitAll()
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt()); // JWT configuration

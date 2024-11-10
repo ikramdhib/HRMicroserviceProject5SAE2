@@ -25,6 +25,7 @@ services:
       - "8088:8088"
     depends_on:
       - eureka-server
+      - configserver
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
   
@@ -110,9 +111,19 @@ services:
     container_name: eurekaContainer
     ports:
       - "8761:8761"
+
+  configserver:
+    build: ./ConfigServer
+    image: ikramdhib/configserver
+    container_name: configserver
+    ports:
+      - "8888:8888"
+    depends_on:
+      - eureka-server
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
-
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/ikramdhib/HRMicroserviceProject5SAE2.git/configFiles
+      
   api-gateway:
     build: ./ApiGateway
     image: ikramdhib/apigateway
