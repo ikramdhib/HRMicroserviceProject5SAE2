@@ -26,7 +26,7 @@ export class LoginComponent  {
         localStorage.setItem('userRole', response.role); // Ajustez selon vos besoins
 
         // Rediriger vers la page d'accueil ou une autre page après la connexion réussie
-        this.router.navigate(['/projet/addprojet']);
+        this.router.navigate(['/user/dashboard']);
       },
     );
   }

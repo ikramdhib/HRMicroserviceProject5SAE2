@@ -14,7 +14,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     const token = this.authService.gettoken(); // Assurez-vous que le nom de la fonction est correct
     if (token) {
       const cloned = request.clone({
-        headers: request.headers.set('Authorization', `Bearer ${token}`).append('ngsw-bypass', 'true')
+        headers: request.headers.set('Authorization', `Bearer ${token}`)
       });
       return next.handle(cloned);
     }
