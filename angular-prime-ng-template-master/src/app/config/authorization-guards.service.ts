@@ -13,7 +13,7 @@ export class AuthorizationGuardsService {
 
     canActivate(route: ActivatedRouteSnapshot): boolean {
       const expectedRoles = route.data['roles']; // Roles required for this route
-      const token = this.authServ.gettoken(); // Get the JWT token
+      const token = this.authServ.getToken(); // Get the JWT token
   
       if (!token) {
         // If there's no token, redirect to login or access denied page

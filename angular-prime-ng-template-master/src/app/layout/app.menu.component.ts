@@ -88,7 +88,22 @@ export class AppMenuComponent implements OnInit {
                 
             },
            
-           
+            {
+                items: [
+                    { label: 'Gestion des employés',
+                         icon: 'pi pi-user-plus',
+                         routerLink: ['/user/employees'],
+                         roles: ['ADMIN', 'HR'] 
+                        },
+
+                    { label: 'Gestion HR', 
+                        icon: 'pi pi-address-book', 
+                        routerLink: ['/user/hr'],
+                        roles: ['ADMIN', 'HR'] 
+                    },
+            
+                ]
+            },
            
             {
                 icon: 'pi pi-fw pi-briefcase',
@@ -103,20 +118,20 @@ export class AppMenuComponent implements OnInit {
                         roles: ['ADMIN', 'HR'] },
 
                     {
-                        label: 'Conge',
+                        label: 'Demander congé',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink: ['/pages/conge'],
-                        roles: ['ADMIN', 'HR']
+                        roles: ['EMPLOYEE', 'HR']
                     },
                     {
-                        label: 'CongeAdmin',
+                        label: 'Gestiond des congés',
                         icon: 'pi pi-fw pi-calendar',
                         routerLink: ['/pages/conge-admin'],
-                        roles: ['EMPLOYEE']
+                        roles: ['ADMIN']
                     },
                     {
                         label: 'Departements',
-                        icon: 'pi pi-fw pi-circle-off',
+                        icon: 'pi pi-building',
                         routerLink: ['/pages/departement'],
                         roles: ['ADMIN', 'HR']
                     },
@@ -142,18 +157,6 @@ export class AppMenuComponent implements OnInit {
                         icon: 'pi pi-copy',
                         routerLink: ['/contenus'],
                         roles: ['ADMIN', 'HR','EMPLOYEE']
-                    },
-                    {
-                        label: 'CongeAdmin',
-                        icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/pages/conge-admin'],
-                        roles: ['EMPLOYEE']
-                    },
-                    {
-                        label: 'Departements',
-                        icon: 'pi pi-fw pi-circle-off',
-                        routerLink: ['/pages/departement'],
-                        roles: ['ADMIN', 'HR']
                     },
                 ]
             },

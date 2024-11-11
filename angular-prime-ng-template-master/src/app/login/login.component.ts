@@ -20,14 +20,12 @@ export class LoginComponent  {
   onLogin() {
     this.authService.login(this.email, this.password).subscribe(
       (response) => {
-        // Enregistrez le token dans le localStorage
-        localStorage.setItem('accessToken', response.accessToken.access_token);
-        localStorage.setItem('id', response.id); // Exemple: vous pouvez utiliser une autre propriété pour l'ID de l'utilisateur
-        localStorage.setItem('userRole', response.role); // Ajustez selon vos besoins
-
-        // Rediriger vers la page d'accueil ou une autre page après la connexion réussie
         this.router.navigate(['/user/dashboard']);
       },
+      (error) => {
+        console.error('Login failed', error);
+       
+      }
     );
   }
 

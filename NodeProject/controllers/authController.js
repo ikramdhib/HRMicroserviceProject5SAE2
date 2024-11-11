@@ -43,54 +43,46 @@ const { getKeycloakToken, verifyJwtToken } = require("../middelwares/keycloakAda
     }
 };
   
-const refresh = (req, res) => {
-    const cookies = req.cookies;
-  
-    // Check if jwt cookie is present
-    if (!cookies || !cookies.jwt) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-  
-    const refreshToken = cookies.jwt;
-  
-    jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      async (err, decoded) => {
-        // Check for token verification errors
-        if (err) {
-          return res.status(403).json({ message: "Forbidden" });
-        }
-  
-        try {
-          // Find user by ID from the decoded token
-          const foundUser = await User.findById(decoded.UserInfo.id).exec();
-          // Check if user exists
-          if (!foundUser) {
-            return res.status(401).json({ message: "Unauthorized" });
+const refresh = async (req, res) => {
+  const { refresh_token } = req.body;
+
+  if (!refresh_token) {
+      return res.status(400).json({ message: "Refresh token is required" });
+  }
+
+  try {
+      // Vérifiez si le refresh_token est valide auprès de Keycloak
+      const response = await axios.post(
+          'http://keycloak:8080/realms/HR-realm/protocol/openid-connect/token',
+          qs.stringify({
+              client_id: 'api-gateway-client',
+              client_secret: 'V5ON0UKESxNL1SSsVQH0fifOsj3SOK5C',
+              grant_type: 'refresh_token',
+              refresh_token: refresh_token,
+          }),
+          {
+              headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+              }
           }
-  
-          // Create a new access token
-          const accessToken = jwt.sign(
-            {
-              UserInfo: {
-                id: foundUser.id,
-                role : foundUser.role
-              },
-            },
-            process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "15m" } // Specify the expiration time appropriately
-          );
-  
-          // Send the new access token in the response
-          return res.json({ accessToken });
-        } catch (error) {
-          console.error("Error fetching user:", error);
-          return res.status(500).json({ message: "Internal Server Error" });
-        }
+      );
+
+      // Si la réponse contient un nouveau token, nous renvoyons ces informations
+      if (response.data) {
+          const { access_token, refresh_token: newRefreshToken } = response.data;
+
+          return res.status(200).json({
+              access_token,
+              refresh_token: newRefreshToken
+          });
+      } else {
+          return res.status(401).json({ message: "Invalid refresh token" });
       }
-    );
-  };
+  } catch (error) {
+      console.error("Error refreshing token:", error);
+      return res.status(500).json({ message: "Internal server error during token refresh" });
+  }
+};
   
   const logout = (req, res) => {
     // get the cookies that already saved
