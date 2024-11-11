@@ -9,7 +9,7 @@ async function getKeycloakToken(email,password){
         'http://keycloak:8080/realms/HR-realm/protocol/openid-connect/token',
         qs.stringify({
             client_id: 'api-gateway-client',
-            client_secret: 'V5ON0UKESxNL1SSsVQH0fifOsj3SOK5C',
+            client_secret: 'HW3vv2JiknAAN7678qrteP2UBsvgYlUP',
             username: email,
             password: password,
             grant_type: 'password'
