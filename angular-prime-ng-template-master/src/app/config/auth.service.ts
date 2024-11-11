@@ -17,7 +17,7 @@ export class AuthService {
     return this.http.post<any>(`${this.API_RL}auth/login`, { email, password }).pipe(
       tap((response) => {
         // Store tokens after successful login
-        this.storeTokens(response.accessToken.access_token, response.accessToken.refresh_token);
+        this.storeTokens(response.id,response.role,response.accessToken.access_token, response.accessToken.refresh_token);
       })
     );
   }
@@ -31,9 +31,11 @@ export class AuthService {
     this.refreshTokenSubject.next(null);
   }
 
-  storeTokens(accessToken: string, refreshToken: string): void {
+  storeTokens(userId: any,userRole: any,accessToken: string, refreshToken: string): void {
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('refresh_token', refreshToken);
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('userRole', userRole);
     this.tokenSubject.next(accessToken);
     this.refreshTokenSubject.next(refreshToken);
   }
@@ -47,8 +49,10 @@ export class AuthService {
       switchMap((response: any) => {
         if (response?.access_token && response?.refresh_token) {
           const newAccessToken = response.access_token;
-          const newRefreshToken = response.refresh_token;
-          this.storeTokens(newAccessToken, newRefreshToken);
+          const newRefreshToken = response.accessToken.refresh_token;
+          const id = response.id;
+          const role = response.role;
+          this.storeTokens(id,role,newAccessToken, newRefreshToken);
           return of(response); // Return the refreshed token data
         } else {
           throw new Error('Unable to refresh token');

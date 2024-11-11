@@ -12,7 +12,7 @@ export class PostulerService {
   constructor(private http: HttpClient) {}
 
   getJobOffers(): Observable<JobOffer[]> {
-    return this.http.get<JobOffer[]>(this.apiUrl);
+    return this.http.get<JobOffer[]>(this.apiUrl+'/');
   }
 
   createJobOffer(newJobOffer: JobOffer): Observable<JobOffer> {

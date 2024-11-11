@@ -32,7 +32,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
     volumes:
-      - gestprojet-data:/data
+      - gestprojet-data:/data/h2db/Project
       
   gestdepartment:
     build: ./MSGestionDept
@@ -190,5 +190,8 @@ volumes:
   mysql-data:  
     driver: local
   gestcours-data:
+    driver: local
   gestdepartment-data:
+    driver: local
   gestprojet-data:
+    driver: local

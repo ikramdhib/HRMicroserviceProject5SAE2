@@ -22,7 +22,8 @@ public class JobOfferRController {
     @Operation(description = "Add JobOffer")
     @PostMapping("/add")
     public JobOffer createJobOffer(@RequestBody JobOffer jobOffer) {
-        return iJobOfferService.createJobOffer(jobOffer);
+        JobOffer jobOffer1 = iJobOfferService.createJobOffer(jobOffer);
+        return new ResponseEntity<>(jobOffer1, HttpStatus.OK).getBody() ;
     }
 
 
