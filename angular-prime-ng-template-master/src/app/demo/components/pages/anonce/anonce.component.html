@@ -1,0 +1,26 @@
+<p-dataView #dv [value]="jobOffers" [paginator]="true" [rows]="6" filterBy="title" layout="grid">
+    <ng-template let-job pTemplate="gridItem">
+      <div class="col-12 md:col-4">
+        <div class="card m-3 border-1 surface-border">
+          <div class="text-center">
+            <div class="text-2xl font-bold">{{ job.title }}</div>
+            <div class="mb-3">{{ job.description }}</div>
+            <div class="flex align-items-center justify-content-between mt-3">
+              <span class="font-semibold">Experience:</span>
+              <span>{{ job.nbreExperience }} years</span>
+            </div>
+            <div class="flex align-items-center justify-content-between mt-2">
+              <span class="font-semibold">End Date:</span>
+              <span>{{ job.dateFin | date }}</span>
+            </div>
+            <div class="flex align-items-center justify-content-between mt-2">
+              <span class="font-semibold">Salary:</span>
+              <span>${{ job.salary }}</span>
+            </div>
+            <!-- Apply Button - On click, navigate to the ApplicationFormComponent -->
+            <p-button icon="pi pi-send" label="Apply" (click)="applyForJob(job.idJob)"></p-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>

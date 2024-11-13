@@ -17,6 +17,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/gestionconge?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root  
       - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
     
   gestprojet:
     build: ./MSGestProject
@@ -31,8 +33,15 @@ services:
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/h2db/Project;AUTO_SERVER=TRUE
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=Dhib
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
+      - SPRING_DATASOURCE_INITIALIZATION-MODE=always
+      - SPRING_DATASOURCE_DATA=file:/data/h2db/Project
     volumes:
-      - gestprojet-data:/data/h2db/Project
+      - gestprojet-data:/data/h2db
       
   gestdepartment:
     build: ./MSGestionDept
@@ -46,6 +55,14 @@ services:
       - nodeproject
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/h2db/Departments;AUTO_SERVER=TRUE
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=Dhib
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
+      - SPRING_DATASOURCE_INITIALIZATION-MODE=always
+      - SPRING_DATASOURCE_DATA=file:/data/h2db/Departments
     volumes:
       - gestdepartment-data:/data
 
@@ -60,6 +77,14 @@ services:
       - configserver
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/h2db/Cours;AUTO_SERVER=TRUE
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=Dhib
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
+      - SPRING_DATASOURCE_INITIALIZATION-MODE=always
+      - SPRING_DATASOURCE_DATA=file:/data/h2db/Cours
     volumes:
       - gestcours-data:/data
 
@@ -78,6 +103,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/gestionconge?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root  
       - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
     
   nodeproject:
     build: ./NodeProject 
@@ -104,6 +131,16 @@ services:
     container_name: sakai-ng
     ports:
       - "4200:80"
+    depends_on:
+      - eureka-server
+      - keycloak
+      - nodeproject
+      - gestjobs
+      - gestcours
+      - gestdepartment
+      - gestprojet
+      - conge
+      - api-gateway
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.0
@@ -190,8 +227,5 @@ volumes:
   mysql-data:  
     driver: local
   gestcours-data:
-    driver: local
   gestdepartment-data:
-    driver: local
   gestprojet-data:
-    driver: local

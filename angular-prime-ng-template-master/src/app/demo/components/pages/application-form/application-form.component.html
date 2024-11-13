@@ -1,58 +1,44 @@
 <div class="grid p-fluid">
-  <div class="col-12 md:col-12">
+  <div class="col-12">
     <div class="card">
       <h5>Job Application Form</h5>
       <form [formGroup]="applyForm" (ngSubmit)="submitApplication()">
         <div class="grid formgrid">
+          
           <!-- Full Name -->
           <div class="col-12 mb-6 lg:col-6 lg:mb-0">
             <label for="fullName">Full Name *</label>
-            <input type="text" pInputText id="fullName" placeholder="Enter your full name" formControlName="fullName" />
+            <input type="text" pInputText id="fullName" placeholder="Enter your full name" formControlName="fullName" aria-required="true" />
           </div>
 
           <!-- Email -->
           <div class="col-12 mb-6 lg:col-6 lg:mb-0">
             <label for="email">Email *</label>
-            <input type="email" pInputText id="email" placeholder="Enter your email" formControlName="email" />
+            <input type="email" pInputText id="email" placeholder="Enter your email" formControlName="email" aria-required="true" />
           </div>
 
           <!-- Phone -->
           <div class="col-12 mb-6 lg:col-6 lg:mb-0">
             <label for="phone">Phone *</label>
-            <input type="text" pInputText id="phone" placeholder="Enter your phone number" formControlName="phone" />
+            <input type="text" pInputText id="phone" placeholder="Enter your phone number" formControlName="phone" aria-required="true" />
           </div>
 
           <!-- Experience -->
           <div class="col-12 mb-6 lg:col-6 lg:mb-0">
             <label for="nbExp">Years of Experience *</label>
-            <input type="number" pInputText id="nbExp" placeholder="Enter years of experience" formControlName="nbExp" />
+            <input type="number" pInputText id="nbExp" placeholder="Enter years of experience" formControlName="nbExp" aria-required="true" />
           </div>
 
           <!-- Skills -->
-          <div class="col-2 mb-12 lg:col-12 lg:mb-0">
+          <div class="col-12 mb-6 lg:col-12">
             <label for="skills">Skills *</label>
-            <textarea rows="3" cols="30" id="skills" pInputTextarea placeholder="List your skills" formControlName="skills"></textarea>
+            <textarea rows="3" id="skills" pInputTextarea placeholder="List your skills" formControlName="skills" aria-required="true"></textarea>
           </div>
 
-          <!-- CV Upload -->
-          <div class="col-12 mb-12 lg:col-12 lg:mb-0">
-            <label for="cvPath">Upload CV *</label>
-            <input type="file" id="cvPath" formControlName="cvPath" />
+          <!-- Submit Button -->
+          <div class="col-12 lg:col-4 mt-3">
+            <button pButton label="Submit Application" type="submit" [disabled]="applyForm.invalid"></button>
           </div>
-
-          <!-- Cover Letter Upload -->
-          <div class="col-12 mb-12 lg:col-12 lg:mb-0">
-            <label for="coverLetterPath">Upload Cover Letter (Optional)</label>
-            <input type="file" id="coverLetterPath" formControlName="coverLetterPath" />
-          </div>
-        </div>
-
-        
-
-
-
-        <div class="col-12 mb-4 lg:col-4 lg:mb-0">
-          <button pButton label="Submit Application" type="submit" [disabled]="applyForm.invalid"></button>
         </div>
       </form>
     </div>

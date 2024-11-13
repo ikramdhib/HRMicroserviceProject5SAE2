@@ -8,12 +8,12 @@ import java.util.List;
 
 public interface IDemandeService {
 
-    Demande createDemande(Demande demande, MultipartFile file, MultipartFile coverLetterFile) throws IOException;
+    Demande createDemande(Demande demande);
 
     Demande retrieveDemande(Long idDem);
 
     Demande updateDemande(Long idDem, Demande updatedDemande);
-//liste de demande by job id
+    //liste de demande by job id
     List<Demande> getDemandeByJobId(Long idJob);
 
 

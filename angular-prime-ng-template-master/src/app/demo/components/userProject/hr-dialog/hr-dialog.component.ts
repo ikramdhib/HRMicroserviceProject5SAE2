@@ -66,7 +66,7 @@ export class HrDialogComponent implements OnInit {
         });
       } else {
         // Ajout
-        employeeData.role = 'EMPLOYEE';
+        employeeData.role = 'HR';
         employeeData.password = employeeData.cin; // Exemple : Générer un mot de passe par défaut basé sur le CIN
   
         this.userService.ajouterUser(employeeData).subscribe({

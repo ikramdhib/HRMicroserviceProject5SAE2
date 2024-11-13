@@ -32,7 +32,7 @@ public class CongeRestController {
 
 
     @GetMapping("/")
-    private List<Conge> getAllConge(){
+    public List<Conge> getAllConge(){
         return congeService.getAllConges();
     }
     @DeleteMapping("/{congeId}")

@@ -23,38 +23,15 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-
 public class DemandeServiceImpl implements IDemandeService{
     private IDemandeRepository iDemandeRepository;
     private IJobOfferRepository iJobOfferRepository;
-    private final String uploadDir = "C:/Users/Marye/Desktop/upload";
 
 
-    public Demande createDemande(Demande demande, MultipartFile file, MultipartFile coverLetterFile) throws IOException {
-        // Save CV file if present
-        if (file != null && !file.isEmpty()) {
-            String cvPath = saveFile(file);
-            demande.setCvPath(cvPath);
-        }
-
-        // Save Cover Letter file if present
-        if (coverLetterFile != null && !coverLetterFile.isEmpty()) {
-            String coverLetterPath = saveFile(coverLetterFile);
-            demande.setCoverLetterPath(coverLetterPath);
-        }
-
-        // Save Demande to the database
+    public Demande createDemande(Demande demande) {
         return iDemandeRepository.save(demande);
     }
 
-    // Utility method to save file
-    private String saveFile(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
-        Path filePath = Paths.get(uploadDir + fileName);
-        Files.createDirectories(filePath.getParent());
-        Files.write(filePath, file.getBytes());
-        return filePath.toString();
-    }
 
     public Demande retrieveDemande(Long idDem) {
         return iDemandeRepository.findById(idDem).orElse(null);
@@ -72,8 +49,6 @@ public class DemandeServiceImpl implements IDemandeService{
             demande.setNbExp(updatedDemande.getNbExp());
             demande.setEtat(updatedDemande.getEtat());
             demande.setStatus(updatedDemande.getStatus());
-            demande.setCvPath(updatedDemande.getCvPath());
-            demande.setCoverLetterPath(updatedDemande.getCoverLetterPath());
             demande.setJobOffer(updatedDemande.getJobOffer());
             return iDemandeRepository.save(demande);
         } else {

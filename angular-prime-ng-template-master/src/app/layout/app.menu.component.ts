@@ -108,14 +108,14 @@ export class AppMenuComponent implements OnInit {
             {
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
-                    { label: 'Offer Jobs',
+                    { label: 'Ajouter Offre',
                          icon: 'pi pi-fw pi-id-card',
                          routerLink: ['/pages/recruiting'],
                          roles: ['ADMIN', 'HR'] },
                     { label: 'Postuler', 
                         icon: 'pi pi-fw pi-id-card', 
-                        routerLink: ['/pages/ApplicationForm'],
-                        roles: ['ADMIN', 'HR'] },
+                        routerLink: ['/pages/Annonces'],
+                        roles: ['EMPLOYEE'] },
 
                     {
                         label: 'Demander congé',

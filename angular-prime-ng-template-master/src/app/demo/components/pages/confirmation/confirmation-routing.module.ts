@@ -1,13 +1,14 @@
-export class ConfirmationRoutingModule { }
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConfirmationComponent } from './confirmation.component';
+import { ConfirmationComponent } from 'src/app/demo/service/demo/components/pages/confirmation/confirmation.component';
+
+const routes: Routes = [
+  {path: '', component: ConfirmationComponent}
+
+];
 
 @NgModule({
-  imports: [RouterModule.forChild(
-    
-    [{path: '', component: ConfirmationComponent}]
-  )],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ApplicationFormRoutingModule { }
+export class ConfirmationRoutingModule { }

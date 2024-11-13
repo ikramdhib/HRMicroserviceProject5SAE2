@@ -1,5 +1,6 @@
 package tn.esprit.recruitmentms.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class JobOffer implements Serializable {
     private Recruiter recruiter;
 
     @OneToMany(mappedBy = "jobOffer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Demande> demandes;
 
 }

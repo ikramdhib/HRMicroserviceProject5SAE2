@@ -22,13 +22,13 @@ public class JobOfferRController {
     @Operation(description = "Add JobOffer")
     @PostMapping("/add")
     public JobOffer createJobOffer(@RequestBody JobOffer jobOffer) {
-        JobOffer jobOffer1 = iJobOfferService.createJobOffer(jobOffer);
-        return new ResponseEntity<>(jobOffer1, HttpStatus.OK).getBody() ;
+
+        return iJobOfferService.createJobOffer(jobOffer);
     }
 
 
     @Operation(description = "Retrieve all JobOffers")
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<JobOffer> getAllJobOffers() {
         return iJobOfferService.getAllJobOffers();
     }
@@ -36,8 +36,8 @@ public class JobOfferRController {
 
     @PutMapping("/{idJob}")
     public JobOffer updateJobOfferdate(@PathVariable Long idJob, @RequestBody  LocalDate newDateFin) {
-    JobOffer updatedJobOffer = iJobOfferService.updateJobOfferdate(idJob, newDateFin);
-    return new ResponseEntity<>(updatedJobOffer, HttpStatus.OK).getBody();
+        JobOffer updatedJobOffer = iJobOfferService.updateJobOfferdate(idJob, newDateFin);
+        return new ResponseEntity<>(updatedJobOffer, HttpStatus.OK).getBody();
     }
 
 
@@ -53,7 +53,7 @@ public class JobOfferRController {
 
     @DeleteMapping("/{idJob}")
     public ResponseEntity<Object> deleteJobOffer(@PathVariable Long idJob) {
-         iJobOfferService.deleteJobOffer(idJob);
+        iJobOfferService.deleteJobOffer(idJob);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

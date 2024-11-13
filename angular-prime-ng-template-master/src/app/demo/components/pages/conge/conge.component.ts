@@ -25,7 +25,8 @@ export class CongeComponent implements OnInit {
         date_fin: '',
         duree: 0,
         statut: "",
-        raison: ''
+        raison: '',
+        
       };
     displayDeleteDialog: boolean = false;
     displayEditDialog: boolean = false;
@@ -76,11 +77,12 @@ export class CongeComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (localStorage.hasOwnProperty('id')) {
-            this.userId = localStorage.getItem('id');
+        if (localStorage.hasOwnProperty('userId')) {
+            this.userId = localStorage.getItem('userId');
             console.log('user id', this.userId);
+            this.loadConges();
           }
-        this.loadConges();
+        
     }
 
     loadConges() {
